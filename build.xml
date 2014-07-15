@@ -22,6 +22,8 @@
 
         <property name="ivy.filename" value="ivy-${ivy.version}.jar"/>
         <property name="ivy.settings.filename" value="ivysettings.xml"/>
+        <property name="ivy.resolve.log" value="quiet"/>
+        <property name="ivy.default.resolver" value="chained"/>
     </target>
 
     <target name="build-agent-component" depends="init">
