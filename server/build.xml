@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="jvm-monitor-server-plugin" default="default">
+
+    <import file="../build-common.xml"/>
+
+    <target name="package-plugin" depends="copy-resources">
+        <delete dir="${dist.dir}"/>
+
+        <mkdir dir="${dist.dir}/server"/>
+
+        <manifest file="${build.dir}/MANIFEST.MF">
+            <attribute name="Build-Date" value="${build.date}"/>
+            <attribute name="Build-Number" value="${build.number}"/>
+            <attribute name="Build-VCS-Number" value="${build.vcs.number}"/>
+        </manifest>
+
+        <jar destfile="${dist.dir}/server/${plugin.name}.jar"
+             manifest="${build.dir}/MANIFEST.MF"
+             basedir="${classes.dir}">
+            <exclude name="teamcity-plugin.xml"/>
+        </jar>
+    </target>
+
+    <target name="default" depends="package-plugin"/>
+</project>

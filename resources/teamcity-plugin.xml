@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<teamcity-plugin xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xsi:noNamespaceSchemaLocation="urn:schemas-jetbrains-com:teamcity-plugin-v1-xml">
+    <info>
+        <name>jvmMonitorPlugin</name>
+        <display-name>JVM Monitor Plugin</display-name>
+        <version>@VERSION@</version>
+        <description>
+        </description>
+        <email>rod.n.mackenzie@gmail.com</email>
+        <vendor>
+            <name>rodm</name>
+            <url>http://bitbucket.org/rodm/teamcity-jvm-monitor</url>
+        </vendor>
+    </info>
+    <deployment use-separate-classloader="false"/>
+</teamcity-plugin>

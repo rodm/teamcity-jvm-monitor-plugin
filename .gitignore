@@ -1,0 +1,10 @@
+# IDEA
+*.iml
+*.ipr
+*.iws
+.idea
+
+# Build
+build/
+dist/
+lib/

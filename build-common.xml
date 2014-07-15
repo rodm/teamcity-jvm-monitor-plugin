@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="common" default="default"
+         xmlns:ivy="antlib:org.apache.ivy.ant">
+
+    <target name="init">
+        <dirname property="common.dir" file="${ant.file.common}"/>
+        <property file="${common.dir}/build.properties"/>
+        <property file="${common.dir}/default.properties"/>
+
+        <tstamp/>
+        <property name="build.date" value="${TODAY}"/>
+        <property name="build.number" value="dev"/>
+        <property name="build.vcs.number" value="${DSTAMP}${TSTAMP}"/>
+        <property name="version" value="1.1-SNAPSHOT"/>
+
+        <property name="plugin.name" value="jvm-monitor-plugin"/>
+        <property name="plugin.filename" value="${plugin.name}.zip"/>
+
+        <property name="src.dir" location="src"/>
+        <property name="java.src.dir" location="${src.dir}/main/java"/>
+        <property name="resources.dir" location="${src.dir}/main/resources"/>
+        <property name="test.src.dir" location="${src.dir}/test/java"/>
+
+        <property name="build.dir" location="build"/>
+        <property name="classes.dir" location="${build.dir}/classes"/>
+        <property name="test.classes.dir" location="${build.dir}/test/classes"/>
+        <property name="test.report.dir" location="${build.dir}/test/report"/>
+
+        <property name="dist.dir" location="dist"/>
+
+        <!-- Compiler options -->
+        <property name="compiler.debug" value="on"/>
+        <property name="compiler.nowarn" value="off"/>
+        <property name="compiler.source" value="1.6"/>
+        <property name="compiler.target" value="1.6"/>
+        <property name="compiler.args" value=""/>
+        <property name="compiler.max.memory" value="128m"/>
+
+        <property name="ivy.filename" value="ivy-${ivy.version}.jar"/>
+        <property name="ivy.settings.filename" value="ivysettings.xml"/>
+        <property name="ivy.resolve.log" value="quiet"/>
+        <property name="ivy.default.resolver" value="chained"/>
+
+        <property name="lib.dir" location="${common.dir}/lib"/>
+        <available property="download.ivy" file="${lib.dir}/${ivy.filename}"/>
+    </target>
+
+    <target name="dev-package-install" depends="init">
+        <fail unless="teamcity.version" message="teamcity.version property must be set"/>
+
+        <!-- TeamCity 6 and later have a runtime directory for runtime-util.jar -->
+        <condition property="teamcity.runtime.available">
+            <available file="${teamcity.home}/devPackage/runtime" type="dir"/>
+        </condition>
+
+        <property name="repo.dir" location="${user.home}/.ivy2/local/com.jetbrains.teamcity"/>
+        <property name="common-api.dir" location="${repo.dir}/common-api/${teamcity.version}/jars"/>
+        <property name="agent-api.dir" location="${repo.dir}/agent-api/${teamcity.version}/jars"/>
+        <property name="server-api.dir" location="${repo.dir}/server-api/${teamcity.version}/jars"/>
+        <property name="annotations.dir" location="${repo.dir}/annotations/${teamcity.version}/jars"/>
+        <property name="util.dir" location="${repo.dir}/util/${teamcity.version}/jars"/>
+        <property name="runtime-util.dir" location="${repo.dir}/runtime-util/${teamcity.version}/jars"/>
+
+        <copy todir="${common-api.dir}" file="${teamcity.home}/devPackage/common-api.jar"/>
+        <copy todir="${agent-api.dir}" file="${teamcity.home}/devPackage/agent-api.jar"/>
+        <copy todir="${server-api.dir}" file="${teamcity.home}/devPackage/server-api.jar"/>
+        <copy todir="${runtime-util.dir}" flatten="true">
+            <fileset dir="${teamcity.home}/devPackage">
+                <include name="runtime-util.jar" unless="teamcity.runtime.available"/>
+                <include name="runtime/runtime-util.jar" if="teamcity.runtime.available"/>
+            </fileset>
+        </copy>
+        <copy todir="${annotations.dir}" file="${teamcity.home}/webapps/ROOT/WEB-INF/lib/annotations.jar"/>
+        <copy todir="${util.dir}" file="${teamcity.home}/webapps/ROOT/WEB-INF/lib/util.jar"/>
+    </target>
+
+    <target name="download-ivy" depends="dev-package-install" unless="download.ivy">
+        <mkdir dir="${lib.dir}"/>
+
+        <echo message="downloading ivy..."/>
+        <get src="http://repo1.maven.org/maven2/org/apache/ivy/ivy/${ivy.version}/${ivy.filename}"
+             dest="${lib.dir}/${ivy.filename}" usetimestamp="true"/>
+    </target>
+
+    <target name="init-ivy" depends="download-ivy">
+        <path id="lib.classpath">
+            <fileset dir="${lib.dir}" includes="*.jar"/>
+        </path>
+        <taskdef resource="org/apache/ivy/ant/antlib.xml"
+                 uri="antlib:org.apache.ivy.ant"
+                 classpathref="lib.classpath"/>
+
+        <ivy:settings file="${common.dir}/${ivy.settings.filename}" />
+    </target>
+
+    <target name="resolve-dependencies" depends="init-ivy">
+        <ivy:resolve log="${ivy.resolve.log}"/>
+        <ivy:cachepath pathid="compile.classpath" conf="compile"/>
+        <ivy:cachepath pathid="test.classpath" conf="test"/>
+    </target>
+
+    <target name="compile" depends="resolve-dependencies">
+        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${classes.dir}"/>
+
+        <javac destdir="${classes.dir}"
+               debug="${compiler.debug}"
+               nowarn="${compiler.nowarn}"
+               source="${compiler.source}"
+               target="${compiler.target}"
+               memorymaximumsize="${compiler.max.memory}"
+               fork="true">
+            <classpath refid="compile.classpath"/>
+            <src location="${java.src.dir}"/>
+        </javac>
+    </target>
+
+    <target name="copy-resources" depends="compile">
+        <copy todir="${classes.dir}">
+            <fileset dir="${resources.dir}">
+                <type type="file"/>
+            </fileset>
+            <filterset>
+                <filter token="VERSION" value="${version}"/>
+                <filter token="VCS_REVISION" value="${build.vcs.number}"/>
+                <filter token="BUILD_NUMBER" value="${build.number}"/>
+            </filterset>
+        </copy>
+    </target>
+
+    <target name="compile-tests" depends="copy-resources">
+        <mkdir dir="${test.classes.dir}"/>
+
+        <javac destdir="${test.classes.dir}"
+               debug="${compiler.debug}"
+               nowarn="${compiler.nowarn}"
+               memorymaximumsize="${compiler.max.memory}"
+               fork="true"
+               target="${compiler.target}">
+            <classpath refid="compile.classpath"/>
+            <classpath refid="test.classpath"/>
+            <classpath location="${classes.dir}"/>
+            <src location="${test.src.dir}"/>
+        </javac>
+    </target>
+
+    <target name="run-tests" depends="compile-tests">
+        <property name="test.vmparam" value="-Ddefault"/>
+
+        <mkdir dir="${test.report.dir}"/>
+
+        <junit fork="yes"
+               forkmode="once"
+               printsummary="withOutAndErr"
+               errorproperty="tests.failed"
+               failureproperty="tests.failed"
+               showoutput="true">
+            <jvmarg value="${test.vmparam}"/>
+            <classpath refid="compile.classpath"/>
+            <classpath refid="test.classpath"/>
+            <classpath location="${classes.dir}"/>
+            <classpath location="${test.classes.dir}"/>
+
+            <batchtest fork="yes" todir="${test.report.dir}">
+                <formatter type="xml"/>
+                <fileset dir="${test.src.dir}">
+                    <include name="**/*Test.java"/>
+                </fileset>
+            </batchtest>
+        </junit>
+
+        <junitreport todir="${test.report.dir}">
+            <fileset dir="${test.report.dir}">
+                <include name="TEST-*.xml" />
+            </fileset>
+            <report format="noframes" todir="${test.report.dir}" />
+        </junitreport>
+
+        <fail if="tests.failed">Unit tests failed.</fail>
+    </target>
+
+    <target name="package-plugin" depends="copy-resources"/>
+
+    <target name="default" depends="package-plugin"/>
+
+    <target name="clean-all" depends="init">
+        <delete dir="${build.dir}"/>
+        <delete dir="${dist.dir}"/>
+    </target>
+</project>
