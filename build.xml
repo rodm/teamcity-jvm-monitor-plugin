@@ -86,7 +86,7 @@
         <ivy:settings file="${ivy.settings.filename}" />
     </target>
 
-    <target name="publish" depends="package-plugin, init-ivy">
+    <target name="publish" depends="init-ivy">
         <property name="repo.id" value="snapshots"/>
         <property name="repo.url" value="http://localhost:8080/nexus"/>
 
