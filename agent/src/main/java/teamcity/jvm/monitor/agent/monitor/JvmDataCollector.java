@@ -38,6 +38,7 @@ public class JvmDataCollector implements Runnable {
             this.out.println("# main args: " + mainArgs);
             this.out.println("# jvm args: " + jvmArgs);
             this.out.println("# jvm flags: " + jvmFlags);
+            this.out.println("# timestamp, EU, EC, S0U, S0C, S1U, S1C, OU, OC, PU, PC, YGC, YGCT, FGC, FGCT");
             this.future = executor.scheduleAtFixedRate(this, 0, 1, TimeUnit.SECONDS);
         }
         catch (MonitorException e) {
@@ -49,29 +50,32 @@ public class JvmDataCollector implements Runnable {
         future.cancel(false);
         out.close();
     }
-
     @Override
     public void run() {
         StringBuilder stats = new StringBuilder();
         stats.append(dateFormat.format(new Date())).append(",");
-        stats.append(outputMonitor("sun.gc.generation.0.space.1.capacity")).append(",");
-        stats.append(outputMonitor("sun.gc.generation.0.space.2.capacity")).append(",");
-        stats.append(outputMonitor("sun.gc.generation.0.space.1.used")).append(",");
-        stats.append(outputMonitor("sun.gc.generation.0.space.2.used")).append(",");
-        stats.append(outputMonitor("sun.gc.generation.0.space.0.capacity")).append(",");
         stats.append(outputMonitor("sun.gc.generation.0.space.0.used")).append(",");
-        stats.append(outputMonitor("sun.gc.generation.1.space.0.capacity")).append(",");
+        stats.append(outputMonitor("sun.gc.generation.0.space.0.capacity")).append(",");
+        stats.append(outputMonitor("sun.gc.generation.0.space.1.used")).append(",");
+        stats.append(outputMonitor("sun.gc.generation.0.space.1.capacity")).append(",");
+        stats.append(outputMonitor("sun.gc.generation.0.space.2.used")).append(",");
+        stats.append(outputMonitor("sun.gc.generation.0.space.2.capacity")).append(",");
         stats.append(outputMonitor("sun.gc.generation.1.space.0.used")).append(",");
-        stats.append(outputMonitor("sun.gc.generation.2.space.0.capacity")).append(",");
+        stats.append(outputMonitor("sun.gc.generation.1.space.0.capacity")).append(",");
         stats.append(outputMonitor("sun.gc.generation.2.space.0.used")).append(",");
+        stats.append(outputMonitor("sun.gc.generation.2.space.0.capacity")).append(",");
         stats.append(outputMonitor("sun.gc.collector.0.invocations")).append(",");
-        stats.append(outputMonitor("sun.gc.collector.0.time")).append(",");
-        stats.append(outputMonitor("sun.os.hrt.frequency")).append(",");
+        stats.append(calculateTime("sun.gc.collector.0.time", "sun.os.hrt.frequency")).append(",");
         stats.append(outputMonitor("sun.gc.collector.1.invocations")).append(",");
-        stats.append(outputMonitor("sun.gc.collector.1.time")).append(",");
-        stats.append(outputMonitor("sun.os.hrt.frequency")).append("\n");
+        stats.append(calculateTime("sun.gc.collector.1.time", "sun.os.hrt.frequency")).append("\n");
         out.write(stats.toString());
         out.flush();
+    }
+
+    private long calculateTime(String timeName, String frequencyName) {
+        Long time = (Long) outputMonitor(timeName);
+        Long frequency = (Long) outputMonitor(frequencyName);
+        return time / frequency;
     }
 
     private Object outputMonitor(String name) {
