@@ -70,6 +70,8 @@ public class JvmMonitor implements Runnable, VmListener, HostListener {
                 if (!monitoredVms.containsKey(id)) {
                     System.out.println("Adding JVM(pid=" + id + ") to monitored list");
                     String mainClass = MonitoredVmUtil.mainClass(mvm, true);
+                    mainClass = mainClass.replace('/', '.');
+                    mainClass = mainClass.trim();
                     String name = id + "-" + mainClass + ".txt";
                     File outputFile = new File(outputDir, name);
                     Writer writer = new FileWriter(outputFile);
