@@ -43,7 +43,7 @@ public class JvmMonitorBuildFeature extends AgentLifeCycleAdapter {
                 Loggers.AGENT.info("Started JVM Monitor for build");
             }
             catch (Exception e) {
-                e.printStackTrace();
+                Loggers.AGENT.warn("Start monitor failed", e);
             }
         }
     }
@@ -54,7 +54,7 @@ public class JvmMonitorBuildFeature extends AgentLifeCycleAdapter {
             try {
                 monitor.stop();
             } catch (Exception e) {
-                e.printStackTrace();
+                Loggers.AGENT.warn("Stop monitor failed", e);
             }
             monitor = null;
             Loggers.AGENT.info("Stopped JVM Monitor");
