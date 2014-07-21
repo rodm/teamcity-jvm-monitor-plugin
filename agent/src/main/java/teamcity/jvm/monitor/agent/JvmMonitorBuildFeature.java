@@ -56,6 +56,7 @@ public class JvmMonitorBuildFeature extends AgentLifeCycleAdapter {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            monitor = null;
             Loggers.AGENT.info("Stopped JVM Monitor");
             artifactsWatcher.addNewArtifactsPath(outputDir.getAbsolutePath() + "=>" + ".teamcity/jvmmon/");
         }
