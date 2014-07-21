@@ -27,7 +27,6 @@ public class JvmMonitorBuildFeature extends AgentLifeCycleAdapter {
 
     @Override
     public void buildStarted(AgentRunningBuild build) {
-        System.out.println(this.getClass().getSimpleName() + " build started");
         Collection<AgentBuildFeature> features = build.getBuildFeaturesOfType("jvm-monitor-plugin");
         if (!features.isEmpty()) {
             Loggers.AGENT.info("jvm-monitor-plugin feature enabled for build");
