@@ -6,6 +6,8 @@
         <display-name>JVM Monitor Plugin</display-name>
         <version>@VERSION@</version>
         <description>
+            Collects JVM related metrics for any JVM running during the build and publishes them as artifacts.
+            VCS Revision: @VCS_REVISION@, Build Number: @BUILD_NUMBER@
         </description>
         <email>rod.n.mackenzie@gmail.com</email>
         <vendor>
