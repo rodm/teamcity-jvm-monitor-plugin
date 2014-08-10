@@ -1,0 +1,5 @@
+
+apply plugin: 'java'
+
+assemble.dependsOn ':agent:assemble'
+assemble.dependsOn ':server:assemble'

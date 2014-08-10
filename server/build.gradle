@@ -1,0 +1,17 @@
+
+apply plugin: 'java'
+
+teamCityVersion = '8.1.4'
+
+repositories {
+    mavenCentral()
+    maven {
+        url "http://repository.jetbrains.com/all"
+    }
+}
+
+dependencies {
+    compile "org.jetbrains.teamcity:server-api:${teamCityVersion}"
+
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+}

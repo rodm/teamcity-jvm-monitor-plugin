@@ -1,0 +1,37 @@
+
+apply plugin: 'java'
+
+teamCityVersion = '8.1.4'
+
+repositories {
+    mavenCentral()
+    maven {
+        url "http://repository.jetbrains.com/all"
+    }
+}
+
+def javaHome = System.properties['java.home']
+
+dependencies {
+    compile files("${javaHome}/../lib/tools.jar")
+    compile "org.jetbrains.teamcity:agent-api:${teamCityVersion}"
+
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+}
+
+jar {
+    archiveName "jvm-monitor-plugin.jar"
+    exclude "**/teamcity-plugin.xml"
+}
+
+task packageAgentPlugin(type: Zip, dependsOn: jar) {
+    archiveName "agent-jvm-monitor-plugin.zip"
+    from(libsDir) {
+        into "lib"
+    }
+    from(sourceSets.main.resources) {
+        include "teamcity-plugin.xml"
+    }
+}
+
+assemble.dependsOn packageAgentPlugin
