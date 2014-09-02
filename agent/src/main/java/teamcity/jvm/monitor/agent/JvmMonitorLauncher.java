@@ -1,6 +1,6 @@
 package teamcity.jvm.monitor.agent;
 
-import jetbrains.buildServer.log.Loggers;
+import org.apache.log4j.Logger;
 import teamcity.jvm.monitor.agent.monitor.JvmMonitorMain;
 
 import java.io.BufferedWriter;
@@ -16,6 +16,8 @@ import java.util.List;
 
 public class JvmMonitorLauncher {
 
+    private static Logger log = Logger.getLogger("jetbrains.buildServer.AGENT");
+
     private String outputDir;
 
     private PrintWriter writer;
@@ -27,7 +29,7 @@ public class JvmMonitorLauncher {
     }
 
     public void start() throws Exception {
-        Loggers.AGENT.info("Starting JVM Monitor process");
+        log.info("Starting JVM Monitor process");
         String javaHome = System.getProperty("java.home") + "/..";
         File javaCommand = new File(javaHome, "bin/java");
         File agentJar = new File(JvmMonitorLauncher.class.getProtectionDomain().getCodeSource().getLocation().getPath());
@@ -41,7 +43,7 @@ public class JvmMonitorLauncher {
         args.add(outputDir);
         ProcessBuilder builder = new ProcessBuilder();
         builder.command(args);
-        Loggers.AGENT.info("command line: " + builder.toString());
+        log.info("command line: " + builder.toString());
 
         process = builder.start();
         OutputStream in = process.getOutputStream();
@@ -60,16 +62,16 @@ public class JvmMonitorLauncher {
         stderrThread.start();
 
         writer.println("start"); writer.flush();
-        Loggers.AGENT.info("Started JVM Monitor process");
+        log.info("Started JVM Monitor process");
     }
 
     public void stop() throws Exception {
-        Loggers.AGENT.info("Stopping JVM Monitor process");
+        log.info("Stopping JVM Monitor process");
 
         writer.println("stop"); writer.flush();
         writer.close();
 
         int exitValue = process.waitFor();
-        Loggers.AGENT.info("Stopped JVM Monitor process, exit value: " + exitValue);
+        log.info("Stopped JVM Monitor process, exit value: " + exitValue);
     }
 }

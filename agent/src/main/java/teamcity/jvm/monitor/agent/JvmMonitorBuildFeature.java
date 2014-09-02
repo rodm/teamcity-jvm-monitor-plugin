@@ -6,13 +6,15 @@ import jetbrains.buildServer.agent.AgentRunningBuild;
 import jetbrains.buildServer.agent.BuildAgentConfiguration;
 import jetbrains.buildServer.agent.BuildFinishedStatus;
 import jetbrains.buildServer.agent.artifacts.ArtifactsWatcher;
-import jetbrains.buildServer.log.Loggers;
 import jetbrains.buildServer.util.EventDispatcher;
+import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.util.Collection;
 
 public class JvmMonitorBuildFeature extends AgentLifeCycleAdapter {
+
+    private static Logger log = Logger.getLogger("jetbrains.buildServer.AGENT");
 
     private final ArtifactsWatcher artifactsWatcher;
 
@@ -29,21 +31,21 @@ public class JvmMonitorBuildFeature extends AgentLifeCycleAdapter {
     public void buildStarted(AgentRunningBuild build) {
         Collection<AgentBuildFeature> features = build.getBuildFeaturesOfType("jvm-monitor-plugin");
         if (!features.isEmpty()) {
-            Loggers.AGENT.info("jvm-monitor-plugin feature enabled for build");
+            log.info("jvm-monitor-plugin feature enabled for build");
 
             BuildAgentConfiguration config = build.getAgentConfiguration();
             outputDir = new File(config.getTempDirectory(), "jvmmon");
             boolean result = outputDir.mkdirs();
             if (!result) {
-                Loggers.AGENT.warn("Failed to create output directory");
+                log.warn("Failed to create output directory");
             }
             monitor = new JvmMonitorLauncher(outputDir.getAbsolutePath());
             try {
                 monitor.start();
-                Loggers.AGENT.info("Started JVM Monitor for build");
+                log.info("Started JVM Monitor for build");
             }
             catch (Exception e) {
-                Loggers.AGENT.warn("Start monitor failed", e);
+                log.warn("Start monitor failed", e);
             }
         }
     }
@@ -54,10 +56,10 @@ public class JvmMonitorBuildFeature extends AgentLifeCycleAdapter {
             try {
                 monitor.stop();
             } catch (Exception e) {
-                Loggers.AGENT.warn("Stop monitor failed", e);
+                log.warn("Stop monitor failed", e);
             }
             monitor = null;
-            Loggers.AGENT.info("Stopped JVM Monitor");
+            log.info("Stopped JVM Monitor");
             artifactsWatcher.addNewArtifactsPath(outputDir.getAbsolutePath() + "=>" + ".teamcity/jvmmon/");
         }
     }
