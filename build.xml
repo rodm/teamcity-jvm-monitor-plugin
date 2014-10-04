@@ -16,7 +16,7 @@
         <property name="plugin.name" value="jvm-monitor-plugin"/>
         <property name="plugin.filename" value="${plugin.name}.zip"/>
 
-        <property name="resources.dir" location="resources"/>
+        <property name="resources.dir" location="src/main/resources"/>
         <property name="lib.dir" location="lib"/>
         <property name="dist.dir" location="dist"/>
 
