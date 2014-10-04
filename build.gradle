@@ -1,5 +1,34 @@
 
+import org.apache.tools.ant.filters.ReplaceTokens
+
 apply plugin: 'java'
 
-assemble.dependsOn ':agent:assemble'
-assemble.dependsOn ':server:assemble'
+project.ext.teamCityVersion = '8.1.4'
+project.ext.junitVersion = '4.11'
+
+def version = System.properties['version'] ?: "1.0-SNAPSHOT"
+def vcsRevision = System.properties['build.vcs.number'] ?: "buildTimestamp"
+def buildNumber = System.properties['build.number'] ?: "dev"
+
+processResources {
+    filter(ReplaceTokens, tokens: [VERSION: version, VCS_REVISION: vcsRevision, BUILD_NUMBER: buildNumber])
+}
+
+task packagePlugin(type: Zip) {
+    dependsOn ':agent:assemble', ':server:assemble'
+    evaluationDependsOn 'agent'
+    evaluationDependsOn 'server'
+
+    archiveName "jvm-monitor-plugin.zip"
+    from (project(':agent').distsDir) {
+        into "agent"
+    }
+    from (project(':server').libsDir) {
+        into "server"
+    }
+    from ("${buildDir}/resources/main") {
+        include "teamcity-plugin.xml"
+    }
+}
+
+assemble.dependsOn packagePlugin
