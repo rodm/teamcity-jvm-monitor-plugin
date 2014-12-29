@@ -3,6 +3,7 @@ import org.apache.tools.ant.filters.ReplaceTokens
 
 apply plugin: 'java'
 
+project.ext.teamCityVersion = System.properties['teamcity.version'] ?: '8.1.5'
 project.ext.teamCityVersion = '8.1.4'
 project.ext.junitVersion = '4.11'
 
