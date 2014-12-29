@@ -1,0 +1,4 @@
+language: java
+script: gradle assemble -Dteamcity.version=8.1.5
+jdk:
+  - oraclejdk7
