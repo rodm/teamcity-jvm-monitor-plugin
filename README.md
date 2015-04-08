@@ -2,9 +2,12 @@
 
 The JVM Monitor plugin is a Build Feature that can be added to a build configuration to record the garbage collection metrics for any JVM running during the build.
 
+[![Build Status](https://travis-ci.org/rodm/teamcity-jvm-monitor-plugin.svg?branch=master)](https://travis-ci.org/rodm/teamcity-jvm-monitor-plugin)
+[![Download](https://api.bintray.com/packages/rodm/teamcity-plugins/teamcity-jvm-monitor-plugin/images/download.svg)](https://bintray.com/rodm/teamcity-plugins/teamcity-jvm-monitor-plugin/_latestVersion)
+
 ## How to install
 
-Download the plugin archive from [Bintray](https://bintray.com/rodm/teamcity-plugins/teamcity-jvm-monitor-plugin) and copy the `teamcity-jvm-monitor-plugin.zip` file to the `.BuildServer/plugins` directory and restart the TeamCity server.
+Download the plugin using the link above and follow the instructions from the TeamCity documentation, [Installing Additional Plugins](https://confluence.jetbrains.com/display/TCD9/Installing+Additional+Plugins)
 
 ## How to use the plugin
 
