@@ -1,4 +1,13 @@
 language: java
-script: gradle assemble -Dteamcity.version=8.1.5
+
 jdk:
   - oraclejdk7
+#  - oraclejdk8
+
+env:
+  matrix:
+    - TC_VERS='8.1.5'
+    - TC_VERS='9.0.2'
+
+script:
+  - gradle clean build -Dteamcity.version=$TC_VERS
