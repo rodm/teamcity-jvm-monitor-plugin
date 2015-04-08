@@ -8,12 +8,13 @@ repositories {
     }
 }
 
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+archivesBaseName = 'server-jvm-monitor-plugin'
+
 dependencies {
     compile "org.jetbrains.teamcity:server-api:${teamCityVersion}"
 
     testCompile group: 'junit', name: 'junit', version: "${junitVersion}"
-}
-
-jar {
-    archiveName "jvm-monitor-plugin.jar"
 }

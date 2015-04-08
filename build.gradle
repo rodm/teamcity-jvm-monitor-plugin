@@ -11,6 +11,9 @@ def version = System.properties['version'] ?: "1.0-SNAPSHOT"
 def vcsRevision = System.properties['build.vcs.number'] ?: "buildTimestamp"
 def buildNumber = System.properties['build.number'] ?: "dev"
 
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
 processResources {
     filter(ReplaceTokens, tokens: [VERSION: version, VCS_REVISION: vcsRevision, BUILD_NUMBER: buildNumber])
 }
@@ -20,7 +23,6 @@ task packagePlugin(type: Zip) {
     evaluationDependsOn 'agent'
     evaluationDependsOn 'server'
 
-    archiveName "jvm-monitor-plugin.zip"
     from (project(':agent').distsDir) {
         into "agent"
     }

@@ -10,6 +10,11 @@ repositories {
 
 def javaHome = System.properties['java.home']
 
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+archivesBaseName = 'agent-jvm-monitor-plugin'
+
 dependencies {
     compile files("${javaHome}/../lib/tools.jar")
     compile "org.jetbrains.teamcity:agent-api:${teamCityVersion}"
@@ -18,12 +23,10 @@ dependencies {
 }
 
 jar {
-    archiveName "jvm-monitor-plugin.jar"
     exclude "**/teamcity-plugin.xml"
 }
 
 task packageAgentPlugin(type: Zip, dependsOn: jar) {
-    archiveName "agent-jvm-monitor-plugin.zip"
     from(libsDir) {
         into "lib"
     }
