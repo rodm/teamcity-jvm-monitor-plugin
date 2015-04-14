@@ -10,4 +10,4 @@ env:
     - TC_VERS='9.0.2'
 
 script:
-  - gradle clean build -Dteamcity.version=$TC_VERS
+  - ./gradlew clean build -Dteamcity.version=$TC_VERS
