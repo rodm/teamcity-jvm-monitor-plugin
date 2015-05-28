@@ -3,12 +3,14 @@ import org.apache.tools.ant.filters.ReplaceTokens
 
 apply plugin: 'java'
 
-project.ext.teamCityVersion = System.properties['teamcity.version'] ?: '8.1.5'
-project.ext.junitVersion = '4.11'
+ext {
+    teamCityVersion = System.properties['teamcity.version'] ?: '8.1.5'
+    junitVersion = '4.11'
+}
 
 def version = System.properties['version'] ?: "1.0-SNAPSHOT"
-def vcsRevision = System.properties['build.vcs.number'] ?: "buildTimestamp"
-def buildNumber = System.properties['build.number'] ?: "dev"
+def vcsRevision = System.properties['build.vcs.number'] ?: "development"
+def buildNumber = System.properties['build.number'] ?: new Date().format("yyyyMMddHHmmss")
 
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
