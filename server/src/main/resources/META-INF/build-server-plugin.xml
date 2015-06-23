@@ -3,4 +3,11 @@
 
 <beans default-autowire="constructor">
     <bean id="jvmMonitorBuildFeature" class="teamcity.jvm.monitor.server.JvmMonitorBuildFeature"/>
+
+    <bean id="jvmMonitorTab"
+          class="teamcity.jvm.monitor.server.JvmMonitorTab"
+          init-method="register"/>
+
+    <bean id="jvmMonitorController"
+          class="teamcity.jvm.monitor.server.JvmMonitorController"/>
 </beans>
