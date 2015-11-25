@@ -11,6 +11,7 @@ buildscript {
 }
 
 apply plugin: 'com.github.rodm.teamcity-server'
+apply plugin: 'maven-publish'
 
 group = 'com.github.rodm'
 version = '1.0-SNAPSHOT'
@@ -23,6 +24,10 @@ ext {
 ext.teamcityDir = hasProperty('teamcity.home') ? property('teamcity.home') : "$rootDir/servers/TeamCity-${teamcityVersion}"
 ext.teamcityDataDir = "$rootDir/data/" + (teamcityVersion =~ /(\d+\.\d+).*/)[0][1]
 ext.teamcityJavaHome = System.properties['java.home']
+
+ext.repositoryUrl = hasProperty('repositoryUrl') ? property('repositoryUrl') : 'http://localhost:8080'
+ext.repositoryUsername = hasProperty('repositoryUsername') ? property('repositoryUsername') : ''
+ext.repositoryPassword = hasProperty('repositoryPassword') ? property('repositoryPassword') : ''
 
 def version = System.properties['version'] ?: "1.0-SNAPSHOT"
 def vcsRevision = System.properties['build.vcs.number'] ?: "development"
@@ -41,4 +46,25 @@ teamcity {
     homeDir = file(teamcityDir)
     dataDir = file(teamcityDataDir)
     javaHome = file(teamcityJavaHome)
+}
+
+artifacts {
+    archives serverPlugin
+}
+
+publishing {
+    publications {
+        plugin(MavenPublication) {
+            artifact serverPlugin
+        }
+    }
+    repositories {
+        maven {
+            url repositoryUrl
+            credentials {
+                username repositoryUsername
+                password repositoryPassword
+            }
+        }
+    }
 }
