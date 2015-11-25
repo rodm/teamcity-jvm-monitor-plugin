@@ -1,38 +1,44 @@
 
-import org.apache.tools.ant.filters.ReplaceTokens
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath group: 'com.github.rodm', name: 'gradle-teamcity-plugin', version: '0.8'
+    }
+}
 
-apply plugin: 'java'
+apply plugin: 'com.github.rodm.teamcity-server'
+
+group = 'com.github.rodm'
+version = '1.0-SNAPSHOT'
 
 ext {
-    teamCityVersion = System.properties['teamcity.version'] ?: '8.1.5'
+    teamcityVersion = System.properties['teamcity.version'] ?: '8.1.5'
     junitVersion = '4.11'
 }
+
+ext.teamcityDir = hasProperty('teamcity.home') ? property('teamcity.home') : "$rootDir/servers/TeamCity-${teamcityVersion}"
+ext.teamcityDataDir = "$rootDir/data/" + (teamcityVersion =~ /(\d+\.\d+).*/)[0][1]
+ext.teamcityJavaHome = System.properties['java.home']
 
 def version = System.properties['version'] ?: "1.0-SNAPSHOT"
 def vcsRevision = System.properties['build.vcs.number'] ?: "development"
 def buildNumber = System.properties['build.number'] ?: new Date().format("yyyyMMddHHmmss")
 
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
-
-processResources {
-    filter(ReplaceTokens, tokens: [VERSION: version, VCS_REVISION: vcsRevision, BUILD_NUMBER: buildNumber])
+dependencies {
+    agent project(path: ':agent', configuration: 'plugin')
+    server project(':server')
 }
 
-task packagePlugin(type: Zip) {
-    dependsOn ':agent:assemble', ':server:assemble'
-    evaluationDependsOn 'agent'
-    evaluationDependsOn 'server'
+teamcity {
+    version = teamcityVersion
+    descriptor = file("$rootDir/src/main/resources/teamcity-plugin.xml")
+    tokens VERSION: project.version, VCS_REVISION: vcsRevision, BUILD_NUMBER: buildNumber
 
-    from (project(':agent').distsDir) {
-        into "agent"
-    }
-    from (project(':server').libsDir) {
-        into "server"
-    }
-    from ("${buildDir}/resources/main") {
-        include "teamcity-plugin.xml"
-    }
+    homeDir = file(teamcityDir)
+    dataDir = file(teamcityDataDir)
+    javaHome = file(teamcityJavaHome)
 }
-
-assemble.dependsOn packagePlugin

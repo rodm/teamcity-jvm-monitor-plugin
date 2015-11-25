@@ -1,12 +1,6 @@
 
 apply plugin: 'java'
-
-repositories {
-    mavenCentral()
-    maven {
-        url "http://repository.jetbrains.com/all"
-    }
-}
+apply plugin: 'com.github.rodm.teamcity-agent'
 
 def javaHome = System.properties['java.home']
 
@@ -16,8 +10,7 @@ targetCompatibility = 1.7
 archivesBaseName = 'agent-jvm-monitor-plugin'
 
 dependencies {
-    compile files("${javaHome}/../lib/tools.jar")
-    compile "org.jetbrains.teamcity:agent-api:${teamCityVersion}"
+    teamcity files("${javaHome}/../lib/tools.jar")
 
     testCompile group: 'junit', name: 'junit', version: "${junitVersion}"
 }
@@ -26,13 +19,12 @@ jar {
     exclude "**/teamcity-plugin.xml"
 }
 
-task packageAgentPlugin(type: Zip, dependsOn: jar) {
-    from(libsDir) {
-        into "lib"
-    }
-    from(sourceSets.main.resources) {
-        include "teamcity-plugin.xml"
-    }
+agentPlugin {
+    baseName = project.archivesBaseName
 }
 
-assemble.dependsOn packageAgentPlugin
+teamcity {
+    version = teamcityVersion
+
+    descriptor = file("src/main/resources/teamcity-plugin.xml")
+}
