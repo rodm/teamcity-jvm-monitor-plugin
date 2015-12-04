@@ -7,6 +7,7 @@ import jetbrains.buildServer.agent.BuildAgentConfiguration;
 import jetbrains.buildServer.agent.BuildFinishedStatus;
 import jetbrains.buildServer.agent.artifacts.ArtifactsWatcher;
 import jetbrains.buildServer.util.EventDispatcher;
+import jetbrains.buildServer.util.FileUtil;
 import org.apache.log4j.Logger;
 
 import java.io.File;
@@ -35,6 +36,7 @@ public class JvmMonitorBuildFeature extends AgentLifeCycleAdapter {
 
             BuildAgentConfiguration config = build.getAgentConfiguration();
             outputDir = new File(config.getTempDirectory(), "jvmmon");
+            FileUtil.delete(outputDir);
             boolean result = outputDir.mkdirs();
             if (!result) {
                 log.warn("Failed to create output directory");
