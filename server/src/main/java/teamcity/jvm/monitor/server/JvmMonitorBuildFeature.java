@@ -2,10 +2,17 @@ package teamcity.jvm.monitor.server;
 
 
 import jetbrains.buildServer.serverSide.BuildFeature;
+import jetbrains.buildServer.web.openapi.PluginDescriptor;
 
 import java.util.Map;
 
 public class JvmMonitorBuildFeature extends BuildFeature {
+
+    private final PluginDescriptor descriptor;
+
+    public JvmMonitorBuildFeature(PluginDescriptor descriptor) {
+        this.descriptor = descriptor;
+    }
 
     @Override
     public String getType() {
@@ -19,7 +26,7 @@ public class JvmMonitorBuildFeature extends BuildFeature {
 
     @Override
     public String getEditParametersUrl() {
-        return null;
+        return descriptor.getPluginResourcesPath("editFeature.jsp");
     }
 
     @Override
@@ -29,6 +36,6 @@ public class JvmMonitorBuildFeature extends BuildFeature {
 
     @Override
     public String describeParameters(Map<String, String> params) {
-        return "JVM Monitor plugin";
+        return "Collects garbage collection statistics for any JVM running during the build";
     }
 }
