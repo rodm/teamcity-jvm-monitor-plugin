@@ -3,6 +3,7 @@ package teamcity.jvm.monitor.server;
 
 import jetbrains.buildServer.serverSide.BuildFeature;
 import jetbrains.buildServer.web.openapi.PluginDescriptor;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
@@ -14,11 +15,13 @@ public class JvmMonitorBuildFeature extends BuildFeature {
         this.descriptor = descriptor;
     }
 
+    @NotNull
     @Override
     public String getType() {
         return "jvm-monitor-plugin";
     }
 
+    @NotNull
     @Override
     public String getDisplayName() {
         return "JVM Monitor";
@@ -34,8 +37,9 @@ public class JvmMonitorBuildFeature extends BuildFeature {
         return false;
     }
 
+    @NotNull
     @Override
-    public String describeParameters(Map<String, String> params) {
+    public String describeParameters(@NotNull Map<String, String> params) {
         return "Collects garbage collection statistics for any JVM running during the build";
     }
 }

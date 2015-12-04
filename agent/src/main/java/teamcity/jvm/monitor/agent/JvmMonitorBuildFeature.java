@@ -9,6 +9,7 @@ import jetbrains.buildServer.agent.artifacts.ArtifactsWatcher;
 import jetbrains.buildServer.util.EventDispatcher;
 import jetbrains.buildServer.util.FileUtil;
 import org.apache.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.Collection;
@@ -29,7 +30,7 @@ public class JvmMonitorBuildFeature extends AgentLifeCycleAdapter {
     }
 
     @Override
-    public void buildStarted(AgentRunningBuild build) {
+    public void buildStarted(@NotNull AgentRunningBuild build) {
         Collection<AgentBuildFeature> features = build.getBuildFeaturesOfType("jvm-monitor-plugin");
         if (!features.isEmpty()) {
             log.info("jvm-monitor-plugin feature enabled for build");
@@ -53,7 +54,7 @@ public class JvmMonitorBuildFeature extends AgentLifeCycleAdapter {
     }
 
     @Override
-    public void beforeBuildFinish(AgentRunningBuild build, BuildFinishedStatus buildStatus) {
+    public void beforeBuildFinish(@NotNull AgentRunningBuild build, @NotNull BuildFinishedStatus buildStatus) {
         if (monitor != null) {
             try {
                 monitor.stop();
