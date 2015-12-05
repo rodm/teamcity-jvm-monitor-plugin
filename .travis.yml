@@ -6,8 +6,10 @@ jdk:
 
 env:
   matrix:
-    - TC_VERS='8.1.5'
-    - TC_VERS='9.0.2'
+    - TEAMCITY_VERSION='8.0.6'
+    - TEAMCITY_VERSION='8.1.5'
+    - TEAMCITY_VERSION='9.0.3'
+    - TEAMCITY_VERSION='9.1.4'
 
 script:
-  - ./gradlew clean build -Dteamcity.version=$TC_VERS
+  - ./gradlew clean build -Dteamcity.version=$TEAMCITY_VERSION
