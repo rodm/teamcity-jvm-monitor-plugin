@@ -10,3 +10,7 @@ archivesBaseName = 'server-jvm-monitor-plugin'
 dependencies {
     testCompile group: 'junit', name: 'junit', version: "${junitVersion}"
 }
+
+teamcity {
+    version = teamcityVersion
+}
