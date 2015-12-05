@@ -20,7 +20,7 @@ uploaded as build artifacts and can be found as hidden artifacts under the Artif
 
 ## How to build the plugin
 
-1. [Download](http://www.jetbrains.com/teamcity/download/index.html) and install TeamCity version 7.1 or later.
+1. [Download](http://www.jetbrains.com/teamcity/download/index.html) and install TeamCity version 8.0 or later.
 2. Copy the `example.build.properties` file to `build.properties`
 3. Edit the `build.properties` file to set the properties teamcity.home, teamcity.version and teamcity.java.home
 4. Run the Ant build, the default is to build and package the plugin, the plugin is output to `dist/jvm-monitor-plugin.zip`

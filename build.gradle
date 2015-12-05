@@ -9,7 +9,7 @@ group = 'com.github.rodm'
 version = '1.0-SNAPSHOT'
 
 ext {
-    teamcityVersion = System.properties['teamcity.version'] ?: '8.1.5'
+    teamcityVersion = System.properties['teamcity.version'] ?: '8.0.6'
     junitVersion = '4.11'
 }
 
