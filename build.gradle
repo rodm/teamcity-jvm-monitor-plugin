@@ -6,7 +6,7 @@ plugins {
 }
 
 group = 'com.github.rodm'
-version = '1.0-SNAPSHOT'
+version = System.properties['version'] ?: "1.0-SNAPSHOT"
 
 ext {
     teamcityVersion = System.properties['teamcity.version'] ?: '8.0.6'
@@ -21,7 +21,6 @@ ext.repositoryUrl = hasProperty('repositoryUrl') ? property('repositoryUrl') : '
 ext.repositoryUsername = hasProperty('repositoryUsername') ? property('repositoryUsername') : ''
 ext.repositoryPassword = hasProperty('repositoryPassword') ? property('repositoryPassword') : ''
 
-def version = System.properties['version'] ?: "1.0-SNAPSHOT"
 def vcsRevision = System.properties['build.vcs.number'] ?: "development"
 def buildNumber = System.properties['build.number'] ?: new Date().format("yyyyMMddHHmmss")
 
