@@ -48,7 +48,7 @@ public class JvmMonitorBuildFeature extends AgentLifeCycleAdapter {
             if (!result) {
                 log.warn("Failed to create output directory");
             }
-            monitor = new JvmMonitorLauncher(outputDir.getAbsolutePath());
+            monitor = new JvmMonitorLauncher(config.getAgentLogsDirectory(), outputDir);
             try {
                 monitor.start();
                 log.info("Started JVM Monitor for build");

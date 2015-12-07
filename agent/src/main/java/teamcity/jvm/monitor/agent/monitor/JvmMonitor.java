@@ -22,6 +22,8 @@ import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
+import static teamcity.jvm.monitor.agent.monitor.JvmMonitorMain.LOGGER;
+
 public class JvmMonitor implements HostListener {
 
     private static final int DEFAULT_POOL_SIZE = 4;
@@ -43,10 +45,12 @@ public class JvmMonitor implements HostListener {
         try {
             monitoredHost = MonitoredHost.getMonitoredHost(new HostIdentifier((String) null));
             monitoredHost.addHostListener(this);
-        } catch (MonitorException e) {
-            e.printStackTrace(System.err);
-        } catch (URISyntaxException e) {
-            e.printStackTrace(System.err);
+        }
+        catch (MonitorException e) {
+            LOGGER.error("Monitored host exception", e);
+        }
+        catch (URISyntaxException e) {
+            LOGGER.error("Invalid host identifier", e);
         }
     }
 
@@ -57,7 +61,7 @@ public class JvmMonitor implements HostListener {
         try {
             monitoredHost.removeHostListener(this);
         } catch (MonitorException e) {
-            e.printStackTrace(System.err);
+            LOGGER.error("Monitored host exception", e);
         }
         executor.shutdown();
     }
@@ -83,7 +87,7 @@ public class JvmMonitor implements HostListener {
             MonitoredVm mvm = monitoredHost.getMonitoredVm(new VmIdentifier(id.toString()));
 
             if (!monitoredVms.containsKey(id)) {
-                System.out.println("Starting collector for VM: " + id);
+                LOGGER.info("Starting collector for VM: " + id);
                 String mainClass = MonitoredVmUtil.mainClass(mvm, true);
                 mainClass = mainClass.replace('/', '.');
                 mainClass = mainClass.trim();
@@ -95,18 +99,18 @@ public class JvmMonitor implements HostListener {
             }
         }
         catch (MonitorException e) {
-            e.printStackTrace(System.err);
+            LOGGER.error("Monitored host exception", e);
         }
         catch (URISyntaxException e) {
-            e.printStackTrace(System.err);
+            LOGGER.error("Invalid VM identifer", e);
         }
         catch (IOException e) {
-            e.printStackTrace(System.err);
+            LOGGER.error("Failure creating JVM collector file", e);
         }
     }
 
     private void stopCollector(Integer id) {
-        System.out.println("Stopping collector for VM: " + id);
+        LOGGER.info("Stopping collector for VM: " + id);
         JvmDataCollector collector = monitoredVms.remove(id);
         if (collector != null) {
             collector.stop();

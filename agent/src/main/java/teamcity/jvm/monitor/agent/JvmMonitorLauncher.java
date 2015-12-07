@@ -18,13 +18,16 @@ public class JvmMonitorLauncher {
 
     private static Logger log = Logger.getLogger("jetbrains.buildServer.AGENT");
 
-    private String outputDir;
+    private File logDir;
+
+    private File outputDir;
 
     private PrintWriter writer;
 
     private Process process;
 
-    public JvmMonitorLauncher(String outputDir) {
+    public JvmMonitorLauncher(File logDir, File outputDir) {
+        this.logDir = logDir;
         this.outputDir = outputDir;
     }
 
@@ -34,13 +37,18 @@ public class JvmMonitorLauncher {
         File javaCommand = new File(javaHome, "bin/java");
         File agentJar = new File(JvmMonitorLauncher.class.getProtectionDomain().getCodeSource().getLocation().getPath());
         File toolsJar = new File(javaHome, "lib/tools.jar");
+        File log4jJar = new File(agentJar.getParentFile(), "log4j-1.2.17.jar");
 
+        String classPath = toolsJar.getCanonicalPath() + File.pathSeparator +
+                agentJar.getCanonicalPath() + File.pathSeparator +
+                log4jJar.getCanonicalPath();
         List<String> args = new ArrayList<String>();
         args.add(javaCommand.getAbsolutePath());
         args.add("-cp");
-        args.add(toolsJar.getCanonicalPath() + File.pathSeparator + agentJar.getCanonicalPath());
+        args.add(classPath);
         args.add(JvmMonitorMain.class.getName());
-        args.add(outputDir);
+        args.add(logDir.getCanonicalPath());
+        args.add(outputDir.getCanonicalPath());
         ProcessBuilder builder = new ProcessBuilder();
         builder.command(args);
         log.info("command line: " + builder.toString());

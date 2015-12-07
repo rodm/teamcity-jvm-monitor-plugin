@@ -14,6 +14,8 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
+import static teamcity.jvm.monitor.agent.monitor.JvmMonitorMain.LOGGER;
+
 public class JvmDataCollector implements Runnable {
 
     private ScheduledFuture<?> future;
@@ -42,7 +44,7 @@ public class JvmDataCollector implements Runnable {
             this.future = executor.scheduleAtFixedRate(this, 0, 1, TimeUnit.SECONDS);
         }
         catch (MonitorException e) {
-            e.printStackTrace(System.err);
+            LOGGER.error("Failure collecting monitored VM info", e);
         }
     }
 
@@ -85,7 +87,7 @@ public class JvmDataCollector implements Runnable {
             value = monitor.getValue();
         }
         catch (MonitorException e) {
-            e.printStackTrace(System.err);
+            LOGGER.error("Exception fetching monitor value", e);
         }
         return value;
     }
