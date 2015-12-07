@@ -1,6 +1,7 @@
 package teamcity.jvm.monitor.server;
 
 import jetbrains.buildServer.serverSide.artifacts.BuildArtifact;
+import org.apache.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,6 +11,8 @@ import java.util.Collections;
 import java.util.List;
 
 public class JvmLog {
+
+    private static final Logger LOGGER = Logger.getLogger("jetbrains.buildServer.SERVER");
 
     private List<String> contents = new ArrayList<String>();
 
@@ -27,14 +30,14 @@ public class JvmLog {
                 contents.add(line);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.warn("Exception reading artifact: " + artifact.getName(), e);
         }
         finally {
             if (reader != null) {
                 try {
                     reader.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    LOGGER.warn("Exception closing artifact input stream", e);
                 }
             }
         }
