@@ -5,7 +5,7 @@ apply plugin: 'com.github.rodm.teamcity-server'
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
-archivesBaseName = 'server-jvm-monitor-plugin'
+archivesBaseName = 'jvm-monitor-server'
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: "${junitVersion}"

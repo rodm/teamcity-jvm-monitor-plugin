@@ -7,7 +7,7 @@ def javaHome = System.properties['java.home']
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
-archivesBaseName = 'agent-jvm-monitor-plugin'
+archivesBaseName = 'jvm-monitor-agent'
 
 dependencies {
     teamcity files("${javaHome}/../lib/tools.jar")
