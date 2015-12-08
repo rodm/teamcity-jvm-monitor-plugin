@@ -17,7 +17,7 @@ import java.util.Collection;
 
 public class JvmMonitorBuildFeature extends AgentLifeCycleAdapter {
 
-    private static Logger log = Logger.getLogger("jetbrains.buildServer.AGENT");
+    private static final Logger LOGGER = Logger.getLogger("jetbrains.buildServer.AGENT");
 
     private final ArtifactsWatcher artifactsWatcher;
 
@@ -34,7 +34,7 @@ public class JvmMonitorBuildFeature extends AgentLifeCycleAdapter {
     public void buildStarted(@NotNull AgentRunningBuild build) {
         Collection<AgentBuildFeature> features = build.getBuildFeaturesOfType("jvm-monitor-plugin");
         if (!features.isEmpty()) {
-            log.info("jvm-monitor-plugin feature enabled for build");
+            LOGGER.info("jvm-monitor-plugin feature enabled for build");
 
             BuildAgentConfiguration config = build.getAgentConfiguration();
             outputDir = new File(config.getTempDirectory(), "jvmmon");
@@ -46,15 +46,14 @@ public class JvmMonitorBuildFeature extends AgentLifeCycleAdapter {
             }
             boolean result = outputDir.mkdirs();
             if (!result) {
-                log.warn("Failed to create output directory");
+                LOGGER.warn("Failed to create output directory");
             }
             monitor = new JvmMonitorLauncher(config.getAgentLogsDirectory(), outputDir);
             try {
                 monitor.start();
-                log.info("Started JVM Monitor for build");
             }
             catch (Exception e) {
-                log.warn("Start monitor failed", e);
+                LOGGER.warn("Start monitor failed", e);
             }
         }
     }
@@ -65,10 +64,9 @@ public class JvmMonitorBuildFeature extends AgentLifeCycleAdapter {
             try {
                 monitor.stop();
             } catch (Exception e) {
-                log.warn("Stop monitor failed", e);
+                LOGGER.warn("Stop monitor failed", e);
             }
             monitor = null;
-            log.info("Stopped JVM Monitor");
             artifactsWatcher.addNewArtifactsPath(outputDir.getAbsolutePath() + "=>" + ".teamcity/jvmmon/");
         }
     }

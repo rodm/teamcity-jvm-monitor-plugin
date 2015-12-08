@@ -87,10 +87,10 @@ public class JvmMonitor implements HostListener {
             MonitoredVm mvm = monitoredHost.getMonitoredVm(new VmIdentifier(id.toString()));
 
             if (!monitoredVms.containsKey(id)) {
-                LOGGER.info("Starting collector for VM: " + id);
                 String mainClass = MonitoredVmUtil.mainClass(mvm, true);
                 mainClass = mainClass.replace('/', '.');
                 mainClass = mainClass.trim();
+                LOGGER.info("Starting collector for VM: " + id + ": main class: " + mainClass);
                 String name = id + "-" + mainClass + ".txt";
                 File outputFile = new File(outputDir, name);
                 Writer writer = new FileWriter(outputFile);
@@ -102,7 +102,7 @@ public class JvmMonitor implements HostListener {
             LOGGER.error("Monitored host exception", e);
         }
         catch (URISyntaxException e) {
-            LOGGER.error("Invalid VM identifer", e);
+            LOGGER.error("Invalid VM identifier", e);
         }
         catch (IOException e) {
             LOGGER.error("Failure creating JVM collector file", e);
