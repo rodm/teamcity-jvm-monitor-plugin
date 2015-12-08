@@ -24,7 +24,6 @@ public class JvmLog {
         BufferedReader reader = null;
         try {
             String line;
-            long s = artifact.getSize();
             reader = new BufferedReader(new InputStreamReader(artifact.getInputStream()));
             while ((line = reader.readLine()) != null) {
                 contents.add(line);
