@@ -6,7 +6,7 @@ BS.JvmMon = {
     },
 
     showJvmLog: function (jvmLog) {
-        var url = base_uri + "/jvmmon.html"
+        var url = base_uri + "/jvmmon.html";
 
         $j("#loadingLog").show();
         BS.ajaxRequest(url, {
