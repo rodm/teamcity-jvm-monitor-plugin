@@ -26,10 +26,6 @@ public class JvmMonitorTab extends ViewLogTab {
     }
 
     @Override
-    public boolean isVisible() {
-        return super.isVisible();
-    }
-
     public boolean isAvailable(@NotNull HttpServletRequest request) {
         SBuild build = this.getBuild(request);
         return build != null && this.hasArtifacts(build);
@@ -37,7 +33,7 @@ public class JvmMonitorTab extends ViewLogTab {
 
     private boolean hasArtifacts(@NotNull SBuild build) {
         BuildArtifact artifact = JvmMonitorUtil.getBuildArtifact(build);
-        return artifact != null && artifact.getChildren().size() > 0;
+        return artifact != null && !artifact.getChildren().isEmpty();
     }
 
     @Override

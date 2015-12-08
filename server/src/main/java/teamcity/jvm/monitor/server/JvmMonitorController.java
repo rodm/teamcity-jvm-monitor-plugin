@@ -52,15 +52,17 @@ public class JvmMonitorController extends BaseFormXmlController {
 
     @Nullable
     private SBuild getBuildFromRequest(HttpServletRequest request) {
-        long buildId = -1L;
         String value = request.getParameter("buildId");
         if (value != null) {
             try {
-                buildId = Long.parseLong(value);
+                long buildId = Long.parseLong(value);
+                return this.myServer.findBuildInstanceById(buildId);
             }
-            catch (NumberFormatException ignored) { }
+            catch (NumberFormatException ignored) {
+                return null;
+            }
         }
-        return this.myServer.findBuildInstanceById(buildId);
+        return null;
     }
 
     private String getJvmLogNameFromRequest(HttpServletRequest request) {
