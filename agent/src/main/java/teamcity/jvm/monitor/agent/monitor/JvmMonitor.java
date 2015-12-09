@@ -1,5 +1,6 @@
 package teamcity.jvm.monitor.agent.monitor;
 
+import org.apache.log4j.Logger;
 import sun.jvmstat.monitor.HostIdentifier;
 import sun.jvmstat.monitor.MonitorException;
 import sun.jvmstat.monitor.MonitoredHost;
@@ -22,9 +23,9 @@ import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
-import static teamcity.jvm.monitor.agent.monitor.JvmMonitorMain.LOGGER;
-
 public class JvmMonitor implements HostListener {
+
+    private static final Logger LOGGER = Logger.getLogger(JvmMonitor.class);
 
     private static final int DEFAULT_POOL_SIZE = 4;
 

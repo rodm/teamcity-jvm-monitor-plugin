@@ -1,29 +1,22 @@
 package teamcity.jvm.monitor.agent.monitor;
 
-import org.apache.log4j.FileAppender;
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import org.apache.log4j.PatternLayout;
+import org.apache.log4j.xml.DOMConfigurator;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URL;
 
 public class JvmMonitorMain {
 
-    public static final Logger LOGGER = Logger.getLogger("JvmMonitor");
+    private static final Logger LOGGER = Logger.getLogger(JvmMonitorMain.class);
 
     public static void main(String[] args) {
-        File logDir = new File(args[0]);
-        FileAppender appender = new FileAppender();
-        appender.setName("JvmMonitorLogger");
-        appender.setFile(logDir + File.separator + "jvm-monitor.log");
-        appender.setLayout(new PatternLayout("%d %-5p [%c{1}] %m%n"));
-        appender.setThreshold(Level.ALL);
-        appender.activateOptions();
-        LOGGER.addAppender(appender);
-        LOGGER.setLevel(Level.DEBUG);
+        System.setProperty("log.dir", args[0]);
+        URL configurationResource = JvmMonitorMain.class.getResource("/teamcity-jvm-monitor-log4j.xml");
+        DOMConfigurator.configure(configurationResource);
 
         BufferedReader reader = null;
         try {

@@ -1,5 +1,6 @@
 package teamcity.jvm.monitor.agent.monitor;
 
+import org.apache.log4j.Logger;
 import sun.jvmstat.monitor.Monitor;
 import sun.jvmstat.monitor.MonitorException;
 import sun.jvmstat.monitor.MonitoredVm;
@@ -14,9 +15,9 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
-import static teamcity.jvm.monitor.agent.monitor.JvmMonitorMain.LOGGER;
-
 public class JvmDataCollector implements Runnable {
+
+    private static final Logger LOGGER = Logger.getLogger(JvmDataCollector.class);
 
     private ScheduledFuture<?> future;
 
