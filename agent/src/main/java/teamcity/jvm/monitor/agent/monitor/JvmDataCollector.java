@@ -25,7 +25,7 @@ public class JvmDataCollector implements Runnable {
 
     private PrintWriter out;
 
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
     public JvmDataCollector(ScheduledExecutorService executor, MonitoredVm mvm, Writer writer) {
         this.monitoredVm = mvm;
