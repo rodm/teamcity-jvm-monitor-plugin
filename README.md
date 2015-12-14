@@ -15,16 +15,14 @@ Download the plugin using the link above and follow the instructions from the Te
 * Select the Build Features page a click the 'Add build feature' button.
 * Select 'JVM Monitor' from the list of features.
 
-When a build runs the garbage collection metrics are recorded into a text file for each process. These files are then
-uploaded as build artifacts and can be found as hidden artifacts under the Artifacts tab in the jvmmon directory. 
+When a build runs the garbage collection metrics are recorded into a text file for each Java process. These files are
+uploaded as build artifacts and presented on the JVMMon tab of the build results page.
 
 ## How to build the plugin
 
-1. [Download](http://www.jetbrains.com/teamcity/download/index.html) and install TeamCity version 8.0 or later.
-2. Copy the `example.build.properties` file to `build.properties`
-3. Edit the `build.properties` file to set the properties teamcity.home, teamcity.version and teamcity.java.home
-4. Run the Ant build, the default is to build and package the plugin, the plugin is output to `dist/jvm-monitor-plugin.zip`
-
-The Ant build script provides a target to deploy the plugin to a local configuration directory, deploy-plugin. The
-TeamCity server can be started using the start-teamcity-server target. The TEAMCITY_DATA_PATH is set by default to use
-a local directory and not the `~/.BuildServer` directory.
+* To build and package the plugin run `./gradlew build`, the plugin is output to the `build/distributions` directory.
+* To deploy and test the plugin the following commands can be used to download and install a server, deploy the plugin and start the server.
+  * Download and install a TeamCity server run `./gradlew installTeamCity`
+  * Deploy the plugin run `./gradlew deployPlugin`
+  * Start the server run `./gradlew startServer`
+  * Start the build agent run `./gradlew startAgent`
