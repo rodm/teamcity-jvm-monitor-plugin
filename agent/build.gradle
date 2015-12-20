@@ -10,7 +10,7 @@ targetCompatibility = 1.7
 archivesBaseName = 'jvm-monitor-agent'
 
 dependencies {
-    teamcity files("${javaHome}/../lib/tools.jar")
+    provided files("${javaHome}/../lib/tools.jar")
 
     testCompile group: 'junit', name: 'junit', version: "${junitVersion}"
 }
