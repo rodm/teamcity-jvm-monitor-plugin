@@ -1,6 +1,6 @@
 
 plugins {
-    id 'com.github.rodm.teamcity-server' version '0.8.1'
+    id 'com.github.rodm.teamcity-server' version '0.8.4'
     id 'org.sonarqube' version '1.1'
     id 'maven-publish'
 }
@@ -12,18 +12,17 @@ ext {
     publicationVersion = System.properties['version'] ?: version
     teamcityVersion = System.properties['teamcity.version'] ?: '8.0.6'
     junitVersion = '4.11'
+
+    vcsRevision = System.properties['build.vcs.number'] ?: "development"
+    buildNumber = System.properties['build.number'] ?: new Date().format("yyyyMMddHHmmss")
+
+    teamcityDir = project.hasProperty('teamcity.dir') ? property('teamcity.dir') : "$rootDir/servers"
+    teamcityJavaHome = System.properties['java.home']
+
+    repositoryUrl = project.hasProperty('repositoryUrl') ? property('repositoryUrl') : 'http://localhost:8080'
+    repositoryUsername = project.hasProperty('repositoryUsername') ? property('repositoryUsername') : ''
+    repositoryPassword = project.hasProperty('repositoryPassword') ? property('repositoryPassword') : ''
 }
-
-ext.teamcityDir = hasProperty('teamcity.home') ? property('teamcity.home') : "$rootDir/servers/TeamCity-${teamcityVersion}"
-ext.teamcityDataDir = "$rootDir/data/" + (teamcityVersion =~ /(\d+\.\d+).*/)[0][1]
-ext.teamcityJavaHome = System.properties['java.home']
-
-ext.repositoryUrl = hasProperty('repositoryUrl') ? property('repositoryUrl') : 'http://localhost:8080'
-ext.repositoryUsername = hasProperty('repositoryUsername') ? property('repositoryUsername') : ''
-ext.repositoryPassword = hasProperty('repositoryPassword') ? property('repositoryPassword') : ''
-
-def vcsRevision = System.properties['build.vcs.number'] ?: "development"
-def buildNumber = System.properties['build.number'] ?: new Date().format("yyyyMMddHHmmss")
 
 dependencies {
     agent project(path: ':agent', configuration: 'plugin')
@@ -32,12 +31,27 @@ dependencies {
 
 teamcity {
     version = teamcityVersion
-    descriptor = file("$rootDir/src/main/resources/teamcity-plugin.xml")
-    tokens VERSION: project.version, VCS_REVISION: vcsRevision, BUILD_NUMBER: buildNumber
 
-    homeDir = file(teamcityDir)
-    dataDir = file(teamcityDataDir)
-    javaHome = file(teamcityJavaHome)
+    server {
+        descriptor = file("$rootDir/src/main/resources/teamcity-plugin.xml")
+        tokens VERSION: project.version, VCS_REVISION: vcsRevision, BUILD_NUMBER: buildNumber
+
+        baseHomeDir = teamcityDir
+
+        environments {
+            teamcity81 {
+                version = '8.1.5'
+                homeDir = file("${baseHomeDir}/TeamCity-${version}")
+                javaHome = file(teamcityJavaHome)
+            }
+
+            teamcity91 {
+                version = '9.1.6'
+                homeDir = file("${baseHomeDir}/TeamCity-${version}")
+                javaHome = file(teamcityJavaHome)
+            }
+        }
+    }
 }
 
 artifacts {
