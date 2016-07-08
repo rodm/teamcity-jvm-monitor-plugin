@@ -16,6 +16,7 @@ ext {
     vcsRevision = System.properties['build.vcs.number'] ?: "development"
     buildNumber = System.properties['build.number'] ?: new Date().format("yyyyMMddHHmmss")
 
+    downloadsDir = findProperty('downloads.dir') ?: "$rootDir/downloads"
     teamcityDir = findProperty('teamcity.dir') ?: "$rootDir/servers"
     teamcityJavaHome = System.properties['java.home']
 
@@ -36,6 +37,7 @@ teamcity {
         descriptor = file("$rootDir/src/main/resources/teamcity-plugin.xml")
         tokens VERSION: project.version, VCS_REVISION: vcsRevision, BUILD_NUMBER: buildNumber
 
+        downloadsDir = project.downloadsDir
         baseHomeDir = teamcityDir
 
         environments {
