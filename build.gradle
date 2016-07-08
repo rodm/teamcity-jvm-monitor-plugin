@@ -18,6 +18,7 @@ ext {
 
     downloadsDir = findProperty('downloads.dir') ?: "$rootDir/downloads"
     serversDir = findProperty('servers.dir') ?: "$rootDir/servers"
+    java8Home = findProperty('java8.home') ?: '/opt/jdk1.8.0_92'
     teamcityJavaHome = System.properties['java.home']
 
     repositoryUrl = findProperty('repositoryUrl') ?: 'http://localhost:8080'
@@ -47,6 +48,14 @@ teamcity {
 
             teamcity91 {
                 version = '9.1.6'
+            }
+
+            teamcity10 {
+                version = '10-EAP2'
+                downloadUrl = "https://download.jetbrains.com/teamcity/eap/TeamCity-41463.tar.gz"
+                homeDir = file("${baseHomeDir}/TeamCity-${version}")
+                dataDir = file("${baseDataDir}/10.0")
+                javaHome = file(java8Home)
             }
         }
     }
