@@ -17,7 +17,7 @@ ext {
     buildNumber = System.properties['build.number'] ?: new Date().format("yyyyMMddHHmmss")
 
     downloadsDir = findProperty('downloads.dir') ?: "$rootDir/downloads"
-    teamcityDir = findProperty('teamcity.dir') ?: "$rootDir/servers"
+    serversDir = findProperty('servers.dir') ?: "$rootDir/servers"
     teamcityJavaHome = System.properties['java.home']
 
     repositoryUrl = findProperty('repositoryUrl') ?: 'http://localhost:8080'
@@ -38,7 +38,7 @@ teamcity {
         tokens VERSION: project.version, VCS_REVISION: vcsRevision, BUILD_NUMBER: buildNumber
 
         downloadsDir = project.downloadsDir
-        baseHomeDir = teamcityDir
+        baseHomeDir = project.serversDir
 
         environments {
             teamcity81 {
