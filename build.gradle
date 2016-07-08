@@ -16,12 +16,12 @@ ext {
     vcsRevision = System.properties['build.vcs.number'] ?: "development"
     buildNumber = System.properties['build.number'] ?: new Date().format("yyyyMMddHHmmss")
 
-    teamcityDir = project.hasProperty('teamcity.dir') ? property('teamcity.dir') : "$rootDir/servers"
+    teamcityDir = findProperty('teamcity.dir') ?: "$rootDir/servers"
     teamcityJavaHome = System.properties['java.home']
 
-    repositoryUrl = project.hasProperty('repositoryUrl') ? property('repositoryUrl') : 'http://localhost:8080'
-    repositoryUsername = project.hasProperty('repositoryUsername') ? property('repositoryUsername') : ''
-    repositoryPassword = project.hasProperty('repositoryPassword') ? property('repositoryPassword') : ''
+    repositoryUrl = findProperty('repositoryUrl') ?: 'http://localhost:8080'
+    repositoryUsername = findProperty('repositoryUsername') ?: ''
+    repositoryPassword = findProperty('repositoryPassword') ?: ''
 }
 
 dependencies {
