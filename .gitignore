@@ -9,4 +9,7 @@
 build/
 gradle.properties
 
+# gradle-teamcity-plugin
 data/
+downloads/
+servers/
