@@ -5,10 +5,8 @@ jdk:
 
 env:
   matrix:
-    - TEAMCITY_VERSION='8.0.6'
-    - TEAMCITY_VERSION='8.1.5'
-    - TEAMCITY_VERSION='9.0.3'
-    - TEAMCITY_VERSION='9.1.4'
+    - TEAMCITY_VERSION='10.0'
+    - TEAMCITY_VERSION='2017.1'
 
 script:
   - ./gradlew clean build -Dteamcity.version=$TEAMCITY_VERSION
