@@ -27,5 +27,7 @@ agentPlugin {
 teamcity {
     version = teamcityVersion
 
-    descriptor = file("src/main/resources/teamcity-plugin.xml")
+    agent {
+        descriptor = file("src/main/resources/teamcity-plugin.xml")
+    }
 }
