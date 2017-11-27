@@ -3,8 +3,8 @@ apply plugin: 'java'
 apply plugin: 'org.gradle.jacoco'
 apply plugin: 'com.github.rodm.teamcity-server'
 
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 archivesBaseName = 'jvm-monitor-server'
 
