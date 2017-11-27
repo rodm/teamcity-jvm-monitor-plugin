@@ -16,18 +16,16 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: "${junitVersion}"
 }
 
-jar {
-    exclude "**/teamcity-plugin.xml"
-}
-
-agentPlugin {
-    baseName = project.archivesBaseName
-}
-
 teamcity {
     version = teamcityVersion
 
     agent {
-        descriptor = file("src/main/resources/teamcity-plugin.xml")
+        archiveName = "jvm-monitor-agent.zip"
+
+        descriptor {
+            pluginDeployment {
+                useSeparateClassloader = true
+            }
+        }
     }
 }

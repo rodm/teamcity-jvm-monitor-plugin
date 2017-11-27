@@ -34,8 +34,16 @@ teamcity {
     version = teamcityVersion
 
     server {
-        descriptor = file("$rootDir/src/main/resources/teamcity-plugin.xml")
-        tokens VERSION: project.version, VCS_REVISION: vcsRevision, BUILD_NUMBER: buildNumber
+        descriptor {
+            name = 'jvmMonitorPlugin'
+            displayName = 'JVM Monitor Plugin'
+            version = rootProject.version
+            description = 'Collects JVM metrics for any JVM running during the build and publishes them as artifacts'
+            vendorName = 'Rod MacKenzie'
+            vendorUrl = 'https://github.com/rodm/teamcity-jvm-monitor-plugin'
+            email = 'rod.n.mackenzie@gmail.com'
+            useSeparateClassloader = true
+        }
     }
 
     environments {
