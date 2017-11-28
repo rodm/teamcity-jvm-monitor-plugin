@@ -85,7 +85,9 @@ public class JvmDataCollector implements Runnable {
         Object value = "-";
         try {
             Monitor monitor = monitoredVm.findByName(name);
-            value = monitor.getValue();
+            if (monitor != null) {
+                value = monitor.getValue();
+            }
         }
         catch (MonitorException e) {
             LOGGER.error("Exception fetching monitor value", e);
