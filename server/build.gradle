@@ -19,8 +19,8 @@ teamcity {
         archiveName = "jvm-monitor-${rootProject.version}.zip"
 
         descriptor {
-            name = 'jvmMonitorPlugin'
-            displayName = 'JVM Monitor Plugin'
+            name = 'jvm-monitor'
+            displayName = 'JVM Monitor'
             version = rootProject.version
             description = 'Collects JVM metrics for any JVM running during the build and publishes them as artifacts'
             vendorName = 'Rod MacKenzie'
