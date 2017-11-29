@@ -41,7 +41,9 @@ public class JvmDataCollector implements Runnable {
             this.out.println("# main args: " + mainArgs);
             this.out.println("# jvm args: " + jvmArgs);
             this.out.println("# jvm flags: " + jvmFlags);
+            this.out.println("# jvm version: " + outputMonitor("java.property.java.version"));
             this.out.println("# timestamp, EU, EC, S0U, S0C, S1U, S1C, OU, OC, PU, PC, YGC, YGCT, FGC, FGCT");
+            this.out.flush();
             this.future = executor.scheduleAtFixedRate(this, 0, 1, TimeUnit.SECONDS);
         }
         catch (MonitorException e) {

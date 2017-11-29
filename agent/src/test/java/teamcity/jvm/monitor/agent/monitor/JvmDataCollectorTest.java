@@ -46,6 +46,17 @@ public class JvmDataCollectorTest {
     }
 
     @Test
+    public void collectOutputsMonitoredVmJavaVersion() throws MonitorException {
+        Monitor stringMonitor = mock(Monitor.class);
+        when(stringMonitor.getValue()).thenReturn("1.7");
+        when(monitoredVm.findByName(eq("java.property.java.version"))).thenReturn(stringMonitor);
+
+        new JvmDataCollector(executor, monitoredVm, writer);
+
+        assertThat(writer.toString(), containsString("# jvm version: 1.7"));
+    }
+
+    @Test
     public void collectorOutputsGarbageCollectorMonitorValues() throws MonitorException {
         when(monitoredVm.findByName(startsWith("sun.gc.generation"))).thenReturn(integerMonitor);
         when(monitoredVm.findByName(startsWith("sun.gc.collector"))).thenReturn(longMonitor);
