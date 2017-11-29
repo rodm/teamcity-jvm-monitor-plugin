@@ -23,6 +23,8 @@ public class JvmDataCollector implements Runnable {
 
     private MonitoredVm monitoredVm;
 
+    private boolean vmUsesPermGen = false;
+
     private PrintWriter out;
 
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
@@ -31,6 +33,10 @@ public class JvmDataCollector implements Runnable {
         this.monitoredVm = mvm;
         this.out = new PrintWriter(new BufferedWriter(writer));
         try {
+            String version = (String) outputMonitor("java.property.java.version");
+            if (version.startsWith("1.6") || version.startsWith("1.7")) {
+                vmUsesPermGen = true;
+            }
             String cmdLine = MonitoredVmUtil.commandLine(mvm);
             String mainClass = MonitoredVmUtil.mainClass(mvm, true);
             String mainArgs = MonitoredVmUtil.mainArgs(mvm);
@@ -41,8 +47,12 @@ public class JvmDataCollector implements Runnable {
             this.out.println("# main args: " + mainArgs);
             this.out.println("# jvm args: " + jvmArgs);
             this.out.println("# jvm flags: " + jvmFlags);
-            this.out.println("# jvm version: " + outputMonitor("java.property.java.version"));
-            this.out.println("# timestamp, EU, EC, S0U, S0C, S1U, S1C, OU, OC, PU, PC, YGC, YGCT, FGC, FGCT");
+            this.out.println("# jvm version: " + version);
+            if (vmUsesPermGen) {
+                this.out.println("# timestamp, EU, EC, S0U, S0C, S1U, S1C, OU, OC, PU, PC, YGC, YGCT, FGC, FGCT");
+            } else {
+                this.out.println("# timestamp, EU, EC, S0U, S0C, S1U, S1C, OU, OC, MU, MC, CCSU, CCSC, YGC, YGCT, FGC, FGCT");
+            }
             this.out.flush();
             this.future = executor.scheduleAtFixedRate(this, 0, 1, TimeUnit.SECONDS);
         }
@@ -67,8 +77,15 @@ public class JvmDataCollector implements Runnable {
         stats.append(outputMonitor("sun.gc.generation.0.space.2.capacity")).append(",");
         stats.append(outputMonitor("sun.gc.generation.1.space.0.used")).append(",");
         stats.append(outputMonitor("sun.gc.generation.1.space.0.capacity")).append(",");
-        stats.append(outputMonitor("sun.gc.generation.2.space.0.used")).append(",");
-        stats.append(outputMonitor("sun.gc.generation.2.space.0.capacity")).append(",");
+        if (vmUsesPermGen) {
+            stats.append(outputMonitor("sun.gc.generation.2.space.0.used")).append(",");
+            stats.append(outputMonitor("sun.gc.generation.2.space.0.capacity")).append(",");
+        } else {
+            stats.append(outputMonitor("sun.gc.metaspace.used")).append(",");
+            stats.append(outputMonitor("sun.gc.metaspace.capacity")).append(",");
+            stats.append(outputMonitor("sun.gc.compressedclassspace.used")).append(",");
+            stats.append(outputMonitor("sun.gc.compressedclassspace.capacity")).append(",");
+        }
         stats.append(outputMonitor("sun.gc.collector.0.invocations")).append(",");
         stats.append(calculateTime("sun.gc.collector.0.time", "sun.os.hrt.frequency")).append(",");
         stats.append(outputMonitor("sun.gc.collector.1.invocations")).append(",");

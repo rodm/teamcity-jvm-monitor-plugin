@@ -57,7 +57,28 @@ public class JvmDataCollectorTest {
     }
 
     @Test
-    public void collectorOutputsGarbageCollectorMonitorValues() throws MonitorException {
+    public void collectorOutputsHeaderForJvmWithPermGen() throws MonitorException {
+        Monitor stringMonitor = mock(Monitor.class);
+        when(stringMonitor.getValue()).thenReturn("1.7");
+        when(monitoredVm.findByName(eq("java.property.java.version"))).thenReturn(stringMonitor);
+
+        new JvmDataCollector(executor, monitoredVm, writer);
+
+        assertThat(writer.toString(), containsString("# timestamp, EU, EC, S0U, S0C, S1U, S1C, OU, OC, PU, PC, YGC, YGCT, FGC, FGCT"));
+    }
+
+    @Test
+    public void collectorOutputsHeaderForJvmWithMetaspace() {
+        new JvmDataCollector(executor, monitoredVm, writer);
+
+        assertThat(writer.toString(), containsString("# timestamp, EU, EC, S0U, S0C, S1U, S1C, OU, OC, MU, MC, CCSU, CCSC, YGC, YGCT, FGC, FGCT"));
+    }
+
+    @Test
+    public void collectorOutputsGarbageCollectorMonitorValuesForVmWithPermGen() throws MonitorException {
+        Monitor stringMonitor = mock(Monitor.class);
+        when(stringMonitor.getValue()).thenReturn("1.7");
+        when(monitoredVm.findByName(eq("java.property.java.version"))).thenReturn(stringMonitor);
         when(monitoredVm.findByName(startsWith("sun.gc.generation"))).thenReturn(integerMonitor);
         when(monitoredVm.findByName(startsWith("sun.gc.collector"))).thenReturn(longMonitor);
         when(monitoredVm.findByName(startsWith("sun.os"))).thenReturn(longMonitor);
@@ -67,20 +88,30 @@ public class JvmDataCollectorTest {
 
         assertThat(writer.toString(), containsString("1,1,1,1,1,1,1,1,1,1,1,1,1,1"));
     }
-    
+
     @Test
-    public void collectorOutputsGarbageCollectorMonitorValuesForJava8() throws MonitorException {
+    public void collectorOutpusGarbageCollectorMonitorValuesForVmWithMetaspace() throws MonitorException {
         when(monitoredVm.findByName(startsWith("sun.gc.generation"))).thenReturn(integerMonitor);
         when(monitoredVm.findByName(startsWith("sun.gc.collector"))).thenReturn(longMonitor);
         when(monitoredVm.findByName(startsWith("sun.os"))).thenReturn(longMonitor);
-
-        // monitors for the permanent generation no longer exist
-        when(monitoredVm.findByName(eq("sun.gc.generation.2.space.0.used"))).thenReturn(null);
-        when(monitoredVm.findByName(eq("sun.gc.generation.2.space.0.capacity"))).thenReturn(null);
+        when(monitoredVm.findByName(startsWith("sun.gc.metaspace"))).thenReturn(integerMonitor);
+        when(monitoredVm.findByName(startsWith("sun.gc.compressedclassspace"))).thenReturn(integerMonitor);
 
         JvmDataCollector collector = new JvmDataCollector(executor, monitoredVm, writer);
         collector.run();
 
-        assertThat(writer.toString(), containsString("1,1,1,1,1,1,1,1,-,-,1,1,1,1"));
+        assertThat(writer.toString(), containsString("1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1"));
+    }
+
+    @Test
+    public void collectorOutputsDummyValuesForMissingMonitors() throws MonitorException {
+        when(monitoredVm.findByName(startsWith("sun.gc.generation"))).thenReturn(integerMonitor);
+        when(monitoredVm.findByName(startsWith("sun.gc.collector"))).thenReturn(longMonitor);
+        when(monitoredVm.findByName(startsWith("sun.os"))).thenReturn(longMonitor);
+
+        JvmDataCollector collector = new JvmDataCollector(executor, monitoredVm, writer);
+        collector.run();
+
+        assertThat(writer.toString(), containsString("1,1,1,1,1,1,1,1,-,-,-,-,1,1,1,1"));
     }
 }
