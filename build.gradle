@@ -20,43 +20,8 @@ ext {
     java8Home = findProperty('java8.home') ?: '/opt/jdk1.8.0_92'
 }
 
-dependencies {
-    agent project(path: ':agent', configuration: 'plugin')
-    server project(':server')
-}
-
 teamcity {
     version = teamcityVersion
-
-    server {
-        archiveName = "jvm-monitor-${rootProject.version}.zip"
-        
-        descriptor {
-            name = 'jvmMonitorPlugin'
-            displayName = 'JVM Monitor Plugin'
-            version = rootProject.version
-            description = 'Collects JVM metrics for any JVM running during the build and publishes them as artifacts'
-            vendorName = 'Rod MacKenzie'
-            vendorUrl = 'https://github.com/rodm/teamcity-jvm-monitor-plugin'
-            email = 'rod.n.mackenzie@gmail.com'
-            useSeparateClassloader = true
-        }
-    }
-
-    environments {
-        downloadsDir = project.downloadsDir
-        baseHomeDir = project.serversDir
-
-        teamcity10 {
-            version = '10.0.5'
-            javaHome = file(java8Home)
-        }
-
-        'teamcity2017.1' {
-            version = '2017.1.5'
-            javaHome = file(java8Home)
-        }
-    }
 }
 
 bintray {
@@ -64,7 +29,7 @@ bintray {
     key = findProperty('bintray.key')
 
     filesSpec {
-        from "${buildDir}/distributions"
+        from "${project(':server').buildDir}/distributions"
         into 'jvm-monitor'
         include '*.zip'
     }
