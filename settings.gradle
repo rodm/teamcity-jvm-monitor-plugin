@@ -1,5 +1,6 @@
 
 rootProject.name = 'teamcity-jvm-monitor-plugin'
 
-include 'agent', 'server'
-
+include 'common'
+include 'agent'
+include 'server'

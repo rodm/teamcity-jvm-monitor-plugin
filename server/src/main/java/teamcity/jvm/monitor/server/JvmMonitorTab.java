@@ -6,6 +6,7 @@ import jetbrains.buildServer.serverSide.artifacts.BuildArtifact;
 import jetbrains.buildServer.web.openapi.PagePlaces;
 import jetbrains.buildServer.web.openapi.ViewLogTab;
 import org.jetbrains.annotations.NotNull;
+import teamcity.jvm.monitor.JvmMonitorPlugin;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -14,13 +15,12 @@ import java.util.Map;
 
 public class JvmMonitorTab extends ViewLogTab {
 
-    private static final String PLUGIN_NAME = "jvmMonitorPlugin";
     private static final String INCLUDE_URL = "jvmmon.jsp";
     private static final String TITLE = "JVMMon";
 
     public JvmMonitorTab(PagePlaces pagePlaces, SBuildServer server) {
         super(TITLE, "jvmmon", pagePlaces, server);
-        setPluginName(PLUGIN_NAME);
+        setPluginName(JvmMonitorPlugin.PLUGIN_NAME);
         setIncludeUrl(INCLUDE_URL);
         setTabTitle(TITLE);
     }

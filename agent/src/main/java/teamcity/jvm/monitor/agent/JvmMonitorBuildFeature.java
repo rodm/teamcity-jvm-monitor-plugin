@@ -10,6 +10,7 @@ import jetbrains.buildServer.util.EventDispatcher;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
+import teamcity.jvm.monitor.JvmMonitorPlugin;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,7 +33,7 @@ public class JvmMonitorBuildFeature extends AgentLifeCycleAdapter {
 
     @Override
     public void buildStarted(@NotNull AgentRunningBuild build) {
-        Collection<AgentBuildFeature> features = build.getBuildFeaturesOfType("jvm-monitor-plugin");
+        Collection<AgentBuildFeature> features = build.getBuildFeaturesOfType(JvmMonitorPlugin.FEATURE_TYPE);
         if (!features.isEmpty()) {
             LOGGER.info("jvm-monitor-plugin feature enabled for build");
 

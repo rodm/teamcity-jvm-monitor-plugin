@@ -9,6 +9,8 @@ targetCompatibility = 1.8
 archivesBaseName = 'jvm-monitor-server'
 
 dependencies {
+    compile project(':common')
+    
     agent project(path: ':agent', configuration: 'plugin')
 
     testCompile group: 'junit', name: 'junit', version: junitVersion
@@ -33,6 +35,7 @@ teamcity {
     environments {
         downloadsDir = project.downloadsDir
         baseHomeDir = project.serversDir
+        baseDataDir = "${rootDir}/data"
 
         teamcity10 {
             version = '10.0.5'

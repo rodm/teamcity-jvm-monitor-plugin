@@ -4,6 +4,7 @@ package teamcity.jvm.monitor.server;
 import jetbrains.buildServer.serverSide.BuildFeature;
 import jetbrains.buildServer.web.openapi.PluginDescriptor;
 import org.jetbrains.annotations.NotNull;
+import teamcity.jvm.monitor.JvmMonitorPlugin;
 
 import java.util.Map;
 
@@ -18,7 +19,7 @@ public class JvmMonitorBuildFeature extends BuildFeature {
     @NotNull
     @Override
     public String getType() {
-        return "jvm-monitor-plugin";
+        return JvmMonitorPlugin.FEATURE_TYPE;
     }
 
     @NotNull
