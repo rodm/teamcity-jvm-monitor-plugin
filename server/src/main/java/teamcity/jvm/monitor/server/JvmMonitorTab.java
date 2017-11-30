@@ -16,13 +16,12 @@ import java.util.Map;
 public class JvmMonitorTab extends ViewLogTab {
 
     private static final String INCLUDE_URL = "jvmmon.jsp";
-    private static final String TITLE = "JVMMon";
+    private static final String TITLE = "JVM Monitor";
 
     public JvmMonitorTab(PagePlaces pagePlaces, SBuildServer server) {
         super(TITLE, "jvmmon", pagePlaces, server);
         setPluginName(JvmMonitorPlugin.PLUGIN_NAME);
         setIncludeUrl(INCLUDE_URL);
-        setTabTitle(TITLE);
     }
 
     @Override
