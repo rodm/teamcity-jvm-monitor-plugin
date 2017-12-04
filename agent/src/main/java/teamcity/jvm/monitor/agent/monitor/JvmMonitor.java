@@ -35,7 +35,7 @@ public class JvmMonitor implements HostListener {
 
     private MonitoredHost monitoredHost;
 
-    private Map<Integer, JvmDataCollector> monitoredVms = new HashMap<Integer, JvmDataCollector>();
+    private Map<Integer, JvmDataCollector> monitoredVms = new HashMap<>();
 
     public JvmMonitor(File outputDir) {
         this.outputDir = outputDir;

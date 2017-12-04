@@ -42,7 +42,7 @@ public class JvmMonitorLauncher {
         String classPath = toolsJar.getCanonicalPath() + File.pathSeparator +
                 agentJar.getCanonicalPath() + File.pathSeparator +
                 log4jJar.getCanonicalPath();
-        List<String> commandLine = new ArrayList<String>();
+        List<String> commandLine = new ArrayList<>();
         commandLine.add(javaCommand.getAbsolutePath());
         commandLine.add("-cp");
         commandLine.add(classPath);

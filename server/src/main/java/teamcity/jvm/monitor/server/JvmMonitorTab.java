@@ -45,7 +45,7 @@ public class JvmMonitorTab extends ViewLogTab {
     }
 
     private List<String> getProcesses(SBuild build) {
-        List<String> processes = new ArrayList<String>();
+        List<String> processes = new ArrayList<>();
         BuildArtifact artifact = JvmMonitorUtil.getBuildArtifact(build);
         if (artifact != null) {
             for (BuildArtifact file : artifact.getChildren()) {

@@ -14,7 +14,7 @@ public class JvmLog {
 
     private static final Logger LOGGER = Logger.getLogger("jetbrains.buildServer.SERVER");
 
-    private List<String> contents = new ArrayList<String>();
+    private List<String> contents = new ArrayList<>();
 
     public JvmLog() {
         this.contents.add("JVM log file not found");
