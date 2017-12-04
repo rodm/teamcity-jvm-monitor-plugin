@@ -4,9 +4,9 @@ import jetbrains.buildServer.serverSide.SBuild;
 import jetbrains.buildServer.serverSide.SBuildServer;
 import jetbrains.buildServer.serverSide.artifacts.BuildArtifact;
 import jetbrains.buildServer.web.openapi.PagePlaces;
+import jetbrains.buildServer.web.openapi.PluginDescriptor;
 import jetbrains.buildServer.web.openapi.ViewLogTab;
 import org.jetbrains.annotations.NotNull;
-import teamcity.jvm.monitor.JvmMonitorPlugin;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -18,9 +18,12 @@ public class JvmMonitorTab extends ViewLogTab {
     private static final String INCLUDE_URL = "jvmmon.jsp";
     private static final String TITLE = "JVM Monitor";
 
-    public JvmMonitorTab(PagePlaces pagePlaces, SBuildServer server) {
+    public JvmMonitorTab(@NotNull PagePlaces pagePlaces,
+                         @NotNull SBuildServer server,
+                         @NotNull PluginDescriptor pluginDescriptor)
+    {
         super(TITLE, "jvmmon", pagePlaces, server);
-        setPluginName(JvmMonitorPlugin.PLUGIN_NAME);
+        setPluginName(pluginDescriptor.getPluginName());
         setIncludeUrl(INCLUDE_URL);
     }
 
