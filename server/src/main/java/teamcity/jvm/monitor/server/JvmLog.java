@@ -21,24 +21,13 @@ public class JvmLog {
     }
 
     public JvmLog(BuildArtifact artifact) {
-        BufferedReader reader = null;
-        try {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(artifact.getInputStream()))) {
             String line;
-            reader = new BufferedReader(new InputStreamReader(artifact.getInputStream()));
             while ((line = reader.readLine()) != null) {
                 contents.add(line);
             }
         } catch (IOException e) {
             LOGGER.warn("Exception reading artifact: " + artifact.getName(), e);
-        }
-        finally {
-            if (reader != null) {
-                try {
-                    reader.close();
-                } catch (IOException e) {
-                    LOGGER.warn("Exception closing artifact input stream", e);
-                }
-            }
         }
     }
 

@@ -18,8 +18,7 @@ public class JvmMonitorMain {
         URL configurationResource = JvmMonitorMain.class.getResource("/teamcity-jvm-monitor-log4j.xml");
         DOMConfigurator.configure(configurationResource);
 
-        BufferedReader reader = null;
-        try {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
             File outputDir = new File(args[1]);
             LOGGER.info("Output directory: " + outputDir.getCanonicalPath());
             if (!outputDir.exists()) {
@@ -29,7 +28,6 @@ public class JvmMonitorMain {
 
             JvmMonitor monitor = new JvmMonitor(outputDir);
             LOGGER.info("JVM Monitor process started");
-            reader = new BufferedReader(new InputStreamReader(System.in));
             boolean run = true;
             while (run) {
                 String command = reader.readLine();
@@ -46,15 +44,6 @@ public class JvmMonitorMain {
         }
         catch (IOException e) {
             LOGGER.warn("", e);
-        }
-        finally {
-            if (reader != null) {
-                try {
-                    reader.close();
-                } catch (IOException e) {
-                    // ignore
-                }
-            }
         }
     }
 }
