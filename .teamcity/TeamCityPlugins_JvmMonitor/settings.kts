@@ -191,7 +191,7 @@ project {
 
         params {
             param("gradle.opts", "-x build -x jar -x serverPlugin -PrepositoryUrl=%repository.url% -PrepositoryUsername=%repository.user% -PrepositoryPassword=%repository.password%")
-            param("java.home", "%java7.home%")
+            param("java.home", "%java8.home%")
             param("repository.password", "")
             param("repository.url", "")
             param("repository.user", "")
