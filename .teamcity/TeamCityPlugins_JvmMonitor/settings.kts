@@ -103,7 +103,7 @@ project {
         name = "Build - TeamCity 8.1"
 
         params {
-            param("gradle.opts", "-Dteamcity.version=%version% -Dteamcity.home=%teamcity.agent.jvm.user.home%/servers/TeamCity-%version%")
+            param("gradle.opts", "-Dteamcity.version=%version%")
             param("version", "%teamcity81.version%")
         }
 
@@ -118,7 +118,7 @@ project {
         name = "Build - TeamCity 10.0"
 
         params {
-            param("gradle.opts", "-Dteamcity.version=%version% -Dteamcity.home=%teamcity.agent.jvm.user.home%/servers/TeamCity-%version%")
+            param("gradle.opts", "-Dteamcity.version=%version%")
             param("version", "%teamcity100.version%")
         }
 
@@ -135,7 +135,7 @@ project {
         artifactRules = "build/distributions/*.zip"
 
         params {
-            param("gradle.opts", "-Dteamcity.version=%version% -Dteamcity.home=%teamcity.agent.jvm.user.home%/servers/TeamCity-%version%")
+            param("gradle.opts", "-Dteamcity.version=%version%")
             param("version", "2017.1")
         }
     })
@@ -174,7 +174,7 @@ project {
         }
 
         params {
-            param("gradle.opts", "%sonar.opts% -Dteamcity.version=%version% -Dteamcity.home=%teamcity.agent.jvm.user.home%/servers/TeamCity-%version%")
+            param("gradle.opts", "%sonar.opts% -Dteamcity.version=%version%")
             param("java.home", "%java8.home%")
             param("version", "%teamcity81.version%")
         }
@@ -235,7 +235,6 @@ project {
             param("repository.password", "")
             param("repository.url", "")
             param("repository.user", "")
-            param("system.teamcity.home", "%teamcity.agent.jvm.user.home%/servers/TeamCity-%version%")
             param("version", "%teamcity80.version%")
         }
     })
