@@ -190,11 +190,8 @@ project {
         }
 
         params {
-            param("gradle.opts", "-x build -x jar -x serverPlugin -PrepositoryUrl=%repository.url% -PrepositoryUsername=%repository.user% -PrepositoryPassword=%repository.password%")
+            param("gradle.opts", "")
             param("java.home", "%java8.home%")
-            param("repository.password", "")
-            param("repository.url", "")
-            param("repository.user", "")
             param("version", "%teamcity80.version%")
         }
     })
@@ -207,13 +204,7 @@ project {
         name = "Publish to Bintray"
 
         params {
-            param("gradle.opts", """
-            -x build -x jar -x serverPlugin
-            -Dversion=%system.version% -PrepositoryUrl=%repository.url% -PrepositoryUsername=%repository.user% -PrepositoryPassword=%repository.password%
-        """.trimIndent())
-            param("repository.password", "%bintray.repository.password%")
-            param("repository.url", "%bintray.repository.url%teamcity-jvm-monitor-plugin")
-            param("repository.user", "%bintray.repository.user%")
+            param("gradle.opts", "")
             param("system.teamcity.version", "%version%")
             param("system.version", "1.0-b%dep.TeamCityPlugins_JvmMonitor_Build1.build.number%")
         }
