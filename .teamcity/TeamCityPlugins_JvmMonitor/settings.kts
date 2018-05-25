@@ -80,11 +80,6 @@ project {
                 id = "perfmon"
                 type = "perfmon"
             }
-            feature {
-                id = "jvm-monitor-plugin"
-                type = "jvm-monitor-plugin"
-                enabled = false
-            }
         }
 
         params {
