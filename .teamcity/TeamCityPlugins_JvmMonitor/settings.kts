@@ -260,4 +260,6 @@ project {
         }
     })
     buildType(publishToBintray)
+
+    buildTypesOrder = arrayListOf(build81, build100, build20171, reportCodeQuality, publishToBintray)
 }
