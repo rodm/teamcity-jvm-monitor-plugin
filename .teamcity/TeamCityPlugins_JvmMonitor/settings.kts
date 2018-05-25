@@ -8,8 +8,6 @@ import jetbrains.buildServer.configs.kotlin.v2017_2.buildSteps.gradle
 import jetbrains.buildServer.configs.kotlin.v2017_2.project
 import jetbrains.buildServer.configs.kotlin.v2017_2.projectFeatures.VersionedSettings
 import jetbrains.buildServer.configs.kotlin.v2017_2.projectFeatures.versionedSettings
-import jetbrains.buildServer.configs.kotlin.v2017_2.triggers.ScheduleTrigger
-import jetbrains.buildServer.configs.kotlin.v2017_2.triggers.schedule
 import jetbrains.buildServer.configs.kotlin.v2017_2.triggers.vcs
 import jetbrains.buildServer.configs.kotlin.v2017_2.vcs.GitVcsRoot
 import jetbrains.buildServer.configs.kotlin.v2017_2.version
@@ -102,8 +100,6 @@ project {
             param("gradle.opts", "-Dteamcity.version=%version%")
             param("version", "%teamcity81.version%")
         }
-
-        disableSettings("RUNNER_5")
     })
     buildType(build81)
 
@@ -117,8 +113,6 @@ project {
             param("gradle.opts", "-Dteamcity.version=%version%")
             param("version", "%teamcity100.version%")
         }
-
-        disableSettings("RUNNER_5")
     })
     buildType(build100)
 
@@ -149,8 +143,6 @@ project {
             param("java.home", "%java8.home%")
             param("version", "%teamcity81.version%")
         }
-
-        disableSettings("RUNNER_5")
     })
     buildType(reportCodeQuality)
 
