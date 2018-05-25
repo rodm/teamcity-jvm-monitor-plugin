@@ -143,19 +143,6 @@ project {
         id = "TeamCityJvmMonitorPlugin_ReportCodeQuality"
         name = "Report - Code Quality"
 
-        triggers {
-            schedule {
-                id = "TRIGGER_13"
-                schedulingPolicy = weekly {
-                    dayOfWeek = ScheduleTrigger.DAY.Saturday
-                    hour = 11
-                    minute = 25
-                }
-                branchFilter = ""
-                triggerBuild = always()
-            }
-        }
-
         params {
             param("gradle.opts", "%sonar.opts% -Dteamcity.version=%version%")
             param("gradle.tasks", "clean build sonarqube")
@@ -163,7 +150,7 @@ project {
             param("version", "%teamcity81.version%")
         }
 
-        disableSettings("RUNNER_5", "vcsTrigger")
+        disableSettings("RUNNER_5")
     })
     buildType(reportCodeQuality)
 
