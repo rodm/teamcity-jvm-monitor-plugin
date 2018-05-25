@@ -56,7 +56,7 @@ project {
         steps {
             gradle {
                 id = "RUNNER_11"
-                tasks = "clean build"
+                tasks = "%gradle.tasks%"
                 gradleParams = "%gradle.opts%"
                 useGradleWrapper = true
                 enableStacktrace = true
@@ -84,6 +84,7 @@ project {
 
         params {
             param("gradle.opts", "")
+            param("gradle.tasks", "clean build")
             param("java.home", "%java8.home%")
             param("system.teamcity.version", "%version%")
             param("version", "%teamcity80.version%")
@@ -142,19 +143,6 @@ project {
         id = "TeamCityJvmMonitorPlugin_ReportCodeQuality"
         name = "Report - Code Quality"
 
-        steps {
-            gradle {
-                id = "RUNNER_57"
-                tasks = "clean sonarqube"
-                buildFile = ""
-                gradleParams = "%gradle.opts%"
-                useGradleWrapper = true
-                enableStacktrace = true
-                jdkHome = "%java.home%"
-            }
-            stepsOrder = arrayListOf("RUNNER_11", "RUNNER_57")
-        }
-
         triggers {
             schedule {
                 id = "TRIGGER_13"
@@ -170,11 +158,12 @@ project {
 
         params {
             param("gradle.opts", "%sonar.opts% -Dteamcity.version=%version%")
+            param("gradle.tasks", "clean build sonarqube")
             param("java.home", "%java8.home%")
             param("version", "%teamcity81.version%")
         }
 
-        disableSettings("RUNNER_11", "RUNNER_5", "vcsTrigger")
+        disableSettings("RUNNER_5", "vcsTrigger")
     })
     buildType(reportCodeQuality)
 
