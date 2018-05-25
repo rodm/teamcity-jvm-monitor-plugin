@@ -184,7 +184,7 @@ project {
                 artifacts {
                     id = "ARTIFACT_DEPENDENCY_2"
                     cleanDestination = true
-                    artifactRules = "teamcity-jvm-monitor-plugin-1.0-SNAPSHOT.zip => build/distributions"
+                    artifactRules = "jvm-monitor-1.0-SNAPSHOT.zip => server/build/distributions"
                 }
             }
         }
