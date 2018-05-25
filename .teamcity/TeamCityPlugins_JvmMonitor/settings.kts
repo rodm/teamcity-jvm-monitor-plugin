@@ -81,7 +81,7 @@ project {
         }
 
         params {
-            param("gradle.opts", "")
+            param("gradle.opts", "-Dteamcity.version=%version%")
             param("gradle.tasks", "clean build")
             param("java.home", "%java8.home%")
             param("system.teamcity.version", "%version%")
@@ -93,12 +93,11 @@ project {
     val build81 = BuildType({
         template(buildTemplate)
         uuid = "854e9d34-02b3-443f-a648-aec4053a9a79"
-        id = "TeamCityJvmMonitorPlugin_BuildTeamCity81"
+        id = "TeamCityPlugins_JvmMonitor_Build1"
         name = "Build - TeamCity 8.1"
 
         params {
-            param("gradle.opts", "-Dteamcity.version=%version%")
-            param("version", "%teamcity81.version%")
+            param("version", "8.1.5")
         }
     })
     buildType(build81)
@@ -110,8 +109,7 @@ project {
         name = "Build - TeamCity 10.0"
 
         params {
-            param("gradle.opts", "-Dteamcity.version=%version%")
-            param("version", "%teamcity100.version%")
+            param("version", "10.0")
         }
     })
     buildType(build100)
@@ -125,7 +123,6 @@ project {
         artifactRules = "build/distributions/*.zip"
 
         params {
-            param("gradle.opts", "-Dteamcity.version=%version%")
             param("version", "2017.1")
         }
     })
@@ -141,7 +138,7 @@ project {
             param("gradle.opts", "%sonar.opts% -Dteamcity.version=%version%")
             param("gradle.tasks", "clean build sonarqube")
             param("java.home", "%java8.home%")
-            param("version", "%teamcity81.version%")
+            param("version", "8.1.5")
         }
     })
     buildType(reportCodeQuality)
