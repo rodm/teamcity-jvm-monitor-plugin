@@ -156,7 +156,7 @@ project {
         steps {
             gradle {
                 id = "RUNNER_13"
-                tasks = "publish"
+                tasks = "bintrayUpload"
                 gradleParams = "%gradle.opts%"
                 useGradleWrapper = true
                 enableStacktrace = true
