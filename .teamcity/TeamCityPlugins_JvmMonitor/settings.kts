@@ -96,6 +96,8 @@ project {
         id = "TeamCityPlugins_JvmMonitor_Build1"
         name = "Build - TeamCity 10.0"
 
+        artifactRules = "server/build/distributions/*.zip"
+
         params {
             param("version", "10.0")
         }
@@ -119,8 +121,6 @@ project {
         uuid = "1566d1b0-8750-41cc-8eb0-2f8e83fff661"
         id = "TeamCityPlugins_JvmMonitor_Build3"
         name = "Build - TeamCity 2017.2"
-
-        artifactRules = "build/distributions/*.zip"
 
         params {
             param("version", "2017.2")
@@ -176,7 +176,7 @@ project {
         }
 
         dependencies {
-            dependency(build3) {
+            dependency(build1) {
                 snapshot {
                     onDependencyFailure = FailureAction.FAIL_TO_START
                 }
@@ -215,7 +215,7 @@ project {
             param("repository.url", "%bintray.repository.url%teamcity-jvm-monitor-plugin")
             param("repository.user", "%bintray.repository.user%")
             param("system.teamcity.version", "%version%")
-            param("system.version", "1.0-b%dep.TeamCityJvmMonitorPlugin_BuildTeamCity20171.build.number%")
+            param("system.version", "1.0-b%dep.TeamCityPlugins_JvmMonitor_Build1.build.number%")
         }
     })
     buildType(publishToBintray)
