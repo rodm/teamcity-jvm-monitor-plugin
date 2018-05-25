@@ -90,43 +90,43 @@ project {
     })
     template(buildTemplate)
 
-    val build81 = BuildType({
+    val build1 = BuildType({
         template(buildTemplate)
         uuid = "854e9d34-02b3-443f-a648-aec4053a9a79"
         id = "TeamCityPlugins_JvmMonitor_Build1"
-        name = "Build - TeamCity 8.1"
-
-        params {
-            param("version", "8.1.5")
-        }
-    })
-    buildType(build81)
-
-    val build100 = BuildType({
-        template(buildTemplate)
-        uuid = "55cb3e07-59d7-40e6-b684-eaf82ccbdbcf"
-        id = "TeamCityJvmMonitorPlugin_BuildTeamCity100"
         name = "Build - TeamCity 10.0"
 
         params {
             param("version", "10.0")
         }
     })
-    buildType(build100)
+    buildType(build1)
 
-    val build20171 = BuildType({
+    val build2 = BuildType({
         template(buildTemplate)
-        uuid = "1566d1b0-8750-41cc-8eb0-2f8e83fff661"
-        id = "TeamCityJvmMonitorPlugin_BuildTeamCity20171"
+        uuid = "55cb3e07-59d7-40e6-b684-eaf82ccbdbcf"
+        id = "TeamCityPlugins_JvmMonitor_Build2"
         name = "Build - TeamCity 2017.1"
-
-        artifactRules = "build/distributions/*.zip"
 
         params {
             param("version", "2017.1")
         }
     })
-    buildType(build20171)
+    buildType(build2)
+
+    val build3 = BuildType({
+        template(buildTemplate)
+        uuid = "1566d1b0-8750-41cc-8eb0-2f8e83fff661"
+        id = "TeamCityPlugins_JvmMonitor_Build3"
+        name = "Build - TeamCity 2017.2"
+
+        artifactRules = "build/distributions/*.zip"
+
+        params {
+            param("version", "2017.2")
+        }
+    })
+    buildType(build3)
 
     val reportCodeQuality = BuildType({
         template(buildTemplate)
@@ -138,7 +138,7 @@ project {
             param("gradle.opts", "%sonar.opts% -Dteamcity.version=%version%")
             param("gradle.tasks", "clean build sonarqube")
             param("java.home", "%java8.home%")
-            param("version", "8.1.5")
+            param("version", "10.0")
         }
     })
     buildType(reportCodeQuality)
@@ -176,7 +176,7 @@ project {
         }
 
         dependencies {
-            dependency(build20171) {
+            dependency(build3) {
                 snapshot {
                     onDependencyFailure = FailureAction.FAIL_TO_START
                 }
@@ -220,5 +220,5 @@ project {
     })
     buildType(publishToBintray)
 
-    buildTypesOrder = arrayListOf(build81, build100, build20171, reportCodeQuality, publishToBintray)
+    buildTypesOrder = arrayListOf(build1, build2, build3, reportCodeQuality, publishToBintray)
 }
