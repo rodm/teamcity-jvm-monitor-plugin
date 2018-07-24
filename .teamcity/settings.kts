@@ -17,7 +17,6 @@ project {
     val vcsRoot = GitVcsRoot({
         id(vcsId)
         name = "jvm-monitor"
-        pollInterval = 3600
         url = "https://github.com/rodm/teamcity-jvm-monitor-plugin"
         useMirrors = false
     })
