@@ -118,6 +118,17 @@ project {
     }
     buildType(build3)
 
+    val build4 = BuildType {
+        templates(buildTemplate)
+        id("Build4")
+        name = "Build - TeamCity 2018.1"
+
+        params {
+            param("version", "2018.1")
+        }
+    }
+    buildType(build4)
+
     val reportCodeQuality = BuildType {
         templates(buildTemplate)
         id("ReportCodeQuality")
@@ -198,5 +209,5 @@ project {
     }
     buildType(publishToBintray)
 
-    buildTypesOrder = arrayListOf(build1, build2, build3, reportCodeQuality, publishToBintray)
+    buildTypesOrder = arrayListOf(build1, build2, build3, build4, reportCodeQuality, publishToBintray)
 }
