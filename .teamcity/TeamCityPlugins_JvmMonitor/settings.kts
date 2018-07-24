@@ -1,28 +1,28 @@
 package TeamCityPlugins_JvmMonitor
 
-import jetbrains.buildServer.configs.kotlin.v2017_2.BuildType
-import jetbrains.buildServer.configs.kotlin.v2017_2.CheckoutMode
-import jetbrains.buildServer.configs.kotlin.v2017_2.FailureAction
-import jetbrains.buildServer.configs.kotlin.v2017_2.Template
-import jetbrains.buildServer.configs.kotlin.v2017_2.buildSteps.gradle
-import jetbrains.buildServer.configs.kotlin.v2017_2.project
-import jetbrains.buildServer.configs.kotlin.v2017_2.projectFeatures.VersionedSettings
-import jetbrains.buildServer.configs.kotlin.v2017_2.projectFeatures.versionedSettings
-import jetbrains.buildServer.configs.kotlin.v2017_2.triggers.vcs
-import jetbrains.buildServer.configs.kotlin.v2017_2.vcs.GitVcsRoot
-import jetbrains.buildServer.configs.kotlin.v2017_2.version
+import jetbrains.buildServer.configs.kotlin.v2018_1.BuildType
+import jetbrains.buildServer.configs.kotlin.v2018_1.CheckoutMode
+import jetbrains.buildServer.configs.kotlin.v2018_1.FailureAction
+import jetbrains.buildServer.configs.kotlin.v2018_1.Template
+import jetbrains.buildServer.configs.kotlin.v2018_1.buildSteps.gradle
+import jetbrains.buildServer.configs.kotlin.v2018_1.project
+import jetbrains.buildServer.configs.kotlin.v2018_1.projectFeatures.VersionedSettings
+import jetbrains.buildServer.configs.kotlin.v2018_1.projectFeatures.versionedSettings
+import jetbrains.buildServer.configs.kotlin.v2018_1.triggers.vcs
+import jetbrains.buildServer.configs.kotlin.v2018_1.vcs.GitVcsRoot
+import jetbrains.buildServer.configs.kotlin.v2018_1.version
 
-version = "2017.2"
+version = "2018.1"
 project {
     uuid = "e6a5445f-f6ac-4cba-a488-0d9e6b729e8d"
-    id = "TeamCityPlugins_JvmMonitor"
-    parentId = "TeamCityPlugins"
+    id("TeamCityPlugins_JvmMonitor")
+    parentId ("TeamCityPlugins")
     name = "JVM Monitor"
 
     val vcsId = "TeamCityJvmMonitorPlugin_JvmMonitorPlugin"
     val vcsRoot = GitVcsRoot({
         uuid = "0600f2cb-a7a9-4f48-a3d3-61908a9e8f95"
-        id = vcsId
+        id(vcsId)
         name = "jvm monitor plugin"
         pollInterval = 3600
         url = "https://github.com/rodm/teamcity-jvm-monitor-plugin"
@@ -43,7 +43,7 @@ project {
 
     val buildTemplate = Template({
         uuid = "bd4f0ea8-d47e-4ba3-8ea5-a77d78f97bad"
-        id = "TeamCityJvmMonitorPlugin_BuildPlugin"
+        id("TeamCityJvmMonitorPlugin_BuildPlugin")
         name = "build plugin"
 
         vcs {
@@ -91,9 +91,9 @@ project {
     template(buildTemplate)
 
     val build1 = BuildType({
-        template(buildTemplate)
+        templates(buildTemplate)
         uuid = "854e9d34-02b3-443f-a648-aec4053a9a79"
-        id = "TeamCityPlugins_JvmMonitor_Build1"
+        id("TeamCityPlugins_JvmMonitor_Build1")
         name = "Build - TeamCity 10.0"
 
         artifactRules = "server/build/distributions/*.zip"
@@ -105,9 +105,9 @@ project {
     buildType(build1)
 
     val build2 = BuildType({
-        template(buildTemplate)
+        templates(buildTemplate)
         uuid = "55cb3e07-59d7-40e6-b684-eaf82ccbdbcf"
-        id = "TeamCityPlugins_JvmMonitor_Build2"
+        id("TeamCityPlugins_JvmMonitor_Build2")
         name = "Build - TeamCity 2017.1"
 
         params {
@@ -117,9 +117,9 @@ project {
     buildType(build2)
 
     val build3 = BuildType({
-        template(buildTemplate)
+        templates(buildTemplate)
         uuid = "1566d1b0-8750-41cc-8eb0-2f8e83fff661"
-        id = "TeamCityPlugins_JvmMonitor_Build3"
+        id("TeamCityPlugins_JvmMonitor_Build3")
         name = "Build - TeamCity 2017.2"
 
         params {
@@ -129,9 +129,9 @@ project {
     buildType(build3)
 
     val reportCodeQuality = BuildType({
-        template(buildTemplate)
+        templates(buildTemplate)
         uuid = "37093bfa-d15a-46a1-acce-8a6a5800d186"
-        id = "TeamCityJvmMonitorPlugin_ReportCodeQuality"
+        id("TeamCityJvmMonitorPlugin_ReportCodeQuality")
         name = "Report - Code Quality"
 
         params {
@@ -145,7 +145,7 @@ project {
 
     val publishTemplate = Template({
         uuid = "7dcda1c4-21a7-4fc3-9ea9-62cfbb6c53da"
-        id = "TeamCityJvmMonitorPlugin_PublishPlugin"
+        id("TeamCityJvmMonitorPlugin_PublishPlugin")
         name = "publish plugin"
 
         vcs {
@@ -198,9 +198,9 @@ project {
     template(publishTemplate)
 
     val publishToBintray = BuildType({
-        template(publishTemplate)
+        templates(publishTemplate)
         uuid = "99e12728-996d-4bf9-b71c-7601172e0a1a"
-        id = "TeamCityJvmMonitorPlugin_PublishToBintray"
+        id("TeamCityJvmMonitorPlugin_PublishToBintray")
         name = "Publish to Bintray"
 
         params {
