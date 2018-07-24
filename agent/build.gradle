@@ -14,7 +14,6 @@ archivesBaseName = 'jvm-monitor-agent'
 
 dependencies {
     compile project(':common')
-    provided group: 'commons-io', name: 'commons-io', version: '1.3.2'
     provided files("${javaHome}/../lib/tools.jar")
 
     testCompile group: 'org.junit', name: 'junit-bom', version: '5.2.0'

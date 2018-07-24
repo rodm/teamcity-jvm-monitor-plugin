@@ -7,13 +7,12 @@ import jetbrains.buildServer.agent.BuildAgentConfiguration;
 import jetbrains.buildServer.agent.BuildFinishedStatus;
 import jetbrains.buildServer.agent.artifacts.ArtifactsWatcher;
 import jetbrains.buildServer.util.EventDispatcher;
-import org.apache.commons.io.FileUtils;
+import jetbrains.buildServer.util.FileUtil;
 import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import teamcity.jvm.monitor.JvmMonitorPlugin;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Collection;
 
 public class JvmMonitorBuildFeature extends AgentLifeCycleAdapter {
@@ -39,12 +38,7 @@ public class JvmMonitorBuildFeature extends AgentLifeCycleAdapter {
 
             BuildAgentConfiguration config = build.getAgentConfiguration();
             outputDir = new File(config.getTempDirectory(), "jvmmon");
-            try {
-                FileUtils.deleteDirectory(outputDir);
-            }
-            catch (IOException e) {
-                // ignore
-            }
+            FileUtil.delete(outputDir);
             boolean result = outputDir.mkdirs();
             if (!result) {
                 LOGGER.warn("Failed to create output directory");
