@@ -13,10 +13,10 @@ version = "2018.1"
 project {
     description = "A TeamCity plugin that collects JVM metrics during a build"
 
-    val vcsId = "TeamCityJvmMonitorPlugin_JvmMonitorPlugin"
+    val vcsId = "JvmMonitor"
     val vcsRoot = GitVcsRoot({
         id(vcsId)
-        name = "jvm monitor plugin"
+        name = "jvm-monitor"
         pollInterval = 3600
         url = "https://github.com/rodm/teamcity-jvm-monitor-plugin"
         useMirrors = false
@@ -37,8 +37,8 @@ project {
 */
 
     val buildTemplate = Template({
-        id("TeamCityJvmMonitorPlugin_BuildPlugin")
-        name = "build plugin"
+        id("Build")
+        name = "Build"
 
         vcs {
             root(vcsRoot)
@@ -86,7 +86,7 @@ project {
 
     val build1 = BuildType({
         templates(buildTemplate)
-        id("TeamCityPlugins_JvmMonitor_Build1")
+        id("Build1")
         name = "Build - TeamCity 10.0"
 
         artifactRules = "server/build/distributions/*.zip"
@@ -99,7 +99,7 @@ project {
 
     val build2 = BuildType({
         templates(buildTemplate)
-        id("TeamCityPlugins_JvmMonitor_Build2")
+        id("Build2")
         name = "Build - TeamCity 2017.1"
 
         params {
@@ -110,7 +110,7 @@ project {
 
     val build3 = BuildType({
         templates(buildTemplate)
-        id("TeamCityPlugins_JvmMonitor_Build3")
+        id("Build3")
         name = "Build - TeamCity 2017.2"
 
         params {
@@ -121,7 +121,7 @@ project {
 
     val reportCodeQuality = BuildType({
         templates(buildTemplate)
-        id("TeamCityJvmMonitorPlugin_ReportCodeQuality")
+        id("ReportCodeQuality")
         name = "Report - Code Quality"
 
         params {
@@ -134,8 +134,8 @@ project {
     buildType(reportCodeQuality)
 
     val publishTemplate = Template({
-        id("TeamCityJvmMonitorPlugin_PublishPlugin")
-        name = "publish plugin"
+        id("Publish")
+        name = "Publish"
 
         vcs {
             root(vcsRoot)
@@ -188,7 +188,7 @@ project {
 
     val publishToBintray = BuildType({
         templates(publishTemplate)
-        id("TeamCityJvmMonitorPlugin_PublishToBintray")
+        id("PublishToBintray")
         name = "Publish to Bintray"
 
         params {
