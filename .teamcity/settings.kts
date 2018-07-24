@@ -195,7 +195,7 @@ project {
 
         params {
             param("gradle.opts", "")
-            param("system.version", "1.0-b%dep.TeamCityPlugins_JvmMonitor_Build1.build.number%")
+            param("system.version", "1.0-b%dep.${build1.id}.build.number%")
         }
     }
     buildType(publishToBintray)
