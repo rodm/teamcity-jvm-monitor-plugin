@@ -12,10 +12,8 @@ archivesBaseName = 'jvm-monitor-server'
 
 dependencies {
     compile project(':common')
-    
-    agent project(path: ':agent', configuration: 'plugin')
 
-    testCompile group: 'junit', name: 'junit', version: junitVersion
+    agent project(path: ':agent', configuration: 'plugin')
 }
 
 teamcity {

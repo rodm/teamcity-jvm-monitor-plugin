@@ -1,7 +1,7 @@
 package teamcity.jvm.monitor.agent.monitor;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import sun.jvmstat.monitor.Monitor;
 import sun.jvmstat.monitor.MonitorException;
 import sun.jvmstat.monitor.MonitoredVm;
@@ -27,7 +27,7 @@ public class JvmDataCollectorTest {
     private Monitor integerMonitor;
     private Monitor longMonitor;
 
-    @Before
+    @BeforeEach
     public void setup() {
         executor = mock(ScheduledExecutorService.class);
         monitoredVm = mock(MonitoredVm.class);
