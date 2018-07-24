@@ -14,12 +14,12 @@ project {
     description = "A TeamCity plugin that collects JVM metrics during a build"
 
     val vcsId = "JvmMonitor"
-    val vcsRoot = GitVcsRoot({
+    val vcsRoot = GitVcsRoot {
         id(vcsId)
         name = "jvm-monitor"
         url = "https://github.com/rodm/teamcity-jvm-monitor-plugin"
         useMirrors = false
-    })
+    }
     vcsRoot(vcsRoot)
 
 /*
@@ -35,7 +35,7 @@ project {
     }
 */
 
-    val buildTemplate = Template({
+    val buildTemplate = Template {
         id("Build")
         name = "Build"
 
@@ -80,10 +80,10 @@ project {
             param("system.teamcity.version", "%version%")
             param("version", "%teamcity80.version%")
         }
-    })
+    }
     template(buildTemplate)
 
-    val build1 = BuildType({
+    val build1 = BuildType {
         templates(buildTemplate)
         id("Build1")
         name = "Build - TeamCity 10.0"
@@ -93,10 +93,10 @@ project {
         params {
             param("version", "10.0")
         }
-    })
+    }
     buildType(build1)
 
-    val build2 = BuildType({
+    val build2 = BuildType {
         templates(buildTemplate)
         id("Build2")
         name = "Build - TeamCity 2017.1"
@@ -104,10 +104,10 @@ project {
         params {
             param("version", "2017.1")
         }
-    })
+    }
     buildType(build2)
 
-    val build3 = BuildType({
+    val build3 = BuildType {
         templates(buildTemplate)
         id("Build3")
         name = "Build - TeamCity 2017.2"
@@ -115,10 +115,10 @@ project {
         params {
             param("version", "2017.2")
         }
-    })
+    }
     buildType(build3)
 
-    val reportCodeQuality = BuildType({
+    val reportCodeQuality = BuildType {
         templates(buildTemplate)
         id("ReportCodeQuality")
         name = "Report - Code Quality"
@@ -129,10 +129,10 @@ project {
             param("java.home", "%java8.home%")
             param("version", "10.0")
         }
-    })
+    }
     buildType(reportCodeQuality)
 
-    val publishTemplate = Template({
+    val publishTemplate = Template {
         id("Publish")
         name = "Publish"
 
@@ -182,10 +182,10 @@ project {
             param("java.home", "%java8.home%")
             param("version", "%teamcity80.version%")
         }
-    })
+    }
     template(publishTemplate)
 
-    val publishToBintray = BuildType({
+    val publishToBintray = BuildType {
         templates(publishTemplate)
         id("PublishToBintray")
         name = "Publish to Bintray"
@@ -195,7 +195,7 @@ project {
             param("system.teamcity.version", "%version%")
             param("system.version", "1.0-b%dep.TeamCityPlugins_JvmMonitor_Build1.build.number%")
         }
-    })
+    }
     buildType(publishToBintray)
 
     buildTypesOrder = arrayListOf(build1, build2, build3, reportCodeQuality, publishToBintray)
