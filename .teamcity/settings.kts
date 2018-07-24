@@ -74,11 +74,9 @@ project {
         }
 
         params {
-            param("gradle.opts", "-Dteamcity.version=%version%")
+            param("gradle.opts", "")
             param("gradle.tasks", "clean build")
             param("java.home", "%java8.home%")
-            param("system.teamcity.version", "%version%")
-            param("version", "%teamcity80.version%")
         }
     }
     template(buildTemplate)
@@ -89,10 +87,6 @@ project {
         name = "Build - TeamCity 10.0"
 
         artifactRules = "server/build/distributions/*.zip"
-
-        params {
-            param("version", "10.0")
-        }
     }
     buildType(build1)
 
@@ -102,7 +96,7 @@ project {
         name = "Build - TeamCity 2017.1"
 
         params {
-            param("version", "2017.1")
+            param("gradle.opts", "-Pteamcity.api.version=2017.1")
         }
     }
     buildType(build2)
@@ -113,7 +107,7 @@ project {
         name = "Build - TeamCity 2017.2"
 
         params {
-            param("version", "2017.2")
+            param("gradle.opts", "-Pteamcity.api.version=2017.2")
         }
     }
     buildType(build3)
@@ -124,7 +118,7 @@ project {
         name = "Build - TeamCity 2018.1"
 
         params {
-            param("version", "2018.1")
+            param("gradle.opts", "-Pteamcity.api.version=2018.1")
         }
     }
     buildType(build4)
@@ -135,10 +129,9 @@ project {
         name = "Report - Code Quality"
 
         params {
-            param("gradle.opts", "%sonar.opts% -Dteamcity.version=%version%")
+            param("gradle.opts", "%sonar.opts%")
             param("gradle.tasks", "clean build sonarqube")
             param("java.home", "%java8.home%")
-            param("version", "10.0")
         }
     }
     buildType(reportCodeQuality)
@@ -191,7 +184,6 @@ project {
         params {
             param("gradle.opts", "")
             param("java.home", "%java8.home%")
-            param("version", "%teamcity80.version%")
         }
     }
     template(publishTemplate)
@@ -203,7 +195,6 @@ project {
 
         params {
             param("gradle.opts", "")
-            param("system.teamcity.version", "%version%")
             param("system.version", "1.0-b%dep.TeamCityPlugins_JvmMonitor_Build1.build.number%")
         }
     }

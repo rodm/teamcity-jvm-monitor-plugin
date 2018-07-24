@@ -9,7 +9,7 @@ group = 'com.github.rodm'
 version = "1.0-SNAPSHOT"
 
 ext {
-    teamcityVersion = System.properties['teamcity.version'] ?: '10.0'
+    teamcityVersion = project.findProperty('teamcity.api.version') ?: '10.0'
     junitVersion = '4.12'
     mockitoVersion = '2.12.0'
 
