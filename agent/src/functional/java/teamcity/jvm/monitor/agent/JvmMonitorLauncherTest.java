@@ -51,13 +51,16 @@ class JvmMonitorLauncherTest {
         String classPath = System.getProperty("java.class.path");
 
         JvmMonitorLauncher launcher = new JvmMonitorLauncher(logDir, outputDir);
-        launcher.start();
+        try {
+            launcher.start();
 
-        int result = exec(java, "-Xmx32m", "-classpath", classPath, className);
+            int result = exec(java, "-Xmx32m", "-classpath", classPath, className);
 
-        launcher.stop();
-
-        assertEquals(0, result, "Expected test Java process to run");
+            assertEquals(0, result, "Expected test Java process to run");
+        }
+        finally {
+            launcher.stop();
+        }
 
         File[] files = outputDir.listFiles();
         if (files == null || files.length == 0) {
