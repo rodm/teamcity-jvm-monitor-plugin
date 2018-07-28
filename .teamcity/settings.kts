@@ -75,7 +75,7 @@ project {
 
         params {
             param("gradle.opts", "")
-            param("gradle.tasks", "clean build")
+            param("gradle.tasks", "clean build functionalTest")
             param("java.home", "%java8.home%")
         }
     }
