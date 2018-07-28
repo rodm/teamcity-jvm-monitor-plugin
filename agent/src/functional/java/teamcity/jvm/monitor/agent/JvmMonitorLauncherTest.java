@@ -1,8 +1,9 @@
 package teamcity.jvm.monitor.agent;
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junitpioneer.jupiter.TempDirectory;
+import org.junitpioneer.jupiter.TempDirectory.TempDir;
 
 import java.io.File;
 import java.io.InputStream;
@@ -10,6 +11,7 @@ import java.io.OutputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -19,18 +21,16 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.hasItem;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
-public class JvmMonitorLauncherTest {
-
-    @Rule
-    public TemporaryFolder testFolder = new TemporaryFolder();
+@ExtendWith(TempDirectory.class)
+class JvmMonitorLauncherTest {
 
     @Test
-    public void monitorJavaProcess() throws Exception {
-        File logDir = testFolder.newFolder("logs");
-        File outputDir = testFolder.newFolder("jvmmon");
+    void monitorJavaProcess(@TempDir Path logPath, @TempDir Path outputPath) throws Exception {
+        File logDir = logPath.toFile();
+        File outputDir = outputPath.toFile();
 
         JvmMonitorLauncher launcher = new JvmMonitorLauncher(logDir, outputDir);
         launcher.start();
@@ -43,7 +43,7 @@ public class JvmMonitorLauncherTest {
 
         launcher.stop();
 
-        assertEquals("Expected test Java process to run", 0, result);
+        assertEquals(0, result, "Expected test Java process to run");
 
         File[] files = outputDir.listFiles();
         if (files == null || files.length == 0) {
