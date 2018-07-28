@@ -1,7 +1,9 @@
 package teamcity.jvm.monitor.agent;
 
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junitpioneer.jupiter.TempDirectory;
 import org.junitpioneer.jupiter.TempDirectory.TempDir;
 
@@ -23,22 +25,34 @@ import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.hasItem;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 @ExtendWith(TempDirectory.class)
 class JvmMonitorLauncherTest {
 
-    @Test
-    void monitorJavaProcess(@TempDir Path logPath, @TempDir Path outputPath) throws Exception {
-        File logDir = logPath.toFile();
-        File outputDir = outputPath.toFile();
+    private File logDir;
+    private File outputDir;
+
+    @BeforeEach
+    void init(@TempDir Path logPath, @TempDir Path outputPath) {
+        logDir = logPath.toFile();
+        outputDir = outputPath.toFile();
+    }
+
+    @ParameterizedTest(name = "monitor process running on Java {1}")
+    @CsvSource({"java8.home,1.8", "java9.home,9"})
+    void monitorJavaProcess(String homeProperty, String version) throws Exception {
+        String javaHome = System.getProperty(homeProperty);
+        File javaBinary = new File(javaHome, "bin/java");
+        assumeTrue(javaBinary.exists(), "The path set for the '" + javaHome + "' property is not a valid Java install");
+
+        String java = javaBinary.getAbsolutePath();
+        String className = TestMain.class.getName();
+        String classPath = System.getProperty("java.class.path");
 
         JvmMonitorLauncher launcher = new JvmMonitorLauncher(logDir, outputDir);
         launcher.start();
 
-        String javaHome = System.getProperty("java.home");
-        String java = new File(javaHome, "bin/java").getAbsolutePath();
-        String className = TestMain.class.getName();
-        String classPath = System.getProperty("java.class.path");
         int result = exec(java, "-Xmx32m", "-classpath", classPath, className);
 
         launcher.stop();
@@ -61,7 +75,7 @@ class JvmMonitorLauncherTest {
         List<String> lines = Files.readAllLines(metrics.toPath());
 
         assertThat(lines, hasItem(containsString("main class: " + className)));
-        assertThat(lines, hasItem(containsString("jvm version: " + "1.8")));
+        assertThat(lines, hasItem(containsString("jvm version: " + version)));
 
         List<String> dataLines = lines.stream().filter(line -> !line.startsWith("#")).collect(Collectors.toList());
         assertThat(dataLines.size(), greaterThanOrEqualTo(4));
