@@ -15,6 +15,7 @@ archivesBaseName = 'jvm-monitor-agent'
 ext {
     java8Home = findProperty('java8.home') ?: ''
     java9Home = findProperty('java9.home') ?: ''
+    java10Home = findProperty('java10.home') ?: ''
 }
 
 sourceSets {
@@ -51,6 +52,7 @@ task functionalTest(type: Test) {
     classpath = project.files(jar, sourceSets.functional.runtimeClasspath)
     systemProperty 'java8.home', java8Home
     systemProperty 'java9.home', java9Home
+    systemProperty 'java10.home', java10Home
 }
 
 teamcity {

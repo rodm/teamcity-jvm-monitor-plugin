@@ -40,7 +40,7 @@ class JvmMonitorLauncherTest {
     }
 
     @ParameterizedTest(name = "monitor process running on Java {1}")
-    @CsvSource({"java8.home,1.8", "java9.home,9"})
+    @CsvSource({"java8.home , 1.8", "java9.home , 9", "java10.home , 10"})
     void monitorJavaProcess(String homeProperty, String version) throws Exception {
         String javaHome = System.getProperty(homeProperty);
         File javaBinary = new File(javaHome, "bin/java");
