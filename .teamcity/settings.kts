@@ -75,7 +75,7 @@ project {
 
         params {
             param("gradle.opts", "")
-            param("gradle.shared.opts", "-Pjava8.home=%java8.home% -Pjava9.home=%java9.home% -Pjava10.home=%java10.home%")
+            param("gradle.shared.opts", "-Pjava7.home=%java7.home% -Pjava8.home=%java8.home% -Pjava9.home=%java9.home% -Pjava10.home=%java10.home%")
             param("gradle.tasks", "clean build functionalTest")
             param("java.home", "%java8.home%")
         }

@@ -13,6 +13,7 @@ targetCompatibility = 1.8
 archivesBaseName = 'jvm-monitor-agent'
 
 ext {
+    java7Home = findProperty('java7.home') ?: ''
     java8Home = findProperty('java8.home') ?: ''
     java9Home = findProperty('java9.home') ?: ''
     java10Home = findProperty('java10.home') ?: ''
@@ -40,6 +41,11 @@ dependencies {
     testRuntime group: 'org.junit.jupiter', name: 'junit-jupiter-engine'
 }
 
+compileFunctionalJava {
+    sourceCompatibility = 1.7
+    targetCompatibility = 1.7
+}
+
 test {
     useJUnitPlatform()
 }
@@ -50,6 +56,7 @@ task functionalTest(type: Test) {
     useJUnitPlatform()
     testClassesDirs = sourceSets.functional.output.classesDirs
     classpath = project.files(jar, sourceSets.functional.runtimeClasspath)
+    systemProperty 'java7.home', java7Home
     systemProperty 'java8.home', java8Home
     systemProperty 'java9.home', java9Home
     systemProperty 'java10.home', java10Home

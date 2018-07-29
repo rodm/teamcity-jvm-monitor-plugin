@@ -41,7 +41,7 @@ class JvmMonitorLauncherTest {
     }
 
     @ParameterizedTest(name = "monitor process running on Java {1}")
-    @CsvSource({"java8.home , 1.8", "java9.home , 9", "java10.home , 10"})
+    @CsvSource({"java7.home , 1.7", "java8.home , 1.8", "java9.home , 9", "java10.home , 10"})
     void monitorJavaProcess(String homeProperty, String version) throws Exception {
         String javaHome = System.getProperty(homeProperty, "");
         assumeFalse(javaHome.trim().isEmpty(), "The property '" + javaHome + "' should not be empty");
@@ -82,7 +82,10 @@ class JvmMonitorLauncherTest {
         assertThat(lines, hasItem(containsString("main class: " + className)));
         assertThat(lines, hasItem(containsString("jvm version: " + version)));
 
-        List<String> dataLines = lines.stream().filter(line -> !line.startsWith("#")).collect(Collectors.toList());
+        List<String> dataLines = new ArrayList<>();
+        for (String line : lines) {
+            if (!line.startsWith("#")) dataLines.add(line);
+        }
         assertThat(dataLines.size(), greaterThanOrEqualTo(4));
     }
 
