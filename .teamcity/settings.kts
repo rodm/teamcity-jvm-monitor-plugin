@@ -48,7 +48,7 @@ project {
             gradle {
                 id = "RUNNER_11"
                 tasks = "%gradle.tasks%"
-                gradleParams = "%gradle.opts%"
+                gradleParams = "%gradle.shared.opts% %gradle.opts%"
                 useGradleWrapper = true
                 enableStacktrace = true
                 jdkHome = "%java.home%"
@@ -75,6 +75,7 @@ project {
 
         params {
             param("gradle.opts", "")
+            param("gradle.shared.opts", "-Pjava8.home=%java8.home% -Pjava9.home=%java9.home% -Pjava10.home=%java10.home%")
             param("gradle.tasks", "clean build functionalTest")
             param("java.home", "%java8.home%")
         }
