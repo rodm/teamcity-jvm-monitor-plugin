@@ -25,6 +25,7 @@ import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.hasItem;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assumptions.assumeFalse;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 @ExtendWith(TempDirectory.class)
@@ -42,7 +43,8 @@ class JvmMonitorLauncherTest {
     @ParameterizedTest(name = "monitor process running on Java {1}")
     @CsvSource({"java8.home , 1.8", "java9.home , 9", "java10.home , 10"})
     void monitorJavaProcess(String homeProperty, String version) throws Exception {
-        String javaHome = System.getProperty(homeProperty);
+        String javaHome = System.getProperty(homeProperty, "");
+        assumeFalse(javaHome.trim().isEmpty(), "The property '" + javaHome + "' should not be empty");
         File javaBinary = new File(javaHome, "bin/java");
         assumeTrue(javaBinary.exists(), "The path set for the '" + javaHome + "' property is not a valid Java install");
 
