@@ -41,13 +41,16 @@ public class JvmMonitorLauncher {
         File log4jJar = new File(Logger.class.getProtectionDomain().getCodeSource().getLocation().getPath());
         File toolsJar = new File(javaHomeFile, "lib/tools.jar");
 
-        String classPath = toolsJar.getCanonicalPath() + File.pathSeparator +
-                agentJar.getCanonicalPath() + File.pathSeparator +
-                log4jJar.getCanonicalPath();
+        List<String> classPath = new ArrayList<>();
+        if (toolsJar.exists()) {
+            classPath.add(toolsJar.getCanonicalPath());
+        }
+        classPath.add(agentJar.getCanonicalPath());
+        classPath.add(log4jJar.getCanonicalPath());
         List<String> commandLine = new ArrayList<>();
         commandLine.add(javaCommand.getAbsolutePath());
         commandLine.add("-cp");
-        commandLine.add(classPath);
+        commandLine.add(String.join(File.pathSeparator, classPath));
         commandLine.add(JvmMonitorMain.class.getName());
         commandLine.add(logDir.getCanonicalPath());
         commandLine.add(outputDir.getCanonicalPath());
