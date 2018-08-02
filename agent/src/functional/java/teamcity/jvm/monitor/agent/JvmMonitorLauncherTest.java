@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.junitpioneer.jupiter.TempDirectory;
 import org.junitpioneer.jupiter.TempDirectory.TempDir;
 
@@ -23,6 +24,8 @@ import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.hasItem;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.junit.jupiter.api.Assumptions.assumeFalse;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
@@ -41,7 +44,7 @@ class JvmMonitorLauncherTest {
 
     @ParameterizedTest(name = "monitor process running on Java {1}")
     @CsvSource({"java7.home , 1.7", "java8.home , 1.8", "java9.home , 9", "java10.home , 10"})
-    void monitorJavaProcess(String homeProperty, String version) throws Exception {
+    void monitorJavaProcessOnJava(String homeProperty, String version) throws Exception {
         String javaHome = System.getProperty(homeProperty, "");
         assumeFalse(javaHome.trim().isEmpty(), "The property '" + javaHome + "' should not be empty");
         File javaBinary = new File(javaHome, "bin/java");
@@ -86,6 +89,47 @@ class JvmMonitorLauncherTest {
             if (!line.startsWith("#")) dataLines.add(line);
         }
         assertThat(dataLines.size(), greaterThanOrEqualTo(4));
+    }
+
+    @ParameterizedTest(name = "launch jvm monitor running on Java {1}")
+    @ValueSource(strings = {"java7.home", "java8.home", "java9.home", "java10.home"})
+    void launchJvmMonitorOnJava(String homeProperty) throws Exception {
+        String javaHome = System.getProperty(homeProperty, "");
+        assumeFalse(javaHome.trim().isEmpty(), "The property '" + javaHome + "' should not be empty");
+        File javaCommand = new File(javaHome, "bin/java");
+        assumeTrue(javaCommand.exists(), "The path set for the '" + javaHome + "' property is not a valid Java install");
+
+        String defaultJavaHome = System.getProperty("java.home");
+        File defaultJavaCommand = new File(defaultJavaHome, "bin/java");
+
+        String java = defaultJavaCommand.getAbsolutePath();
+        String className = TestMain.class.getName();
+        String classPath = System.getProperty("java.class.path");
+
+        JvmMonitorLauncher launcher = new JvmMonitorLauncher(logDir, outputDir);
+        launcher.setJavaHome(javaHome);
+        try {
+            launcher.start();
+
+            int result = exec(java, "-Xmx32m", "-classpath", classPath, className);
+
+            assertEquals(0, result, "Expected test Java process to run");
+        }
+        finally {
+            launcher.stop();
+        }
+
+        File[] files = outputDir.listFiles();
+        assertNotNull(files, "Expected JVM metrics file for " + className + " process");
+        assertNotEquals(0, files.length, "Expected JVM metrics file for " + className + " process");
+
+        File metrics = null;
+        for (File file : files) {
+            if (file.getName().contains(className)) {
+                metrics = file;
+            }
+        }
+        assertNotNull(metrics, "Expected JVM metrics file for " + className + " process");
     }
 
     private int exec(String command, String... args) throws Exception {

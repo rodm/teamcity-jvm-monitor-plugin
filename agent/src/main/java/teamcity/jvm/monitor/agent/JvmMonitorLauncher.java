@@ -22,6 +22,8 @@ public class JvmMonitorLauncher {
 
     private File outputDir;
 
+    private String javaHome;
+
     private PrintWriter writer;
 
     private Process process;
@@ -33,11 +35,11 @@ public class JvmMonitorLauncher {
 
     public void start() throws Exception {
         LOGGER.info("Starting JVM Monitor process");
-        String javaHome = System.getProperty("java.home") + "/..";
-        File javaCommand = new File(javaHome, "bin/java");
+        File javaHomeFile = getJavaHome();
+        File javaCommand = new File(javaHomeFile, "bin/java");
         File agentJar = new File(JvmMonitorLauncher.class.getProtectionDomain().getCodeSource().getLocation().getPath());
         File log4jJar = new File(Logger.class.getProtectionDomain().getCodeSource().getLocation().getPath());
-        File toolsJar = new File(javaHome, "lib/tools.jar");
+        File toolsJar = new File(javaHomeFile, "lib/tools.jar");
 
         String classPath = toolsJar.getCanonicalPath() + File.pathSeparator +
                 agentJar.getCanonicalPath() + File.pathSeparator +
@@ -83,5 +85,21 @@ public class JvmMonitorLauncher {
 
         int exitValue = process.waitFor();
         LOGGER.info("Stopped JVM Monitor process, exit value: " + exitValue);
+    }
+
+    void setJavaHome(String javaHome) {
+        this.javaHome = javaHome;
+    }
+
+    private File getJavaHome() {
+        if (javaHome == null) {
+            javaHome = System.getProperty("java.home");
+        }
+        File javaHomeFile = new File(javaHome);
+        if ("jre".equals(javaHomeFile.getName())) {
+            return javaHomeFile.getParentFile();
+        } else {
+            return javaHomeFile;
+        }
     }
 }
