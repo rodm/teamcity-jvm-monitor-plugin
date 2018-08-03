@@ -64,6 +64,7 @@ public class JvmMonitorController extends BaseFormXmlController {
 
     @Override
     protected void doPost(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull Element element) {
+        // ignore
     }
 
     @Nullable

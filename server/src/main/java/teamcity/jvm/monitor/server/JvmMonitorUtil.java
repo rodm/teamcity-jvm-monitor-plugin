@@ -34,4 +34,6 @@ public class JvmMonitorUtil {
         BuildArtifacts artifacts = build.getArtifacts(BuildArtifactsViewMode.VIEW_HIDDEN_ONLY);
         return artifacts.getArtifact(JVMMON_PATH + "/" + name);
     }
+
+    private JvmMonitorUtil() {}
 }
