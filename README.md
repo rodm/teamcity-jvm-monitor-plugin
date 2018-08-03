@@ -26,3 +26,11 @@ uploaded as build artifacts and presented on the JVMMon tab of the build results
   * Deploy the plugin run `./gradlew deployPlugin`
   * Start the server run `./gradlew startServer`
   * Start the build agent run `./gradlew startAgent`
+
+## Compatibility
+
+The plugin is compatible with TeamCity 10.0 and later and requires the build agent to be running on Java 7 or later.
+
+## License
+
+This plugin is available under the http://www.apache.org/licenses/LICENSE-2.0.html[Apache License, Version 2.0].
