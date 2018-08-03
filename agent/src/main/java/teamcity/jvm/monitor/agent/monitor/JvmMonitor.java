@@ -64,7 +64,7 @@ public class JvmMonitor implements HostListener {
             monitoredHost.addHostListener(this);
         }
         catch (MonitorException e) {
-            LOGGER.error("Monitored host exception", e);
+            LOGGER.error("Exception starting JVM monitor", e);
         }
         catch (URISyntaxException e) {
             LOGGER.error("Invalid host identifier", e);
@@ -72,13 +72,14 @@ public class JvmMonitor implements HostListener {
     }
 
     public void stop() {
-        for (Integer vmId : new HashSet<Integer>(monitoredVms.keySet())) {
+        for (Integer vmId : new HashSet<>(monitoredVms.keySet())) {
             stopCollector(vmId);
         }
         try {
             monitoredHost.removeHostListener(this);
-        } catch (MonitorException e) {
-            LOGGER.error("Monitored host exception", e);
+        }
+        catch (MonitorException e) {
+            LOGGER.error("Exception stopping JVM monitor", e);
         }
         executor.shutdown();
     }
@@ -97,6 +98,7 @@ public class JvmMonitor implements HostListener {
 
     @Override
     public void disconnected(HostEvent event) {
+        // ignore
     }
 
     private void startCollector(Integer id) {
@@ -116,7 +118,7 @@ public class JvmMonitor implements HostListener {
             }
         }
         catch (MonitorException e) {
-            LOGGER.error("Monitored host exception", e);
+            LOGGER.error("Exception starting collector for VM: " + id, e);
         }
         catch (URISyntaxException e) {
             LOGGER.error("Invalid VM identifier", e);

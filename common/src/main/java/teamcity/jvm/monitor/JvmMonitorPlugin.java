@@ -18,5 +18,5 @@ package teamcity.jvm.monitor;
 
 public class JvmMonitorPlugin {
 
-    public static String FEATURE_TYPE = "jvm-monitor-plugin";
+    public static final String FEATURE_TYPE = "jvm-monitor-plugin";
 }
