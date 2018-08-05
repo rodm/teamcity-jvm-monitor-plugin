@@ -50,7 +50,7 @@ public class JvmMonitorMain {
                 if ("start".equals(command)) {
                     LOGGER.info("Starting JVM Monitor");
                     monitor.start();
-                } else if ("stop".equals(command)) {
+                } else if ("stop".equals(command) || command == null) {
                     LOGGER.info("Stopping JVM Monitor");
                     run = false;
                     monitor.stop();
