@@ -22,6 +22,7 @@ val java7Home = findProperty("java7.home") ?: ""
 val java8Home = findProperty("java8.home") ?: ""
 val java9Home = findProperty("java9.home") ?: ""
 val java10Home = findProperty("java10.home") ?: ""
+val java11Home = findProperty("java11.home") ?: ""
 
 sourceSets {
     create("functional") {
@@ -62,6 +63,7 @@ tasks {
         systemProperty ("java8.home", java8Home)
         systemProperty ("java9.home", java9Home)
         systemProperty ("java10.home", java10Home)
+        systemProperty ("java11.home", java11Home)
     }
 }
 
