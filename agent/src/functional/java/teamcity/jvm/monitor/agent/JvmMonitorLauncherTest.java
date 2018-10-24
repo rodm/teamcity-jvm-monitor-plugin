@@ -66,22 +66,9 @@ class JvmMonitorLauncherTest {
         File javaBinary = new File(javaHome, "bin/java");
         assumeTrue(javaBinary.exists(), "The path set for the '" + javaHome + "' property is not a valid Java install");
 
-        String java = javaBinary.getAbsolutePath();
+        monitorTestApp(System.getProperty("java.home"), javaHome);
+
         String className = TestMain.class.getName();
-        String classPath = System.getProperty("java.class.path");
-
-        JvmMonitorLauncher launcher = new JvmMonitorLauncher(logDir, outputDir);
-        try {
-            launcher.start();
-
-            int result = exec(java, "-Xmx32m", "-classpath", classPath, className);
-
-            assertEquals(0, result, "Expected test Java process to run");
-        }
-        finally {
-            launcher.stop();
-        }
-
         File[] files = outputDir.listFiles();
         if (files == null || files.length == 0) {
             fail("Expected JVM metrics file for " + className + " process");
@@ -115,26 +102,9 @@ class JvmMonitorLauncherTest {
         File javaCommand = new File(javaHome, "bin/java");
         assumeTrue(javaCommand.exists(), "The path set for the '" + javaHome + "' property is not a valid Java install");
 
-        String defaultJavaHome = System.getProperty("java.home");
-        File defaultJavaCommand = new File(defaultJavaHome, "bin/java");
+        monitorTestApp(javaHome, System.getProperty("java.home"));
 
-        String java = defaultJavaCommand.getAbsolutePath();
         String className = TestMain.class.getName();
-        String classPath = System.getProperty("java.class.path");
-
-        JvmMonitorLauncher launcher = new JvmMonitorLauncher(logDir, outputDir);
-        launcher.setJavaHome(javaHome);
-        try {
-            launcher.start();
-
-            int result = exec(java, "-Xmx32m", "-classpath", classPath, className);
-
-            assertEquals(0, result, "Expected test Java process to run");
-        }
-        finally {
-            launcher.stop();
-        }
-
         File[] files = outputDir.listFiles();
         assertNotNull(files, "Expected JVM metrics file for " + className + " process");
         assertNotEquals(0, files.length, "Expected JVM metrics file for " + className + " process");
@@ -146,6 +116,26 @@ class JvmMonitorLauncherTest {
             }
         }
         assertNotNull(metrics, "Expected JVM metrics file for " + className + " process");
+    }
+
+    private void monitorTestApp(String monitorJavaHome, String appJavaHome) throws Exception {
+        File javaCommand = new File(appJavaHome, "bin/java");
+        String java = javaCommand.getAbsolutePath();
+        String classPath = System.getProperty("java.class.path");
+        String className = TestMain.class.getName();
+
+        JvmMonitorLauncher launcher = new JvmMonitorLauncher(logDir, outputDir);
+        launcher.setJavaHome(monitorJavaHome);
+        try {
+            launcher.start();
+
+            int result = exec(java, "-Xmx32m", "-classpath", classPath, className);
+
+            assertEquals(0, result, "Expected test Java process to run");
+        }
+        finally {
+            launcher.stop();
+        }
     }
 
     private int exec(String command, String... args) throws Exception {
