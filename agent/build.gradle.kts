@@ -35,7 +35,7 @@ dependencies {
     compile (project(":common"))
     provided (files("${javaHome}/../lib/tools.jar"))
 
-    testCompile (group = "org.junit", name = "junit-bom", version = "5.2.0")
+    testCompile (platform("org.junit:junit-bom:5.2.0"))
     testCompile (group = "org.junit.jupiter", name = "junit-jupiter-api")
     testCompile (group = "org.junit.jupiter", name = "junit-jupiter-params")
     testCompile (group = "org.junit-pioneer", name = "junit-pioneer", version = "0.1.2")
