@@ -1,12 +1,11 @@
 
-import com.github.rodm.teamcity.TeamCityPluginExtension
 import com.jfrog.bintray.gradle.BintrayExtension
 import com.jfrog.bintray.gradle.tasks.RecordingCopyTask
 
 plugins {
-    id ("com.github.rodm.teamcity-server") version "1.1.1"
+    id ("com.github.rodm.teamcity-server") version "1.2.1"
     id ("com.jfrog.bintray") version "1.8.4"
-    id ("org.sonarqube") version "2.6.2"
+    id ("org.sonarqube") version "2.7.1"
 }
 
 group = "com.github.rodm"
@@ -49,12 +48,4 @@ bintray {
             name = project.version as String
         })
     })
-}
-
-fun Project.teamcity(configuration: TeamCityPluginExtension.() -> Unit) {
-    configure(configuration)
-}
-
-fun Project.bintray(configuration: BintrayExtension.() -> Unit) {
-    configure(configuration)
 }

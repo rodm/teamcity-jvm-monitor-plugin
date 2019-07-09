@@ -1,11 +1,11 @@
 
 import com.github.rodm.teamcity.TeamCityEnvironment
-import com.github.rodm.teamcity.TeamCityPluginExtension
 
 plugins {
     id ("org.gradle.java")
     id ("org.gradle.jacoco")
     id ("com.github.rodm.teamcity-server")
+    id ("com.github.rodm.teamcity-environments")
 }
 
 java {
@@ -49,7 +49,7 @@ teamcity {
         baseDataDir = "${rootDir}/data"
 
         operator fun String.invoke(block: TeamCityEnvironment.() -> Unit) {
-            environments.create(this, closureOf<TeamCityEnvironment>(block))
+            environments.create(this, closureOf(block))
         }
 
         "teamcity10" {
@@ -62,8 +62,4 @@ teamcity {
             javaHome = file(extra["java8Home"] as String)
         }
     }
-}
-
-fun Project.teamcity(configuration: TeamCityPluginExtension.() -> Unit) {
-    configure(configuration)
 }

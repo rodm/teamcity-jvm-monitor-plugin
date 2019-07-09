@@ -1,6 +1,4 @@
 
-import com.github.rodm.teamcity.TeamCityPluginExtension
-
 plugins {
     id ("org.gradle.java")
     id ("org.gradle.jacoco")
@@ -77,8 +75,4 @@ teamcity {
             }
         }
     }
-}
-
-fun Project.teamcity(configuration: TeamCityPluginExtension.() -> Unit) {
-    configure(configuration)
 }
