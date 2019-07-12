@@ -92,6 +92,12 @@ project {
         name = "Build - TeamCity 2018.1"
 
         artifactRules = "server/build/distributions/*.zip"
+
+        features {
+            feature {
+                type = "jvm-monitor-plugin"
+            }
+        }
     }
     buildType(build1)
 
