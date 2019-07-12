@@ -12,4 +12,4 @@ env:
     - TEAMCITY_VERSION='2019.1'
 
 script:
-  - ./gradlew clean build -teamcity.api.version=$TEAMCITY_VERSION
+  - ./gradlew clean build -Pteamcity.api.version=$TEAMCITY_VERSION
