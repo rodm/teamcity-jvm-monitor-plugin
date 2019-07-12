@@ -60,12 +60,12 @@ public class JvmMonitorTab extends ViewLogTab {
         model.put("processes", getProcesses(build));
     }
 
-    private List<String> getProcesses(SBuild build) {
-        List<String> processes = new ArrayList<>();
+    private List<JvmLogName> getProcesses(SBuild build) {
+        List<JvmLogName> processes = new ArrayList<>();
         BuildArtifact artifact = JvmMonitorUtil.getBuildArtifact(build);
         if (artifact != null) {
             for (BuildArtifact file : artifact.getChildren()) {
-                processes.add(file.getName());
+                processes.add(new JvmLogName(file.getName()));
             }
         }
         return processes;

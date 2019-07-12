@@ -17,29 +17,35 @@
 <%@ include file="/include.jsp" %>
 
 <jsp:useBean id="build" type="jetbrains.buildServer.serverSide.SBuild" scope="request"/>
-<jsp:useBean id="processes" type="java.util.List" scope="request"/>
+<jsp:useBean id="processes" type="java.util.List<teamcity.jvm.monitor.server.JvmLogName>" scope="request"/>
 <jsp:useBean id="teamcityPluginResourcesPath" type="java.lang.String" scope="request"/>
 
-<script src="<c:url value='${teamcityPluginResourcesPath}js/jvmmon.js'/>" type="text/javascript"></script>
+<bs:linkScript>
+    ${teamcityPluginResourcesPath}js/jvmmon.js
+    ${teamcityPluginResourcesPath}chartjs/Chart.bundle.js
+</bs:linkScript>
 
-<div id="container">
-    <p>Java processes</p>
-    <p>
-        <select size="5" name="process" onchange="BS.JvmMon.showJvmLog(this.value)">
-            <c:forEach items="${processes}" var="process">
-                <option value="${process}"><c:out value="${process}"/></option>
-            </c:forEach>
-        </select>
-    </p>
-</div>
-
+<table>
+    <tbody>
+    <tr>
+        <td style="width: 140px; vertical-align: top;">Java processes:</td>
+        <td>
+            <select size="5" name="process" onchange="BS.JvmMon.showJvmLog(this.value)">
+                <c:forEach items="${processes}" var="process">
+                    <option value="${process.fileName}"><c:out value="${process.displayName}"/></option>
+                </c:forEach>
+            </select>
+        </td>
+    </tr>
+    <tr class="jvm-info" style="display: none"><td style="width: 140px;">JVM version:</td><td id="jvm-version"></td></tr>
+    <tr class="jvm-info" style="display: none"><td style="width: 140px;">JVM arguments:</td><td id="jvm-args"></td></tr>
+    <tr class="jvm-info" style="display: none"><td style="width: 140px;">Command line:</td><td id="jvm-cmdline"></td></tr>
+    </tbody>
+</table>
 <div style="height: 1em;">
     <span id="loadingLog" style="display: none;"><forms:progressRing/> Please wait...</span>
 </div>
-<div id="jvmLogDiv" style="display: none;">
-    <a id="jvmLogAnchor"></a>
-    <div><span id="jvmLogMarker">JVM log:</span></div>
-    <div id="jvmLogContainer"></div>
+<div id="charts" style="width: 95%">
 </div>
 
 <script type="text/javascript">

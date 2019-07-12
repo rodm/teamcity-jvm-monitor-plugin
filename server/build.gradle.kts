@@ -23,6 +23,8 @@ extra["java8Home"] = project.findProperty("java8.home") ?: "/opt/jdk1.8.0_131"
 
 dependencies {
     compile (project(":common"))
+    compile (group = "javax.json", name = "javax.json-api", version = "1.1.4")
+    runtime (group = "org.glassfish", name = "javax.json", version = "1.1.4")
 
     agent (project(path = ":agent", configuration = "plugin"))
 }

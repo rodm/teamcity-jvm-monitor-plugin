@@ -16,64 +16,136 @@
 
 package teamcity.jvm.monitor.server;
 
-import jetbrains.buildServer.controllers.BaseFormXmlController;
+import jetbrains.buildServer.controllers.BaseController;
 import jetbrains.buildServer.serverSide.SBuild;
 import jetbrains.buildServer.serverSide.SBuildServer;
 import jetbrains.buildServer.serverSide.artifacts.BuildArtifact;
-import jetbrains.buildServer.web.openapi.PluginDescriptor;
 import jetbrains.buildServer.web.openapi.WebControllerManager;
-import org.jdom.Element;
+import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
-public class JvmMonitorController extends BaseFormXmlController {
+import static java.nio.charset.StandardCharsets.UTF_8;
 
-    private final PluginDescriptor pluginDescriptor;
+public class JvmMonitorController extends BaseController {
 
-    public JvmMonitorController(@NotNull SBuildServer server, @NotNull WebControllerManager webControllerManager, @NotNull PluginDescriptor pluginDescriptor) {
+    private static final Logger LOGGER = Logger.getLogger("jetbrains.buildServer.SERVER");
+
+    public JvmMonitorController(@NotNull SBuildServer server, @NotNull WebControllerManager webControllerManager) {
         super(server);
-        this.pluginDescriptor = pluginDescriptor;
         webControllerManager.registerController("/jvmmon.html", this);
     }
 
     @Override
-    protected ModelAndView doGet(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response) {
-        JvmLog jvmLog = getJvmLog(request);
+    protected ModelAndView doHandle(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response) {
+        BuildArtifact artifact = getBuildArtifact(request);
 
-        ModelAndView modelAndView = new ModelAndView(this.pluginDescriptor.getPluginResourcesPath("jvmlog.jsp"));
-        Map<String, Object> model = modelAndView.getModel();
-        model.put("jvmlog", jvmLog);
-        return modelAndView;
-    }
-
-    private JvmLog getJvmLog(HttpServletRequest request) {
-        SBuild build = getBuildFromRequest(request);
-        String jvmLogName = getJvmLogNameFromRequest(request);
-
-        BuildArtifact artifact = JvmMonitorUtil.getBuildArtifact(build, jvmLogName);
-        if (artifact != null) {
-            return new JvmLog(artifact);
+        try {
+            JsonObjectBuilder responseNode = Json.createObjectBuilder();
+            response.setContentType("text/json");
+            process(artifact, responseNode);
+            response.getOutputStream().write(responseNode.build().toString().getBytes(UTF_8));
         }
-        return new JvmLog();
+        catch (Exception e) {
+            // ignore
+        }
+        return null;
     }
 
-    @Override
-    protected void doPost(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull Element element) {
-        // ignore
+    void process(BuildArtifact artifact, JsonObjectBuilder responseNode) {
+        List<String> headers = new ArrayList<>();
+        List<String> data = new ArrayList<>();
+
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(artifact.getInputStream()))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.startsWith("# ")) {
+                    headers.add(line);
+                } else {
+                    data.add(line);
+                }
+            }
+        }
+        catch (IOException e) {
+            LOGGER.warn("Exception reading artifact: " + artifact.getName(), e);
+        }
+        String cmdline = "";
+        String jvmArgs = "";
+        String jvmVersion = "";
+        String head = "";
+        for (String header : headers) {
+            if (header.startsWith("# command line")) {
+                cmdline = header.substring("# command line: ".length());
+            }
+            if (header.startsWith("# jvm args:")) {
+                jvmArgs = header.substring("# jvm args: ".length());
+            }
+            if (header.startsWith("# jvm version:")) {
+                jvmVersion = header.substring("# jvm version: ".length());
+            }
+            if (header.startsWith("# timestamp")) {
+                head = header.replace("# ", "");
+            }
+        }
+
+        List<String> timestamps = new ArrayList<>();
+        Map<String, List<Long>> datasets = new LinkedHashMap<>();
+
+        String[] columns = head.split(",");
+        for (String line : data) {
+            String[] parts = line.split(",");
+            for (int i = 0; i < parts.length; i++) {
+                if ("timestamp".equals(columns[i])) {
+                    timestamps.add(parts[i]);
+                } else {
+                    String column = columns[i].trim();
+                    datasets.computeIfAbsent(column, k -> new ArrayList<>()).add(Long.parseLong(parts[i]));
+                }
+            }
+        }
+
+        JsonObject info = Json.createObjectBuilder()
+            .add("cmdline", cmdline)
+            .add("jvmargs", jvmArgs)
+            .add("jvmversion", jvmVersion)
+            .build();
+        responseNode.add("info", info);
+
+        JsonObjectBuilder jsonDatasets = Json.createObjectBuilder();
+        jsonDatasets.add("timestamp", Json.createArrayBuilder(timestamps));
+        for (Map.Entry<String, List<Long>> entry : datasets.entrySet()) {
+            jsonDatasets.add(entry.getKey(), Json.createArrayBuilder(entry.getValue()));
+        }
+        responseNode.add("datasets", jsonDatasets.build());
+    }
+
+    private BuildArtifact getBuildArtifact(HttpServletRequest request) {
+        Long buildId = getBuildIdFromRequest(request);
+        String jvmLogName = getJvmLogNameFromRequest(request);
+        SBuild build = myServer.findBuildInstanceById(buildId);
+        return JvmMonitorUtil.getBuildArtifact(build, jvmLogName);
     }
 
     @Nullable
-    private SBuild getBuildFromRequest(HttpServletRequest request) {
+    private Long getBuildIdFromRequest(HttpServletRequest request) {
         String value = request.getParameter("buildId");
         if (value != null) {
             try {
-                long buildId = Long.parseLong(value);
-                return this.myServer.findBuildInstanceById(buildId);
+                return Long.parseLong(value);
             }
             catch (NumberFormatException ignored) {
                 return null;
