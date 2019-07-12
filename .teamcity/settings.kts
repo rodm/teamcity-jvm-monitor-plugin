@@ -47,6 +47,7 @@ project {
         steps {
             gradle {
                 id = "RUNNER_11"
+                buildFile = "build.gradle.kts"
                 tasks = "%gradle.tasks%"
                 gradleParams = "%gradle.shared.opts% %gradle.opts%"
                 useGradleWrapper = true
@@ -149,6 +150,7 @@ project {
         steps {
             gradle {
                 id = "RUNNER_13"
+                buildFile = "build.gradle.kts"
                 tasks = "bintrayUpload"
                 gradleParams = "%gradle.opts%"
                 useGradleWrapper = true
