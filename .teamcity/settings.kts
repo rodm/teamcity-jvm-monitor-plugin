@@ -8,6 +8,7 @@ import jetbrains.buildServer.configs.kotlin.v2018_1.project
 import jetbrains.buildServer.configs.kotlin.v2018_1.triggers.vcs
 import jetbrains.buildServer.configs.kotlin.v2018_1.vcs.GitVcsRoot
 import jetbrains.buildServer.configs.kotlin.v2018_1.version
+import jetbrains.buildServer.configs.kotlin.v2018_1.triggers.VcsTrigger.QuietPeriodMode.USE_DEFAULT
 
 version = "2019.1"
 
@@ -19,6 +20,11 @@ project {
         id(vcsId)
         name = "jvm-monitor"
         url = "https://github.com/rodm/teamcity-jvm-monitor-plugin"
+        branchSpec = """
+            +:refs/heads/(master)
+            +:refs/tags/(*)
+        """.trimIndent()
+        useTagsAsBranches = true
         useMirrors = false
     }
     vcsRoot(vcsRoot)
@@ -177,7 +183,7 @@ project {
                 artifacts {
                     id = "ARTIFACT_DEPENDENCY_2"
                     cleanDestination = true
-                    artifactRules = "jvm-monitor-1.0-SNAPSHOT.zip => server/build/distributions"
+                    artifactRules = "jvm-monitor-*.zip => server/build/distributions"
                 }
             }
         }
@@ -195,8 +201,15 @@ project {
         name = "Publish to Bintray"
 
         params {
-            param("gradle.opts", "")
-            param("system.version", "1.0-b%dep.${build1.id}.build.number%")
+            param("gradle.opts", "%bintray.opts%")
+            param("gradle.tasks", "bintrayUpload")
+        }
+
+        triggers {
+            vcs {
+                quietPeriodMode = USE_DEFAULT
+                branchFilter = "+:v*"
+            }
         }
     }
     buildType(publishToBintray)
