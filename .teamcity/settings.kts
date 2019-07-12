@@ -9,7 +9,8 @@ import jetbrains.buildServer.configs.kotlin.v2018_1.triggers.vcs
 import jetbrains.buildServer.configs.kotlin.v2018_1.vcs.GitVcsRoot
 import jetbrains.buildServer.configs.kotlin.v2018_1.version
 
-version = "2018.1"
+version = "2019.1"
+
 project {
     description = "A TeamCity plugin that collects JVM metrics during a build"
 
@@ -86,7 +87,7 @@ project {
     val build1 = BuildType {
         templates(buildTemplate)
         id("Build1")
-        name = "Build - TeamCity 10.0"
+        name = "Build - TeamCity 2018.1"
 
         artifactRules = "server/build/distributions/*.zip"
     }
@@ -95,10 +96,10 @@ project {
     val build2 = BuildType {
         templates(buildTemplate)
         id("Build2")
-        name = "Build - TeamCity 2017.1"
+        name = "Build - TeamCity 2018.2"
 
         params {
-            param("gradle.opts", "-Pteamcity.api.version=2017.1")
+            param("gradle.opts", "-Pteamcity.api.version=2018.2")
         }
     }
     buildType(build2)
@@ -106,24 +107,13 @@ project {
     val build3 = BuildType {
         templates(buildTemplate)
         id("Build3")
-        name = "Build - TeamCity 2017.2"
+        name = "Build - TeamCity 2019.1"
 
         params {
-            param("gradle.opts", "-Pteamcity.api.version=2017.2")
+            param("gradle.opts", "-Pteamcity.api.version=2019.1")
         }
     }
     buildType(build3)
-
-    val build4 = BuildType {
-        templates(buildTemplate)
-        id("Build4")
-        name = "Build - TeamCity 2018.1"
-
-        params {
-            param("gradle.opts", "-Pteamcity.api.version=2018.1")
-        }
-    }
-    buildType(build4)
 
     val reportCodeQuality = BuildType {
         templates(buildTemplate)
@@ -203,5 +193,5 @@ project {
     }
     buildType(publishToBintray)
 
-    buildTypesOrder = arrayListOf(build1, build2, build3, build4, reportCodeQuality, publishToBintray)
+    buildTypesOrder = arrayListOf(build1, build2, build3, reportCodeQuality, publishToBintray)
 }

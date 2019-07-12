@@ -11,7 +11,7 @@ plugins {
 group = "com.github.rodm"
 version = "1.0-SNAPSHOT"
 
-extra["teamcityVersion"] = project.findProperty("teamcity.api.version") as String? ?: "10.0"
+extra["teamcityVersion"] = project.findProperty("teamcity.api.version") as String? ?: "2018.1"
 extra["downloadsDir"] = project.findProperty("downloads.dir") as String? ?: "$rootDir/downloads"
 extra["serversDir"] = project.findProperty("servers.dir") as String? ?: "$rootDir/servers"
 extra["java8Home"] = project.findProperty("java8.home") as String? ?: "/opt/jdk1.8.0_192"
