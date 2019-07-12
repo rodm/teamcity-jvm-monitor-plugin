@@ -75,9 +75,11 @@ project {
             }
         }
 
+        // create java home properties for versions 7 to 12
+        val sharedOptions = IntRange(7, 12).map{ "-Pjava${it}.home=%java${it}.home%" }.toList().joinToString(" ")
         params {
             param("gradle.opts", "")
-            param("gradle.shared.opts", "-Pjava7.home=%java7.home% -Pjava8.home=%java8.home% -Pjava9.home=%java9.home% -Pjava10.home=%java10.home%")
+            param("gradle.shared.opts", sharedOptions)
             param("gradle.tasks", "clean build functionalTest")
             param("java.home", "%java8.home%")
         }
