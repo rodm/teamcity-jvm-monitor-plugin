@@ -1,3 +1,6 @@
+
+dist: trusty
+
 language: java
 
 jdk:
@@ -5,8 +8,8 @@ jdk:
 
 env:
   matrix:
-    - TEAMCITY_VERSION='10.0'
-    - TEAMCITY_VERSION='2017.1'
+    - TEAMCITY_VERSION='2018.1'
+    - TEAMCITY_VERSION='2019.1'
 
 script:
-  - ./gradlew clean build -Dteamcity.version=$TEAMCITY_VERSION
+  - ./gradlew clean build -teamcity.api.version=$TEAMCITY_VERSION
