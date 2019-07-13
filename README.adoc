@@ -1,0 +1,45 @@
+:uri-teamcity-documentation: https://www.jetbrains.com/help/teamcity/
+:uri-travis-build: https://travis-ci.org/rodm/teamcity-jvm-monitor-plugin
+:uri-travis-image: https://travis-ci.org/rodm/teamcity-jvm-monitor-plugin.svg?branch=master
+:uri-bintray-link: https://bintray.com/rodm/teamcity-plugins-generic/jvm-monitor/_latestVersion
+:uri-bintray-image: https://api.bintray.com/packages/rodm/teamcity-plugins/teamcity-jvm-monitor-plugin/images/download.svg
+:uri-apache-license: http://www.apache.org/licenses/LICENSE-2.0.html[Apache License, Version 2.0]
+
+= JVM Monitor Plugin for TeamCity
+
+The JVM Monitor plugin is a Build Feature that can be added to a build configuration to record the garbage collection metrics for any JVM running during the build.
+
+image:{uri-travis-image}[Build Status,link={uri-travis-build}]
+image:{uri-bintray-image}[Download,link={uri-bintray-link}]
+
+== How to install
+
+Download the plugin using the link above and follow the instructions from the TeamCity documentation,
+{uri-teamcity-documentation}/installing-additional-plugins.html[Installing Additional Plugins]
+
+== How to use the plugin
+
+* Edit a build configuration
+* Select the Build Features page and click the 'Add build feature' button.
+* Select `JVM Monitor` from the list of features.
+
+When a build runs the garbage collection metrics are recorded into a text file for each Java process. These files are
+uploaded as build artifacts and presented as graphs in the `JVM Monitor` tab of the build results page.
+
+== How to build the plugin
+
+* To build and package the plugin run `./gradlew build`, the plugin is output to the `build/distributions` directory.
+* To deploy and test the plugin the following commands can be used to download and install a server, deploy the plugin
+and start the server.
+* Download and install a TeamCity server run `./gradlew installTeamCity2018.1`
+* Deploy the plugin run `./gradlew deployPlugin2018.1`
+* Start the server run `./gradlew startTeamcity2018.1`
+* To stop the server run `./gradlew stopTeamcity2018.1`
+
+== Compatibility
+
+The plugin is compatible with TeamCity 2018.1 and later and requires the build agent to be running on Java 7 or later.
+
+== License
+
+This plugin is available under the {uri-apache-license}.
