@@ -17,10 +17,6 @@ base {
     archivesBaseName = "jvm-monitor-server"
 }
 
-extra["downloadsDir"] = project.findProperty("downloads.dir") ?: "${rootDir}/downloads"
-extra["serversDir"] = project.findProperty("servers.dir") ?: "${rootDir}/servers"
-extra["java8Home"] = project.findProperty("java8.home") ?: "/opt/jdk1.8.0_131"
-
 dependencies {
     compile (project(":common"))
     compile (group = "javax.json", name = "javax.json-api", version = "1.1.4")
@@ -46,8 +42,8 @@ teamcity {
     }
 
     environments {
-        downloadsDir = extra["downloadsDir"] as String
-        baseHomeDir = extra["serversDir"] as String
+        downloadsDir = rootProject.extra["downloadsDir"] as String
+        baseHomeDir = rootProject.extra["serversDir"] as String
         baseDataDir = "${rootDir}/data"
 
         operator fun String.invoke(block: TeamCityEnvironment.() -> Unit) = environments.create(this, closureOf(block))
