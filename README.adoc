@@ -2,7 +2,7 @@
 :uri-travis-build: https://travis-ci.org/rodm/teamcity-jvm-monitor-plugin
 :uri-travis-image: https://travis-ci.org/rodm/teamcity-jvm-monitor-plugin.svg?branch=master
 :uri-bintray-link: https://bintray.com/rodm/teamcity-plugins-generic/jvm-monitor/_latestVersion
-:uri-bintray-image: https://api.bintray.com/packages/rodm/teamcity-plugins/teamcity-jvm-monitor-plugin/images/download.svg
+:uri-bintray-image: https://api.bintray.com/packages/rodm/teamcity-plugins-generic/jvm-monitor/images/download.svg
 :uri-apache-license: http://www.apache.org/licenses/LICENSE-2.0.html[Apache License, Version 2.0]
 
 = JVM Monitor Plugin for TeamCity
