@@ -1,8 +1,6 @@
 
-import jetbrains.buildServer.configs.kotlin.v2018_2.BuildType
 import jetbrains.buildServer.configs.kotlin.v2018_2.CheckoutMode
 import jetbrains.buildServer.configs.kotlin.v2018_2.FailureAction
-import jetbrains.buildServer.configs.kotlin.v2018_2.Template
 import jetbrains.buildServer.configs.kotlin.v2018_2.buildSteps.gradle
 import jetbrains.buildServer.configs.kotlin.v2018_2.project
 import jetbrains.buildServer.configs.kotlin.v2018_2.triggers.vcs
@@ -29,20 +27,7 @@ project {
     }
     vcsRoot(vcsRoot)
 
-/*
-    features {
-        versionedSettings {
-            id = "PROJECT_EXT_8"
-            mode = VersionedSettings.Mode.ENABLED
-            rootExtId = vcsId
-            showChanges = true
-            settingsFormat = VersionedSettings.Format.KOTLIN
-            buildSettingsMode = VersionedSettings.BuildSettingsMode.PREFER_SETTINGS_FROM_VCS
-        }
-    }
-*/
-
-    val buildTemplate = Template {
+    val buildTemplate = template {
         id("Build")
         name = "Build"
 
@@ -90,9 +75,8 @@ project {
             param("java.home", "%java8.home%")
         }
     }
-    template(buildTemplate)
 
-    val build1 = BuildType {
+    val build1 = buildType {
         templates(buildTemplate)
         id("Build1")
         name = "Build - TeamCity 2018.1"
@@ -105,9 +89,8 @@ project {
             }
         }
     }
-    buildType(build1)
 
-    val build2 = BuildType {
+    val build2 = buildType {
         templates(buildTemplate)
         id("Build2")
         name = "Build - TeamCity 2018.2"
@@ -116,9 +99,8 @@ project {
             param("gradle.opts", "-Pteamcity.api.version=2018.2")
         }
     }
-    buildType(build2)
 
-    val build3 = BuildType {
+    val build3 = buildType {
         templates(buildTemplate)
         id("Build3")
         name = "Build - TeamCity 2019.1"
@@ -127,9 +109,8 @@ project {
             param("gradle.opts", "-Pteamcity.api.version=2019.1")
         }
     }
-    buildType(build3)
 
-    val reportCodeQuality = BuildType {
+    val reportCodeQuality = buildType {
         templates(buildTemplate)
         id("ReportCodeQuality")
         name = "Report - Code Quality"
@@ -140,9 +121,8 @@ project {
             param("java.home", "%java8.home%")
         }
     }
-    buildType(reportCodeQuality)
 
-    val publishTemplate = Template {
+    val publishTemplate = template {
         id("Publish")
         name = "Publish"
 
@@ -193,9 +173,8 @@ project {
             param("java.home", "%java8.home%")
         }
     }
-    template(publishTemplate)
 
-    val publishToBintray = BuildType {
+    val publishToBintray = buildType {
         templates(publishTemplate)
         id("PublishToBintray")
         name = "Publish to Bintray"
@@ -212,7 +191,6 @@ project {
             }
         }
     }
-    buildType(publishToBintray)
 
     buildTypesOrder = arrayListOf(build1, build2, build3, reportCodeQuality, publishToBintray)
 }
