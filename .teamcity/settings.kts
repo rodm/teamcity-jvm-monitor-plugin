@@ -1,14 +1,14 @@
 
-import jetbrains.buildServer.configs.kotlin.v2018_1.BuildType
-import jetbrains.buildServer.configs.kotlin.v2018_1.CheckoutMode
-import jetbrains.buildServer.configs.kotlin.v2018_1.FailureAction
-import jetbrains.buildServer.configs.kotlin.v2018_1.Template
-import jetbrains.buildServer.configs.kotlin.v2018_1.buildSteps.gradle
-import jetbrains.buildServer.configs.kotlin.v2018_1.project
-import jetbrains.buildServer.configs.kotlin.v2018_1.triggers.vcs
-import jetbrains.buildServer.configs.kotlin.v2018_1.vcs.GitVcsRoot
-import jetbrains.buildServer.configs.kotlin.v2018_1.version
-import jetbrains.buildServer.configs.kotlin.v2018_1.triggers.VcsTrigger.QuietPeriodMode.USE_DEFAULT
+import jetbrains.buildServer.configs.kotlin.v2018_2.BuildType
+import jetbrains.buildServer.configs.kotlin.v2018_2.CheckoutMode
+import jetbrains.buildServer.configs.kotlin.v2018_2.FailureAction
+import jetbrains.buildServer.configs.kotlin.v2018_2.Template
+import jetbrains.buildServer.configs.kotlin.v2018_2.buildSteps.gradle
+import jetbrains.buildServer.configs.kotlin.v2018_2.project
+import jetbrains.buildServer.configs.kotlin.v2018_2.triggers.vcs
+import jetbrains.buildServer.configs.kotlin.v2018_2.vcs.GitVcsRoot
+import jetbrains.buildServer.configs.kotlin.v2018_2.version
+import jetbrains.buildServer.configs.kotlin.v2018_2.triggers.VcsTrigger.QuietPeriodMode.USE_DEFAULT
 
 version = "2019.1"
 
