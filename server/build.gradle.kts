@@ -1,6 +1,4 @@
 
-import com.github.rodm.teamcity.TeamCityEnvironment
-
 plugins {
     id ("org.gradle.java")
     id ("org.gradle.jacoco")
@@ -46,20 +44,14 @@ teamcity {
         baseHomeDir = rootProject.extra["serversDir"] as String
         baseDataDir = "${rootDir}/data"
 
-        operator fun String.invoke(block: TeamCityEnvironment.() -> Unit) = environments.create(this, closureOf(block))
-
-        "teamcity2018.1" {
-            version = "2018.1.4"
+        register("teamcity2018.1") {
+            version = "2018.1.5"
             serverOptions ("-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005")
             agentOptions ("-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5006")
         }
 
-        "teamcity2018.2" {
-            version = "2018.2.4"
-        }
-
-        "teamcity2019.1" {
-            version = "2019.1.1"
+        register("teamcity2020.2") {
+            version = "2020.2.1"
         }
     }
 }
