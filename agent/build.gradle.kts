@@ -47,6 +47,16 @@ dependencies {
     testRuntimeOnly (group = "log4j", name = "log4j", version = "1.2.17")
 }
 
+tasks.named("test") {
+    finalizedBy (tasks.named("jacocoTestReport"))
+}
+
+tasks.named<JacocoReport>("jacocoTestReport") {
+    reports {
+        xml.isEnabled = true
+    }
+}
+
 tasks {
     "test"(Test::class) {
         useJUnitPlatform()
