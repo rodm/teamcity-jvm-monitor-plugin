@@ -34,12 +34,11 @@ dependencies {
     implementation (project(":common"))
     provided (files("${javaHome}/../lib/tools.jar"))
 
-    testImplementation (platform("org.junit:junit-bom:5.5.0"))
+    testImplementation (platform("org.junit:junit-bom:5.5.2"))
     testImplementation (group = "org.junit.jupiter", name = "junit-jupiter-api")
     testImplementation (group = "org.junit.jupiter", name = "junit-jupiter-params")
-    testImplementation (group = "org.hamcrest", name = "hamcrest-core", version = "1.3")
-    testImplementation (group = "org.hamcrest", name = "hamcrest-library", version = "1.3")
-    testImplementation (group = "org.mockito", name = "mockito-core", version = "2.20.0")
+    testImplementation (group = "org.hamcrest", name = "hamcrest", version = "2.2")
+    testImplementation (group = "org.mockito", name = "mockito-core", version = "3.7.7")
 
     testRuntimeOnly (group = "org.junit.jupiter", name = "junit-jupiter-engine")
     testRuntimeOnly (group = "log4j", name = "log4j", version = "1.2.17")
