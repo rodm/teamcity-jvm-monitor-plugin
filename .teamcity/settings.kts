@@ -8,7 +8,7 @@ import jetbrains.buildServer.configs.kotlin.v2018_2.vcs.GitVcsRoot
 import jetbrains.buildServer.configs.kotlin.v2018_2.version
 import jetbrains.buildServer.configs.kotlin.v2018_2.triggers.VcsTrigger.QuietPeriodMode.USE_DEFAULT
 
-version = "2019.1"
+version = "2020.2"
 
 project {
     description = "A TeamCity plugin that collects JVM metrics during a build"
