@@ -22,11 +22,14 @@ val java9Home = findProperty("java9.home") ?: ""
 val java10Home = findProperty("java10.home") ?: ""
 val java11Home = findProperty("java11.home") ?: ""
 val java12Home = findProperty("java12.home") ?: ""
+val java13Home = findProperty("java13.home") ?: ""
+val java14Home = findProperty("java14.home") ?: ""
+val java15Home = findProperty("java15.home") ?: ""
 
 sourceSets {
     create("functional") {
-        compileClasspath += sourceSets["main"].output + configurations.testRuntime
-        runtimeClasspath += sourceSets["main"].output + configurations.testRuntime
+        compileClasspath += sourceSets["main"].output + configurations.testRuntimeClasspath
+        runtimeClasspath += sourceSets["main"].output + configurations.testRuntimeClasspath
     }
 }
 
@@ -63,6 +66,9 @@ tasks {
         systemProperty ("java10.home", java10Home)
         systemProperty ("java11.home", java11Home)
         systemProperty ("java12.home", java12Home)
+        systemProperty ("java13.home", java13Home)
+        systemProperty ("java14.home", java14Home)
+        systemProperty ("java15.home", java15Home)
     }
 }
 

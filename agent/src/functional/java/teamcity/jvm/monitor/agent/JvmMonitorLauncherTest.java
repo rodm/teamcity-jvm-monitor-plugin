@@ -56,7 +56,11 @@ class JvmMonitorLauncherTest {
     }
 
     @ParameterizedTest(name = "monitor process running on Java {1}")
-    @CsvSource({"java7.home , 1.7", "java8.home , 1.8", "java9.home , 9", "java10.home , 10", "java11.home, 11", "java12.home, 12"})
+    @CsvSource({
+        "java7.home , 1.7", "java8.home , 1.8",
+        "java9.home , 9", "java10.home , 10", "java11.home, 11", "java12.home, 12",
+        "java13.home , 13", "java14.home, 14", "java15.home, 15"
+    })
     void monitorJavaProcessOnJava(String homeProperty, String version) throws Exception {
         String javaHome = System.getProperty(homeProperty, "");
         assumeFalse(javaHome.trim().isEmpty(), "The property '" + javaHome + "' should not be empty");
@@ -92,7 +96,10 @@ class JvmMonitorLauncherTest {
     }
 
     @ParameterizedTest(name = "launch jvm monitor running on Java {1}")
-    @ValueSource(strings = {"java7.home", "java8.home", "java9.home", "java10.home", "java11.home"})
+    @ValueSource(strings = {
+        "java7.home", "java8.home", "java9.home", "java10.home", "java11.home",
+        "java12.home", "java13.home", "java14.home", "java15.home"
+    })
     void launchJvmMonitorOnJava(String homeProperty) throws Exception {
         String javaHome = System.getProperty(homeProperty, "");
         assumeFalse(javaHome.trim().isEmpty(), "The property '" + javaHome + "' should not be empty");
