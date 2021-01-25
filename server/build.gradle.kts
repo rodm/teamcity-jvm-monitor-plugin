@@ -18,9 +18,9 @@ base {
 }
 
 dependencies {
-    compile (project(":common"))
-    compile (group = "javax.json", name = "javax.json-api", version = "1.1.4")
-    runtime (group = "org.glassfish", name = "javax.json", version = "1.1.4")
+    implementation (project(":common"))
+    implementation (group = "javax.json", name = "javax.json-api", version = "1.1.4")
+    runtimeOnly (group = "org.glassfish", name = "javax.json", version = "1.1.4")
 
     agent (project(path = ":agent", configuration = "plugin"))
 }

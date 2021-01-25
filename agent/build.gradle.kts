@@ -31,18 +31,18 @@ sourceSets {
 }
 
 dependencies {
-    compile (project(":common"))
+    implementation (project(":common"))
     provided (files("${javaHome}/../lib/tools.jar"))
 
-    testCompile (platform("org.junit:junit-bom:5.5.0"))
-    testCompile (group = "org.junit.jupiter", name = "junit-jupiter-api")
-    testCompile (group = "org.junit.jupiter", name = "junit-jupiter-params")
-    testCompile (group = "org.hamcrest", name = "hamcrest-core", version = "1.3")
-    testCompile (group = "org.hamcrest", name = "hamcrest-library", version = "1.3")
-    testCompile (group = "org.mockito", name = "mockito-core", version = "2.20.0")
+    testImplementation (platform("org.junit:junit-bom:5.5.0"))
+    testImplementation (group = "org.junit.jupiter", name = "junit-jupiter-api")
+    testImplementation (group = "org.junit.jupiter", name = "junit-jupiter-params")
+    testImplementation (group = "org.hamcrest", name = "hamcrest-core", version = "1.3")
+    testImplementation (group = "org.hamcrest", name = "hamcrest-library", version = "1.3")
+    testImplementation (group = "org.mockito", name = "mockito-core", version = "2.20.0")
 
-    testRuntime (group = "org.junit.jupiter", name = "junit-jupiter-engine")
-    testRuntime (group = "log4j", name = "log4j", version = "1.2.17")
+    testRuntimeOnly (group = "org.junit.jupiter", name = "junit-jupiter-engine")
+    testRuntimeOnly (group = "log4j", name = "log4j", version = "1.2.17")
 }
 
 tasks {

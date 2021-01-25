@@ -3,9 +3,9 @@ import com.jfrog.bintray.gradle.BintrayExtension
 import com.jfrog.bintray.gradle.tasks.RecordingCopyTask
 
 plugins {
-    id ("com.github.rodm.teamcity-server") version "1.2.1"
-    id ("com.jfrog.bintray") version "1.8.4"
-    id ("org.sonarqube") version "2.7.1"
+    id ("com.github.rodm.teamcity-server") version "1.3.2"
+    id ("com.jfrog.bintray") version "1.8.5"
+    id ("org.sonarqube") version "3.1.1"
 }
 
 group = "com.github.rodm"
