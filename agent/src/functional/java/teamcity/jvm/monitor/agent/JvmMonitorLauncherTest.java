@@ -95,7 +95,7 @@ class JvmMonitorLauncherTest {
         assertThat(dataLines.size(), greaterThanOrEqualTo(4));
     }
 
-    @ParameterizedTest(name = "launch jvm monitor running on Java {1}")
+    @ParameterizedTest(name = "launch jvm monitor running on Java {0}")
     @ValueSource(strings = {
         "java7.home", "java8.home", "java9.home", "java10.home", "java11.home",
         "java12.home", "java13.home", "java14.home", "java15.home"
