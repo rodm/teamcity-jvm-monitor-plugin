@@ -18,6 +18,7 @@ package teamcity.jvm.monitor.agent;
 
 import jetbrains.buildServer.agent.AgentBuildFeature;
 import jetbrains.buildServer.agent.AgentLifeCycleAdapter;
+import jetbrains.buildServer.agent.AgentLifeCycleListener;
 import jetbrains.buildServer.agent.AgentRunningBuild;
 import jetbrains.buildServer.agent.BuildAgentConfiguration;
 import jetbrains.buildServer.agent.BuildFinishedStatus;
@@ -41,7 +42,7 @@ public class JvmMonitorBuildFeature extends AgentLifeCycleAdapter {
 
     private File outputDir;
 
-    public JvmMonitorBuildFeature(ArtifactsWatcher artifactsWatcher, EventDispatcher<AgentLifeCycleAdapter> eventDispatcher) {
+    public JvmMonitorBuildFeature(ArtifactsWatcher artifactsWatcher, EventDispatcher<AgentLifeCycleListener> eventDispatcher) {
         this.artifactsWatcher = artifactsWatcher;
         eventDispatcher.addListener(this);
     }
