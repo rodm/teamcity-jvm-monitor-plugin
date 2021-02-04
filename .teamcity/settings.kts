@@ -1,5 +1,4 @@
 
-import jetbrains.buildServer.configs.kotlin.v2018_2.CheckoutMode
 import jetbrains.buildServer.configs.kotlin.v2018_2.FailureAction
 import jetbrains.buildServer.configs.kotlin.v2018_2.buildSteps.gradle
 import jetbrains.buildServer.configs.kotlin.v2018_2.project
@@ -33,7 +32,6 @@ project {
 
         vcs {
             root(vcsRoot)
-            checkoutMode = CheckoutMode.ON_SERVER
         }
 
         steps {
@@ -118,7 +116,6 @@ project {
 
         vcs {
             root(vcsRoot)
-            checkoutMode = CheckoutMode.ON_SERVER
         }
 
         steps {
