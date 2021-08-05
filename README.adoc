@@ -1,8 +1,9 @@
 :uri-teamcity-documentation: https://www.jetbrains.com/help/teamcity/
 :uri-github-build: https://github.com/rodm/teamcity-jvm-monitor-plugin/actions
 :uri-github-status: https://github.com/rodm/teamcity-jvm-monitor-plugin/workflows/Build/badge.svg
-:uri-bintray-link: https://bintray.com/rodm/teamcity-plugins-generic/jvm-monitor/_latestVersion
-:uri-bintray-image: https://api.bintray.com/packages/rodm/teamcity-plugins-generic/jvm-monitor/images/download.svg
+:uri-download: https://github.com/rodm/teamcity-jvm-monitor-plugin/releases/latest
+:uri-version: https://img.shields.io/github/v/release/rodm/teamcity-jvm-monitor-plugin?label=TeamCity%20plugin
+:uri-downloads: https://img.shields.io/github/downloads/rodm/teamcity-jvm-monitor-plugin/total?label=Downloads
 :uri-apache-license: http://www.apache.org/licenses/LICENSE-2.0.html[Apache License, Version 2.0]
 
 = JVM Monitor Plugin for TeamCity
@@ -10,7 +11,8 @@
 The JVM Monitor plugin is a Build Feature that can be added to a build configuration to record the garbage collection metrics for any JVM running during the build.
 
 image:{uri-github-status}?branch=master["Build Status", link="{uri-github-build}"]
-image:{uri-bintray-image}[Download,link={uri-bintray-link}]
+image:{uri-version}[Download,link={uri-download}]
+image:{uri-downloads}["Downloads", link="{uri-download}"]
 
 == How to install
 
