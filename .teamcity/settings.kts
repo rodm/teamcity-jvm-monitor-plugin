@@ -3,6 +3,7 @@ import jetbrains.buildServer.configs.kotlin.v2018_2.buildSteps.gradle
 import jetbrains.buildServer.configs.kotlin.v2018_2.project
 import jetbrains.buildServer.configs.kotlin.v2018_2.triggers.vcs
 import jetbrains.buildServer.configs.kotlin.v2018_2.vcs.GitVcsRoot
+import jetbrains.buildServer.configs.kotlin.v2018_2.vcs.GitVcsRoot.AgentCheckoutPolicy.NO_MIRRORS
 import jetbrains.buildServer.configs.kotlin.v2018_2.version
 
 version = "2020.2"
@@ -20,7 +21,7 @@ project {
             +:refs/tags/(*)
         """.trimIndent()
         useTagsAsBranches = true
-        useMirrors = false
+        checkoutPolicy = NO_MIRRORS
     }
     vcsRoot(vcsRoot)
 
