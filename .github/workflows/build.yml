@@ -4,6 +4,9 @@ name: Build
 on:
   push:
     branches: [ master ]
+    paths-ignore:
+      - '.teamcity/**'
+      - 'README.adoc'
 
 jobs:
   build:
@@ -11,11 +14,13 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Set up JDK 1.8
-        uses: actions/setup-java@v1
+      - name: Setup Java
+        uses: actions/setup-java@v2
         with:
-          java-version: 1.8
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
+          distribution: 'zulu'
+          java-version: 8
       - name: Build with Gradle
-        run: ./gradlew -s clean build
+        run: |
+          ./gradlew -v
+          ./gradlew -s build
+          ./gradlew --stop
