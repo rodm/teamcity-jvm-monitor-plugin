@@ -1,10 +1,6 @@
 
-import com.jfrog.bintray.gradle.BintrayExtension
-import com.jfrog.bintray.gradle.tasks.RecordingCopyTask
-
 plugins {
     id ("com.github.rodm.teamcity-server")
-    id ("com.jfrog.bintray")
     id ("org.sonarqube")
 }
 
@@ -17,34 +13,4 @@ extra["serversDir"] = project.findProperty("servers.dir") as String? ?: "$rootDi
 
 teamcity {
     version = extra["teamcityVersion"] as String
-}
-
-bintray {
-    user = findProperty("bintray.user") as String?
-    key = findProperty("bintray.key") as String?
-
-    filesSpec(closureOf<RecordingCopyTask> {
-        from ("${project(":server").buildDir}/distributions")
-        into ("jvm-monitor")
-        include ("*.zip")
-    })
-
-    dryRun = false
-    publish = true
-    override = false
-
-    pkg(closureOf<BintrayExtension.PackageConfig> {
-        repo = "teamcity-plugins-generic"
-        name = "jvm-monitor"
-        desc = "A TeamCity plugin that provides a build feature to collect JVM metrics during a build"
-        websiteUrl = "https://github.com/rodm/teamcity-jvm-monitor-plugin"
-        issueTrackerUrl = "https://github.com/rodm/teamcity-jvm-monitor-plugin/issues"
-        vcsUrl = "https://github.com/rodm/teamcity-jvm-monitor-plugin.git"
-        setLicenses("Apache-2.0")
-        setLabels("teamcity", "plugin", "jvm", "monitor")
-
-        version(closureOf<BintrayExtension.VersionConfig> {
-            name = project.version as String
-        })
-    })
 }
