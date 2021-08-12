@@ -13,7 +13,7 @@ java {
 }
 
 base {
-    archivesBaseName = "jvm-monitor-agent"
+    archivesName.set("jvm-monitor-agent")
 }
 
 val java7Home = findProperty("java7.home") ?: ""
@@ -53,7 +53,7 @@ tasks.named("test") {
 
 tasks.named<JacocoReport>("jacocoTestReport") {
     reports {
-        xml.isEnabled = true
+        xml.required.set(true)
     }
 }
 

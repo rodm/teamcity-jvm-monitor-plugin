@@ -12,7 +12,7 @@ java {
 }
 
 base {
-    archivesBaseName = "jvm-monitor-server"
+    archivesName.set("jvm-monitor-server")
 }
 
 dependencies {

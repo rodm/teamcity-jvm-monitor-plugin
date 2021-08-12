@@ -11,5 +11,5 @@ java {
 }
 
 base {
-    archivesBaseName = "jvm-monitor-common"
+    archivesName.set("jvm-monitor-common")
 }

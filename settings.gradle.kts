@@ -1,8 +1,8 @@
 
 pluginManagement {
     plugins {
-        id ("com.github.rodm.teamcity-server") version "1.3.2"
-        id ("org.sonarqube") version "3.1.1"
+        id ("com.github.rodm.teamcity-server") version "1.4"
+        id ("org.sonarqube") version "3.3"
     }
 }
 
