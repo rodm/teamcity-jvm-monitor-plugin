@@ -1,11 +1,9 @@
 
-import jetbrains.buildServer.configs.kotlin.v2018_2.FailureAction
 import jetbrains.buildServer.configs.kotlin.v2018_2.buildSteps.gradle
 import jetbrains.buildServer.configs.kotlin.v2018_2.project
 import jetbrains.buildServer.configs.kotlin.v2018_2.triggers.vcs
 import jetbrains.buildServer.configs.kotlin.v2018_2.vcs.GitVcsRoot
 import jetbrains.buildServer.configs.kotlin.v2018_2.version
-import jetbrains.buildServer.configs.kotlin.v2018_2.triggers.VcsTrigger.QuietPeriodMode.USE_DEFAULT
 
 version = "2020.2"
 
@@ -110,74 +108,5 @@ project {
         }
     }
 
-    val publishTemplate = template {
-        id("Publish")
-        name = "Publish"
-
-        vcs {
-            root(vcsRoot)
-        }
-
-        steps {
-            gradle {
-                id = "RUNNER_13"
-                buildFile = "build.gradle.kts"
-                tasks = "bintrayUpload"
-                gradleParams = "%gradle.opts%"
-                useGradleWrapper = true
-                enableStacktrace = true
-                jdkHome = "%java.home%"
-            }
-        }
-
-        failureConditions {
-            executionTimeoutMin = 5
-        }
-
-        features {
-            feature {
-                id = "perfmon"
-                type = "perfmon"
-            }
-        }
-
-        dependencies {
-            dependency(build1) {
-                snapshot {
-                    onDependencyFailure = FailureAction.FAIL_TO_START
-                }
-
-                artifacts {
-                    id = "ARTIFACT_DEPENDENCY_2"
-                    cleanDestination = true
-                    artifactRules = "jvm-monitor-*.zip => server/build/distributions"
-                }
-            }
-        }
-
-        params {
-            param("gradle.opts", "")
-            param("java.home", "%java8.home%")
-        }
-    }
-
-    val publishToBintray = buildType {
-        templates(publishTemplate)
-        id("PublishToBintray")
-        name = "Publish to Bintray"
-
-        params {
-            param("gradle.opts", "%bintray.opts%")
-            param("gradle.tasks", "bintrayUpload")
-        }
-
-        triggers {
-            vcs {
-                quietPeriodMode = USE_DEFAULT
-                branchFilter = "+:v*"
-            }
-        }
-    }
-
-    buildTypesOrder = arrayListOf(build1, build2, reportCodeQuality, publishToBintray)
+    buildTypesOrder = arrayListOf(build1, build2, reportCodeQuality)
 }
