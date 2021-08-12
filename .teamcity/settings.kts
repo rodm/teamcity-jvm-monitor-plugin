@@ -1,12 +1,12 @@
 
-import jetbrains.buildServer.configs.kotlin.v2018_2.buildSteps.gradle
-import jetbrains.buildServer.configs.kotlin.v2018_2.project
-import jetbrains.buildServer.configs.kotlin.v2018_2.triggers.vcs
-import jetbrains.buildServer.configs.kotlin.v2018_2.vcs.GitVcsRoot
-import jetbrains.buildServer.configs.kotlin.v2018_2.vcs.GitVcsRoot.AgentCheckoutPolicy.NO_MIRRORS
-import jetbrains.buildServer.configs.kotlin.v2018_2.version
+import jetbrains.buildServer.configs.kotlin.v2019_2.buildSteps.gradle
+import jetbrains.buildServer.configs.kotlin.v2019_2.project
+import jetbrains.buildServer.configs.kotlin.v2019_2.triggers.vcs
+import jetbrains.buildServer.configs.kotlin.v2019_2.vcs.GitVcsRoot
+import jetbrains.buildServer.configs.kotlin.v2019_2.vcs.GitVcsRoot.AgentCheckoutPolicy.NO_MIRRORS
+import jetbrains.buildServer.configs.kotlin.v2019_2.version
 
-version = "2020.2"
+version = "2021.1"
 
 project {
     description = "A TeamCity plugin that collects JVM metrics during a build"
