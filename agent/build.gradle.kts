@@ -47,24 +47,21 @@ dependencies {
     testRuntimeOnly (group = "log4j", name = "log4j", version = "1.2.17")
 }
 
-tasks.named("test") {
-    finalizedBy (tasks.named("jacocoTestReport"))
-}
-
-tasks.named<JacocoReport>("jacocoTestReport") {
-    reports {
-        xml.required.set(true)
-    }
-}
-
 tasks {
-    "test"(Test::class) {
+    test {
         useJUnitPlatform()
+        finalizedBy (named("jacocoTestReport"))
+    }
+
+    jacocoTestReport {
+        reports {
+            xml.required.set(true)
+        }
     }
 
     val jar by existing
 
-    task("functionalTest", Test::class) {
+    register("functionalTest", Test::class) {
         group = "verification"
         description = "Runs the functional tests."
         useJUnitPlatform()
