@@ -2,7 +2,7 @@
 plugins {
     id ("org.gradle.java")
     id ("org.gradle.jacoco")
-    id ("com.github.rodm.teamcity-agent")
+    id ("io.github.rodm.teamcity-agent")
 }
 
 val javaHome = System.getProperty("java.home")

@@ -2,8 +2,8 @@
 plugins {
     id ("org.gradle.java")
     id ("org.gradle.jacoco")
-    id ("com.github.rodm.teamcity-server")
-    id ("com.github.rodm.teamcity-environments")
+    id ("io.github.rodm.teamcity-server")
+    id ("io.github.rodm.teamcity-environments")
 }
 
 java {
