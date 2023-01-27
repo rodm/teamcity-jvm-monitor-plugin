@@ -6,7 +6,7 @@ import jetbrains.buildServer.configs.kotlin.vcs.GitVcsRoot
 import jetbrains.buildServer.configs.kotlin.vcs.GitVcsRoot.AgentCheckoutPolicy.NO_MIRRORS
 import jetbrains.buildServer.configs.kotlin.version
 
-version = "2021.1"
+version = "2022.10"
 
 project {
     description = "A TeamCity plugin that collects JVM metrics during a build"
