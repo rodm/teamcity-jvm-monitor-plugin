@@ -47,6 +47,11 @@ dependencies {
 }
 
 tasks {
+    named<JavaCompile>("compileFunctionalJava").configure {
+        sourceCompatibility = JavaVersion.VERSION_1_7.toString()
+        targetCompatibility = JavaVersion.VERSION_1_7.toString()
+    }
+
     test {
         useJUnitPlatform()
         finalizedBy (named("jacocoTestReport"))
