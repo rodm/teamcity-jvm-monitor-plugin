@@ -54,6 +54,7 @@ public class JvmMonitorLauncher {
         File javaHomeFile = getJavaHome();
         File javaCommand = new File(javaHomeFile, "bin/java");
         File agentJar = new File(JvmMonitorLauncher.class.getProtectionDomain().getCodeSource().getLocation().getPath());
+        File monitorJar = new File(JvmMonitorMain.class.getProtectionDomain().getCodeSource().getLocation().getPath());
         File log4jJar = new File(Logger.class.getProtectionDomain().getCodeSource().getLocation().getPath());
         File toolsJar = new File(javaHomeFile, "lib/tools.jar");
 
@@ -62,6 +63,7 @@ public class JvmMonitorLauncher {
             classPath.add(toolsJar.getCanonicalPath());
         }
         classPath.add(agentJar.getCanonicalPath());
+        classPath.add(monitorJar.getCanonicalPath());
         classPath.add(log4jJar.getCanonicalPath());
         List<String> commandLine = new ArrayList<>();
         commandLine.add(javaCommand.getAbsolutePath());

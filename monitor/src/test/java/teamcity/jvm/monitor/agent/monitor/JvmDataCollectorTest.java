@@ -106,7 +106,7 @@ public class JvmDataCollectorTest {
     }
 
     @Test
-    public void collectorOutpusGarbageCollectorMonitorValuesForVmWithMetaspace() throws MonitorException {
+    public void collectorOutputsGarbageCollectorMonitorValuesForVmWithMetaspace() throws MonitorException {
         when(monitoredVm.findByName(startsWith("sun.gc.generation"))).thenReturn(integerMonitor);
         when(monitoredVm.findByName(startsWith("sun.gc.collector"))).thenReturn(longMonitor);
         when(monitoredVm.findByName(startsWith("sun.os"))).thenReturn(longMonitor);

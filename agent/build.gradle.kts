@@ -5,8 +5,6 @@ plugins {
     id ("io.github.rodm.teamcity-agent")
 }
 
-val javaHome = System.getProperty("java.home")
-
 java {
     sourceCompatibility = JavaVersion.VERSION_1_7
     targetCompatibility = JavaVersion.VERSION_1_7
@@ -34,8 +32,8 @@ sourceSets {
 }
 
 dependencies {
+    implementation (project(":monitor"))
     implementation (project(":common"))
-    provided (files("${javaHome}/../lib/tools.jar"))
 
     testImplementation (platform("org.junit:junit-bom:5.5.2"))
     testImplementation (group = "org.junit.jupiter", name = "junit-jupiter-api")
@@ -59,14 +57,12 @@ tasks {
         }
     }
 
-    val jar by existing
-
     register("functionalTest", Test::class) {
         group = "verification"
         description = "Runs the functional tests."
         useJUnitPlatform()
         testClassesDirs = sourceSets["functional"].output.classesDirs
-        classpath = project.files(jar, sourceSets["functional"].runtimeClasspath)
+        classpath = sourceSets["functional"].runtimeClasspath
         systemProperty ("java7.home", java7Home)
         systemProperty ("java8.home", java8Home)
         systemProperty ("java9.home", java9Home)
