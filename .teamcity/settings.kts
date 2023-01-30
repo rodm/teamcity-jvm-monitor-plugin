@@ -16,8 +16,9 @@ project {
         id(vcsId)
         name = "jvm-monitor"
         url = "https://github.com/rodm/teamcity-jvm-monitor-plugin"
+        branch = "refs/heads/main"
         branchSpec = """
-            +:refs/heads/(master)
+            +:refs/heads/(main)
             +:refs/tags/(*)
         """.trimIndent()
         useTagsAsBranches = true
