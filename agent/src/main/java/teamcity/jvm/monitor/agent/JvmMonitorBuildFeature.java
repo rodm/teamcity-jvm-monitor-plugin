@@ -23,6 +23,7 @@ import jetbrains.buildServer.agent.AgentRunningBuild;
 import jetbrains.buildServer.agent.BuildAgentConfiguration;
 import jetbrains.buildServer.agent.BuildFinishedStatus;
 import jetbrains.buildServer.agent.artifacts.ArtifactsWatcher;
+import jetbrains.buildServer.agent.plugins.beans.PluginDescriptor;
 import jetbrains.buildServer.util.EventDispatcher;
 import jetbrains.buildServer.util.FileUtil;
 import org.apache.log4j.Logger;
@@ -36,13 +37,15 @@ public class JvmMonitorBuildFeature extends AgentLifeCycleAdapter {
 
     private static final Logger LOGGER = Logger.getLogger("jetbrains.buildServer.AGENT");
 
+    private final PluginDescriptor pluginDescriptor;
     private final ArtifactsWatcher artifactsWatcher;
 
     private JvmMonitorLauncher monitor;
 
     private File outputDir;
 
-    public JvmMonitorBuildFeature(ArtifactsWatcher artifactsWatcher, EventDispatcher<AgentLifeCycleListener> eventDispatcher) {
+    public JvmMonitorBuildFeature(PluginDescriptor pluginDescriptor, ArtifactsWatcher artifactsWatcher, EventDispatcher<AgentLifeCycleListener> eventDispatcher) {
+        this.pluginDescriptor = pluginDescriptor;
         this.artifactsWatcher = artifactsWatcher;
         eventDispatcher.addListener(this);
     }
@@ -60,7 +63,9 @@ public class JvmMonitorBuildFeature extends AgentLifeCycleAdapter {
             if (!result) {
                 LOGGER.warn("Failed to create output directory");
             }
-            monitor = new JvmMonitorLauncher(config.getAgentLogsDirectory(), outputDir);
+
+            File toolDir = pluginDescriptor.getPluginRoot().toPath().resolve("tool").toFile();
+            monitor = new JvmMonitorLauncher(toolDir, config.getAgentLogsDirectory(), outputDir);
             try {
                 monitor.start();
             }

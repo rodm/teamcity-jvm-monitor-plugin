@@ -32,8 +32,9 @@ sourceSets {
     }
 }
 
+val tool by configurations.creating
+
 dependencies {
-    implementation (project(":monitor"))
     implementation (project(":common"))
 
     testImplementation (platform("org.junit:junit-bom:5.5.2"))
@@ -44,6 +45,8 @@ dependencies {
 
     testRuntimeOnly (group = "org.junit.jupiter", name = "junit-jupiter-engine")
     testRuntimeOnly (group = "log4j", name = "log4j", version = "1.2.17")
+
+    tool (project(":monitor"))
 }
 
 tasks {
@@ -63,12 +66,20 @@ tasks {
         }
     }
 
+    val toolDir = project.layout.buildDirectory.dir("tool")
+    register("copyTool", Copy::class) {
+        destinationDir = toolDir.get().asFile
+        from(tool)
+    }
+
     register("functionalTest", Test::class) {
         group = "verification"
         description = "Runs the functional tests."
         useJUnitPlatform()
+        dependsOn(named("copyTool"))
         testClassesDirs = sourceSets["functional"].output.classesDirs
         classpath = sourceSets["functional"].runtimeClasspath
+        systemProperty ("tool.dir", toolDir.get().asFile.absolutePath)
         systemProperty ("java7.home", java7Home)
         systemProperty ("java8.home", java8Home)
         systemProperty ("java9.home", java9Home)
@@ -88,6 +99,12 @@ teamcity {
         descriptor {
             pluginDeployment {
                 useSeparateClassloader = true
+            }
+        }
+
+        files {
+            into("tool") {
+                from(tool)
             }
         }
     }

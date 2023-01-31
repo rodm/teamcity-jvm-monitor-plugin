@@ -17,7 +17,6 @@
 package teamcity.jvm.monitor.agent;
 
 import org.apache.log4j.Logger;
-import teamcity.jvm.monitor.agent.monitor.JvmMonitorMain;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -33,18 +32,18 @@ import java.util.List;
 public class JvmMonitorLauncher {
 
     private static final Logger LOGGER = Logger.getLogger("jetbrains.buildServer.AGENT");
+    private static final String JVM_MONITOR_TOOL_CLASS = "teamcity.jvm.monitor.agent.monitor.JvmMonitorMain";
 
-    private File logDir;
-
-    private File outputDir;
+    private final File toolDir;
+    private final File logDir;
+    private final File outputDir;
 
     private String javaHome;
-
     private PrintWriter writer;
-
     private Process process;
 
-    public JvmMonitorLauncher(File logDir, File outputDir) {
+    public JvmMonitorLauncher(File toolDir, File logDir, File outputDir) {
+        this.toolDir = toolDir;
         this.logDir = logDir;
         this.outputDir = outputDir;
     }
@@ -53,23 +52,23 @@ public class JvmMonitorLauncher {
         LOGGER.info("Starting JVM Monitor process");
         File javaHomeFile = getJavaHome();
         File javaCommand = new File(javaHomeFile, "bin/java");
-        File agentJar = new File(JvmMonitorLauncher.class.getProtectionDomain().getCodeSource().getLocation().getPath());
-        File monitorJar = new File(JvmMonitorMain.class.getProtectionDomain().getCodeSource().getLocation().getPath());
-        File log4jJar = new File(Logger.class.getProtectionDomain().getCodeSource().getLocation().getPath());
         File toolsJar = new File(javaHomeFile, "lib/tools.jar");
 
         List<String> classPath = new ArrayList<>();
         if (toolsJar.exists()) {
             classPath.add(toolsJar.getCanonicalPath());
         }
-        classPath.add(agentJar.getCanonicalPath());
-        classPath.add(monitorJar.getCanonicalPath());
-        classPath.add(log4jJar.getCanonicalPath());
+        File[] toolFiles = toolDir.listFiles();
+        if (toolFiles != null) {
+            for (File file : toolFiles) {
+                classPath.add(file.getCanonicalPath());
+            }
+        }
         List<String> commandLine = new ArrayList<>();
         commandLine.add(javaCommand.getAbsolutePath());
         commandLine.add("-cp");
         commandLine.add(String.join(File.pathSeparator, classPath));
-        commandLine.add(JvmMonitorMain.class.getName());
+        commandLine.add(JVM_MONITOR_TOOL_CLASS);
         commandLine.add(logDir.getCanonicalPath());
         commandLine.add(outputDir.getCanonicalPath());
         ProcessBuilder builder = new ProcessBuilder();

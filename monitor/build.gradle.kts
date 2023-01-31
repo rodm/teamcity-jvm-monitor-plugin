@@ -21,7 +21,9 @@ val javaHome = System.getProperty("java.home")
 
 dependencies {
     compileOnly (files("${javaHome}/../lib/tools.jar"))
-    compileOnly (group = "log4j", name = "log4j", version = "1.2.17")
+    implementation (group = "org.apache.logging.log4j", name = "log4j-1.2-api", version = "2.12.4")
+    implementation (group = "org.apache.logging.log4j", name = "log4j-api", version = "2.12.4")
+    implementation (group = "org.apache.logging.log4j", name = "log4j-core", version = "2.12.4")
 
     testImplementation (files("${javaHome}/../lib/tools.jar"))
     testImplementation (platform("org.junit:junit-bom:5.5.2"))
@@ -31,7 +33,6 @@ dependencies {
     testImplementation (group = "org.mockito", name = "mockito-core", version = "3.7.7")
 
     testRuntimeOnly (group = "org.junit.jupiter", name = "junit-jupiter-engine")
-    testRuntimeOnly (group = "log4j", name = "log4j", version = "1.2.17")
 }
 
 tasks {

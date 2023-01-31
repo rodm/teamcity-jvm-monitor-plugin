@@ -28,6 +28,7 @@ import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -45,6 +46,7 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 class JvmMonitorLauncherTest {
 
+    private File toolDir;
     private File logDir;
     private File outputDir;
 
@@ -52,6 +54,7 @@ class JvmMonitorLauncherTest {
     void init(@TempDir Path logPath, @TempDir Path outputPath) {
         logDir = logPath.toFile();
         outputDir = outputPath.toFile();
+        toolDir = Paths.get(System.getProperty("tool.dir", "")).toFile();
     }
 
     @ParameterizedTest(name = "monitor process running on Java {1}")
@@ -128,7 +131,7 @@ class JvmMonitorLauncherTest {
         String classPath = System.getProperty("java.class.path");
         String className = TestMain.class.getName();
 
-        JvmMonitorLauncher launcher = new JvmMonitorLauncher(logDir, outputDir);
+        JvmMonitorLauncher launcher = new JvmMonitorLauncher(toolDir, logDir, outputDir);
         launcher.setJavaHome(monitorJavaHome);
         try {
             launcher.start();
