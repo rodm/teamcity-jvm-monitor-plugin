@@ -1,14 +1,6 @@
 
 plugins {
-    id ("org.gradle.java")
-    id ("org.gradle.jacoco")
-    id ("io.github.rodm.teamcity-agent")
-}
-
-java {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(8))
-    }
+    id ("teamcity.agent-plugin")
 }
 
 base {
@@ -53,17 +45,6 @@ tasks {
     named<JavaCompile>("compileFunctionalJava").configure {
         sourceCompatibility = JavaVersion.VERSION_1_7.toString()
         targetCompatibility = JavaVersion.VERSION_1_7.toString()
-    }
-
-    test {
-        useJUnitPlatform()
-        finalizedBy (named("jacocoTestReport"))
-    }
-
-    jacocoTestReport {
-        reports {
-            xml.required.set(true)
-        }
     }
 
     val toolDir = project.layout.buildDirectory.dir("tool")

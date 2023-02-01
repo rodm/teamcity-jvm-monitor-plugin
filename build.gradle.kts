@@ -1,6 +1,6 @@
 
 plugins {
-    id ("io.github.rodm.teamcity-server")
+    id ("teamcity.base")
     id ("org.sonarqube")
 }
 
