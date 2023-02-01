@@ -8,6 +8,8 @@ pluginManagement {
 
 rootProject.name = "teamcity-jvm-monitor-plugin"
 
+includeBuild ("build-logic")
+
 include ("monitor")
 include ("common")
 include ("agent")
