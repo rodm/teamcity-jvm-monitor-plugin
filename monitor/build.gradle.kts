@@ -1,17 +1,10 @@
 
 plugins {
-    id ("org.gradle.java-library")
-    id ("org.gradle.jacoco")
+    id ("teamcity.java-tool")
 }
 
 repositories {
     mavenCentral()
-}
-
-java {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(8))
-    }
 }
 
 base {
@@ -40,16 +33,5 @@ dependencies {
 tasks {
     compileJava {
         javaCompiler.set(java7Compiler)
-    }
-
-    test {
-        useJUnitPlatform()
-        finalizedBy (named("jacocoTestReport"))
-    }
-
-    jacocoTestReport {
-        reports {
-            xml.required.set(true)
-        }
     }
 }
