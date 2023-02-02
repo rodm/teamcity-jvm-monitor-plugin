@@ -3,6 +3,10 @@ plugins {
     id ("io.github.rodm.teamcity-environments")
 }
 
+extra["downloadsDir"] = project.findProperty("downloads.dir") as String? ?: "$rootDir/downloads"
+extra["serversDir"] = project.findProperty("servers.dir") as String? ?: "$rootDir/servers"
+extra["java11Home"] = project.findProperty("java11.home") ?: "/opt/jdk-11.0.2"
+
 val plugins by configurations.creating
 
 dependencies {
@@ -11,8 +15,8 @@ dependencies {
 
 teamcity {
     environments {
-        downloadsDir = rootProject.extra["downloadsDir"] as String
-        baseHomeDir = rootProject.extra["serversDir"] as String
+        downloadsDir = extra["downloadsDir"] as String
+        baseHomeDir = extra["serversDir"] as String
         baseDataDir = "${rootDir}/data"
 
         register("teamcity2018.1") {
@@ -25,6 +29,12 @@ teamcity {
         register("teamcity2020.2") {
             version = "2020.2.4"
             plugins = configurations["plugins"]
+        }
+
+        register("teamcity2022.10") {
+            version = "2022.10.1"
+            plugins = configurations["plugins"]
+            javaHome = extra["java11Home"] as String
         }
     }
 }
