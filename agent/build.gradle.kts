@@ -29,13 +29,6 @@ val tool by configurations.creating
 dependencies {
     implementation (project(":common"))
 
-    testImplementation (platform("org.junit:junit-bom:5.5.2"))
-    testImplementation (group = "org.junit.jupiter", name = "junit-jupiter-api")
-    testImplementation (group = "org.junit.jupiter", name = "junit-jupiter-params")
-    testImplementation (group = "org.hamcrest", name = "hamcrest", version = "2.2")
-    testImplementation (group = "org.mockito", name = "mockito-core", version = "3.7.7")
-
-    testRuntimeOnly (group = "org.junit.jupiter", name = "junit-jupiter-engine")
     testRuntimeOnly (group = "log4j", name = "log4j", version = "1.2.17")
 
     tool (project(":monitor"))

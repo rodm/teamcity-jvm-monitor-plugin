@@ -21,13 +21,6 @@ dependencies {
     implementation (group = "org.apache.logging.log4j", name = "log4j-core", version = "2.12.4")
 
     testImplementation (files("${java7Home}/lib/tools.jar"))
-    testImplementation (platform("org.junit:junit-bom:5.5.2"))
-    testImplementation (group = "org.junit.jupiter", name = "junit-jupiter-api")
-    testImplementation (group = "org.junit.jupiter", name = "junit-jupiter-params")
-    testImplementation (group = "org.hamcrest", name = "hamcrest", version = "2.2")
-    testImplementation (group = "org.mockito", name = "mockito-core", version = "3.7.7")
-
-    testRuntimeOnly (group = "org.junit.jupiter", name = "junit-jupiter-engine")
 }
 
 tasks {
