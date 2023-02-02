@@ -1,7 +1,6 @@
 
 plugins {
     id ("teamcity.server-plugin")
-    id ("io.github.rodm.teamcity-environments")
 }
 
 base {
@@ -29,22 +28,6 @@ teamcity {
             vendorUrl = "https://github.com/rodm/teamcity-jvm-monitor-plugin"
             email = "rod.n.mackenzie@gmail.com"
             useSeparateClassloader = true
-        }
-    }
-
-    environments {
-        downloadsDir = rootProject.extra["downloadsDir"] as String
-        baseHomeDir = rootProject.extra["serversDir"] as String
-        baseDataDir = "${rootDir}/data"
-
-        register("teamcity2018.1") {
-            version = "2018.1.5"
-            serverOptions ("-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005")
-            agentOptions ("-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5006")
-        }
-
-        register("teamcity2020.2") {
-            version = "2020.2.2"
         }
     }
 }
