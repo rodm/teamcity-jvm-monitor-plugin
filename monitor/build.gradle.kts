@@ -11,20 +11,21 @@ base {
     archivesName.set("jvm-monitor-tool")
 }
 
-val java7Compiler = javaToolchains.compilerFor { languageVersion.set(JavaLanguageVersion.of(7)) }
-val java7Home = java7Compiler.get().metadata.installationPath.toString()
+val javaCompiler = javaToolchains.compilerFor { languageVersion.set(JavaLanguageVersion.of(8)) }
+val javaHome = javaCompiler.get().metadata.installationPath.toString()
 
 dependencies {
-    compileOnly (files("${java7Home}/lib/tools.jar"))
+    compileOnly (files("${javaHome}/lib/tools.jar"))
     implementation (group = "org.apache.logging.log4j", name = "log4j-1.2-api", version = "2.12.4")
     implementation (group = "org.apache.logging.log4j", name = "log4j-api", version = "2.12.4")
     implementation (group = "org.apache.logging.log4j", name = "log4j-core", version = "2.12.4")
 
-    testImplementation (files("${java7Home}/lib/tools.jar"))
+    testImplementation (files("${javaHome}/lib/tools.jar"))
 }
 
 tasks {
     compileJava {
-        javaCompiler.set(java7Compiler)
+        sourceCompatibility = "1.7"
+        targetCompatibility = "1.7"
     }
 }
