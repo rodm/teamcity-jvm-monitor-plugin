@@ -26,6 +26,8 @@ import java.io.OutputStreamWriter;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +35,8 @@ public class JvmMonitorLauncher {
 
     private static final Logger LOGGER = Logger.getLogger("jetbrains.buildServer.AGENT");
     private static final String JVM_MONITOR_TOOL_CLASS = "teamcity.jvm.monitor.agent.monitor.JvmMonitorMain";
+    private static final String EXPORT_MONITOR_PACKAGE = "--add-exports=jdk.internal.jvmstat/sun.jvmstat.monitor=ALL-UNNAMED";
+    private static final String EXPORT_EVENT_PACKAGE = "--add-exports=jdk.internal.jvmstat/sun.jvmstat.monitor.event=ALL-UNNAMED";
 
     private final File toolDir;
     private final File logDir;
@@ -66,6 +70,10 @@ public class JvmMonitorLauncher {
         }
         List<String> commandLine = new ArrayList<>();
         commandLine.add(javaCommand.getAbsolutePath());
+        if (isJava9OrLater()) {
+            commandLine.add(EXPORT_MONITOR_PACKAGE);
+            commandLine.add(EXPORT_EVENT_PACKAGE);
+        }
         commandLine.add("-cp");
         commandLine.add(String.join(File.pathSeparator, classPath));
         commandLine.add(JVM_MONITOR_TOOL_CLASS);
@@ -121,5 +129,10 @@ public class JvmMonitorLauncher {
         } else {
             return javaHomeFile;
         }
+    }
+
+    private boolean isJava9OrLater() {
+        Path modulesFile = getJavaHome().toPath().resolve("lib/modules");
+        return Files.exists(modulesFile);
     }
 }

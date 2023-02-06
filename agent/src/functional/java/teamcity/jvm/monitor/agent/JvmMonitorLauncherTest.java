@@ -61,7 +61,8 @@ class JvmMonitorLauncherTest {
     @CsvSource(value = {
         "java7.home , 1.7", "java8.home , 1.8",
         "java9.home , 9", "java10.home , 10", "java11.home, 11", "java12.home, 12",
-        "java13.home , 13", "java14.home, 14", "java15.home, 15"
+        "java13.home , 13", "java14.home, 14", "java15.home, 15", "java16.home, 16",
+        "java17.home , 17", "java18.home, 18", "java19.home, 19"
     })
     void monitorJavaProcessOnJava(String homeProperty, String version) throws Exception {
         String javaHome = System.getProperty(homeProperty, "");
@@ -101,7 +102,8 @@ class JvmMonitorLauncherTest {
     @CsvSource(value = {
         "java7.home , 1.7", "java8.home , 1.8",
         "java9.home , 9", "java10.home , 10", "java11.home, 11", "java12.home, 12",
-        "java13.home , 13", "java14.home, 14", "java15.home, 15"
+        "java13.home , 13", "java14.home, 14", "java15.home, 15", "java16.home, 16",
+        "java17.home , 17", "java18.home, 18", "java19.home, 19"
     })
     void launchJvmMonitorOnJava(String homeProperty, String version) throws Exception {
         String javaHome = System.getProperty(homeProperty, "");
