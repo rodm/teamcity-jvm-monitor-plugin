@@ -55,17 +55,17 @@ public class JvmDataCollectorTest {
     }
 
     @Test
-    public void collectorRegistersWithScheduledExecutorService() {
+    void collectorRegistersWithScheduledExecutorService() {
         new JvmDataCollector(executor, monitoredVm, writer);
 
         verify(executor).scheduleAtFixedRate(any(JvmDataCollector.class), eq(0L), eq(1L), eq(TimeUnit.SECONDS));
     }
 
     @Test
-    public void collectOutputsMonitoredVmJavaVersion() throws MonitorException {
+    void collectOutputsMonitoredVmJavaVersion() throws MonitorException {
         Monitor stringMonitor = mock(Monitor.class);
         when(stringMonitor.getValue()).thenReturn("1.7");
-        when(monitoredVm.findByName(eq("java.property.java.version"))).thenReturn(stringMonitor);
+        when(monitoredVm.findByName("java.property.java.version")).thenReturn(stringMonitor);
 
         new JvmDataCollector(executor, monitoredVm, writer);
 
@@ -73,10 +73,10 @@ public class JvmDataCollectorTest {
     }
 
     @Test
-    public void collectorOutputsHeaderForJvmWithPermGen() throws MonitorException {
+    void collectorOutputsHeaderForJvmWithPermGen() throws MonitorException {
         Monitor stringMonitor = mock(Monitor.class);
         when(stringMonitor.getValue()).thenReturn("1.7");
-        when(monitoredVm.findByName(eq("java.property.java.version"))).thenReturn(stringMonitor);
+        when(monitoredVm.findByName("java.property.java.version")).thenReturn(stringMonitor);
 
         new JvmDataCollector(executor, monitoredVm, writer);
 
@@ -84,17 +84,17 @@ public class JvmDataCollectorTest {
     }
 
     @Test
-    public void collectorOutputsHeaderForJvmWithMetaspace() {
+    void collectorOutputsHeaderForJvmWithMetaspace() {
         new JvmDataCollector(executor, monitoredVm, writer);
 
         assertThat(writer.toString(), containsString("# timestamp, EU, EC, S0U, S0C, S1U, S1C, OU, OC, MU, MC, CCSU, CCSC, YGC, YGCT, FGC, FGCT"));
     }
 
     @Test
-    public void collectorOutputsGarbageCollectorMonitorValuesForVmWithPermGen() throws MonitorException {
+    void collectorOutputsGarbageCollectorMonitorValuesForVmWithPermGen() throws MonitorException {
         Monitor stringMonitor = mock(Monitor.class);
         when(stringMonitor.getValue()).thenReturn("1.7");
-        when(monitoredVm.findByName(eq("java.property.java.version"))).thenReturn(stringMonitor);
+        when(monitoredVm.findByName("java.property.java.version")).thenReturn(stringMonitor);
         when(monitoredVm.findByName(startsWith("sun.gc.generation"))).thenReturn(integerMonitor);
         when(monitoredVm.findByName(startsWith("sun.gc.collector"))).thenReturn(longMonitor);
         when(monitoredVm.findByName(startsWith("sun.os"))).thenReturn(longMonitor);
@@ -106,7 +106,7 @@ public class JvmDataCollectorTest {
     }
 
     @Test
-    public void collectorOutputsGarbageCollectorMonitorValuesForVmWithMetaspace() throws MonitorException {
+    void collectorOutputsGarbageCollectorMonitorValuesForVmWithMetaspace() throws MonitorException {
         when(monitoredVm.findByName(startsWith("sun.gc.generation"))).thenReturn(integerMonitor);
         when(monitoredVm.findByName(startsWith("sun.gc.collector"))).thenReturn(longMonitor);
         when(monitoredVm.findByName(startsWith("sun.os"))).thenReturn(longMonitor);
@@ -120,7 +120,7 @@ public class JvmDataCollectorTest {
     }
 
     @Test
-    public void collectorOutputsDummyValuesForMissingMonitors() throws MonitorException {
+    void collectorOutputsDummyValuesForMissingMonitors() throws MonitorException {
         when(monitoredVm.findByName(startsWith("sun.gc.generation"))).thenReturn(integerMonitor);
         when(monitoredVm.findByName(startsWith("sun.gc.collector"))).thenReturn(longMonitor);
         when(monitoredVm.findByName(startsWith("sun.os"))).thenReturn(longMonitor);
