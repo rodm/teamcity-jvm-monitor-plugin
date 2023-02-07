@@ -20,6 +20,7 @@ import org.apache.log4j.Logger;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -52,7 +53,7 @@ public class JvmMonitorLauncher {
         this.outputDir = outputDir;
     }
 
-    public void start() throws Exception {
+    public void start() throws IOException {
         LOGGER.info("Starting JVM Monitor process");
         File javaHomeFile = getJavaHome();
         File javaCommand = new File(javaHomeFile, "bin/java");
@@ -104,7 +105,7 @@ public class JvmMonitorLauncher {
         LOGGER.info("Started JVM Monitor process");
     }
 
-    public void stop() throws Exception {
+    public void stop() throws InterruptedException {
         LOGGER.info("Stopping JVM Monitor process");
 
         writer.println("stop");
