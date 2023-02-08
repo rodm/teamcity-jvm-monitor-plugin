@@ -10,7 +10,7 @@ extra["java11Home"] = project.findProperty("java11.home") ?: "/opt/jdk-11.0.2"
 val plugins by configurations.creating
 
 dependencies {
-    plugins (project(path = ":server", configuration = "plugin"))
+    plugins (project(path = ":jvm-monitor-server", configuration = "plugin"))
 }
 
 teamcity {

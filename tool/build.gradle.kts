@@ -7,10 +7,6 @@ repositories {
     mavenCentral()
 }
 
-base {
-    archivesName.set("jvm-monitor-tool")
-}
-
 val javaCompiler = javaToolchains.compilerFor { languageVersion.set(JavaLanguageVersion.of(8)) }
 val javaHome = javaCompiler.get().metadata.installationPath.toString()
 

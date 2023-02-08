@@ -3,10 +3,6 @@ plugins {
     id ("teamcity.agent-plugin")
 }
 
-base {
-    archivesName.set("jvm-monitor-agent")
-}
-
 sourceSets {
     create("functional") {
         compileClasspath += sourceSets["main"].output + configurations.testRuntimeClasspath
@@ -17,11 +13,11 @@ sourceSets {
 val tool by configurations.creating
 
 dependencies {
-    implementation (project(":common"))
+    implementation (project(":jvm-monitor-common"))
 
     testRuntimeOnly (group = "log4j", name = "log4j", version = "1.2.17")
 
-    tool (project(":tool"))
+    tool (project(":jvm-monitor-tool"))
 }
 
 tasks {
@@ -54,8 +50,6 @@ tasks {
 
 teamcity {
     agent {
-        archiveName = "jvm-monitor-agent.zip"
-
         descriptor {
             pluginDeployment {
                 useSeparateClassloader = true

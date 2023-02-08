@@ -3,16 +3,12 @@ plugins {
     id ("teamcity.server-plugin")
 }
 
-base {
-    archivesName.set("jvm-monitor-server")
-}
-
 dependencies {
-    implementation (project(":common"))
+    implementation (project(":jvm-monitor-common"))
     implementation (group = "javax.json", name = "javax.json-api", version = "1.1.4")
     runtimeOnly (group = "org.glassfish", name = "javax.json", version = "1.1.4")
 
-    agent (project(path = ":agent", configuration = "plugin"))
+    agent (project(path = ":jvm-monitor-agent", configuration = "plugin"))
 }
 
 teamcity {

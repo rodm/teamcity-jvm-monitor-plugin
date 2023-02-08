@@ -5,7 +5,7 @@ pluginManagement {
     }
 }
 
-rootProject.name = "teamcity-jvm-monitor-plugin"
+rootProject.name = "jvm-monitor"
 
 includeBuild ("build-logic")
 
@@ -14,3 +14,7 @@ include ("common")
 include ("agent")
 include ("server")
 include ("test")
+
+rootProject.children.forEach { project ->
+    project.name = "${rootProject.name}-${project.name}"
+}
