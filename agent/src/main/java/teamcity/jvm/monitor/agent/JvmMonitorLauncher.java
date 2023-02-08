@@ -35,7 +35,7 @@ import java.util.List;
 public class JvmMonitorLauncher {
 
     private static final Logger LOGGER = Logger.getLogger("jetbrains.buildServer.AGENT");
-    private static final String JVM_MONITOR_TOOL_CLASS = "teamcity.jvm.monitor.agent.monitor.JvmMonitorMain";
+    private static final String JVM_MONITOR_TOOL_CLASS = "teamcity.jvm.monitor.tool.JvmMonitorTool";
     private static final String EXPORT_MONITOR_PACKAGE = "--add-exports=jdk.internal.jvmstat/sun.jvmstat.monitor=ALL-UNNAMED";
     private static final String EXPORT_EVENT_PACKAGE = "--add-exports=jdk.internal.jvmstat/sun.jvmstat.monitor.event=ALL-UNNAMED";
 

@@ -9,7 +9,7 @@ rootProject.name = "teamcity-jvm-monitor-plugin"
 
 includeBuild ("build-logic")
 
-include ("monitor")
+include ("tool")
 include ("common")
 include ("agent")
 include ("server")

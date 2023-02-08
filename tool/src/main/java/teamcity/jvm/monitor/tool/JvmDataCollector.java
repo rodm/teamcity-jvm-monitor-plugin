@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package teamcity.jvm.monitor.agent.monitor;
+package teamcity.jvm.monitor.tool;
 
 import org.apache.log4j.Logger;
 import sun.jvmstat.monitor.Monitor;

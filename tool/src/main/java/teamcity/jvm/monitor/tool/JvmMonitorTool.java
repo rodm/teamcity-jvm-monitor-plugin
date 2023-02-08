@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package teamcity.jvm.monitor.agent.monitor;
+package teamcity.jvm.monitor.tool;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
@@ -25,13 +25,13 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 
-public class JvmMonitorMain {
+public class JvmMonitorTool {
 
-    private static final Logger LOGGER = Logger.getLogger(JvmMonitorMain.class);
+    private static final Logger LOGGER = Logger.getLogger(JvmMonitorTool.class);
 
     public static void main(String[] args) {
         System.setProperty("log.dir", args[0]);
-        URL configurationResource = JvmMonitorMain.class.getResource("/teamcity-jvm-monitor-log4j.xml");
+        URL configurationResource = JvmMonitorTool.class.getResource("/teamcity-jvm-monitor-log4j.xml");
         DOMConfigurator.configure(configurationResource);
 
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {

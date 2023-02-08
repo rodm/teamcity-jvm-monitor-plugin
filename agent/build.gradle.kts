@@ -21,7 +21,7 @@ dependencies {
 
     testRuntimeOnly (group = "log4j", name = "log4j", version = "1.2.17")
 
-    tool (project(":monitor"))
+    tool (project(":tool"))
 }
 
 tasks {

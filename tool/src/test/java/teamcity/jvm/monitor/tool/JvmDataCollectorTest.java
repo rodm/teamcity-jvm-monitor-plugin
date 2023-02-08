@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package teamcity.jvm.monitor.agent.monitor;
+package teamcity.jvm.monitor.tool;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
