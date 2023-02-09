@@ -17,23 +17,17 @@
 package teamcity.jvm.monitor.tool;
 
 import org.apache.log4j.Logger;
-import org.apache.log4j.xml.DOMConfigurator;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.URL;
 
 public class JvmMonitorTool {
 
     private static final Logger LOGGER = Logger.getLogger(JvmMonitorTool.class);
 
     public static void main(String[] args) {
-        System.setProperty("log.dir", args[0]);
-        URL configurationResource = JvmMonitorTool.class.getResource("/teamcity-jvm-monitor-log4j.xml");
-        DOMConfigurator.configure(configurationResource);
-
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
             File outputDir = new File(args[1]);
             LOGGER.info("Output directory: " + outputDir.getCanonicalPath());

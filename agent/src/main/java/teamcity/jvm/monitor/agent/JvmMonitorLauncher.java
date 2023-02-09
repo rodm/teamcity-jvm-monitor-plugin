@@ -39,6 +39,9 @@ public class JvmMonitorLauncher {
     private static final String EXPORT_MONITOR_PACKAGE = "--add-exports=jdk.internal.jvmstat/sun.jvmstat.monitor=ALL-UNNAMED";
     private static final String EXPORT_EVENT_PACKAGE = "--add-exports=jdk.internal.jvmstat/sun.jvmstat.monitor.event=ALL-UNNAMED";
 
+    private static final String LOG_DIR_FORMAT = "-Dlog.dir=%s";
+    private static final String LOG_CONFIG_FORMAT = "-Dlog4j2.configurationFile=jar:file:%s!/teamcity-jvm-monitor-log4j2.xml";
+
     private final File toolDir;
     private final File logDir;
     private final File outputDir;
@@ -58,6 +61,7 @@ public class JvmMonitorLauncher {
         File javaHomeFile = getJavaHome();
         File javaCommand = new File(javaHomeFile, "bin/java");
         File toolsJar = new File(javaHomeFile, "lib/tools.jar");
+        File monitorToolJar = new File(toolDir, "jvm-monitor-tool.jar");
 
         List<String> classPath = new ArrayList<>();
         if (toolsJar.exists()) {
@@ -77,6 +81,8 @@ public class JvmMonitorLauncher {
         }
         commandLine.add("-cp");
         commandLine.add(String.join(File.pathSeparator, classPath));
+        commandLine.add(String.format(LOG_DIR_FORMAT, logDir.getAbsolutePath()));
+        commandLine.add(String.format(LOG_CONFIG_FORMAT, monitorToolJar.getAbsolutePath()));
         commandLine.add(JVM_MONITOR_TOOL_CLASS);
         commandLine.add(logDir.getCanonicalPath());
         commandLine.add(outputDir.getCanonicalPath());

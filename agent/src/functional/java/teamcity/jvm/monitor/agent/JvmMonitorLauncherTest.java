@@ -17,6 +17,7 @@
 package teamcity.jvm.monitor.agent;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -40,6 +41,7 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.junit.jupiter.api.Assumptions.assumeFalse;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
@@ -125,6 +127,19 @@ class JvmMonitorLauncherTest {
             }
         }
         assertNotNull(metrics, "Expected JVM metrics file for " + className + " process");
+    }
+
+    @Test
+    void monitorToolOutputsLogFile() throws Exception {
+        String javaHome = System.getProperty("java.home");
+        monitorTestApp(javaHome, javaHome);
+
+        Path monitorLogPath = logDir.toPath().resolve("jvm-monitor.log");
+        assertTrue(Files.exists(monitorLogPath));
+
+        List<String> lines = Files.readAllLines(monitorLogPath);
+        assertThat(lines, hasItem(containsString("Starting JVM Monitor")));
+        assertThat(lines, hasItem(containsString("Stopping JVM Monitor")));
     }
 
     private void monitorTestApp(String monitorJavaHome, String appJavaHome) throws Exception {

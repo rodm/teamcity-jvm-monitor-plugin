@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Configuration>
+    <Appenders>
+        <File name="log" fileName="${sys:log.dir}/jvm-monitor.log">
+            <PatternLayout pattern="[%d] %6p - %30.30c - %m%n"/>
+        </File>
+    </Appenders>
+    <Loggers>
+        <Root level="info">
+            <AppenderRef ref="log"/>
+        </Root>
+    </Loggers>
+</Configuration>
