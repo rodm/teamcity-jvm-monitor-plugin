@@ -33,6 +33,9 @@ import teamcity.jvm.monitor.JvmMonitorPlugin;
 import java.io.File;
 import java.util.Collection;
 
+import static teamcity.jvm.monitor.JvmMonitorPlugin.JVM_MONITOR_LOG_PATH;
+import static teamcity.jvm.monitor.JvmMonitorPlugin.JVM_MONITOR_PATH_NAME;
+
 public class JvmMonitorBuildFeature extends AgentLifeCycleAdapter {
 
     private static final Logger LOGGER = Logger.getLogger("jetbrains.buildServer.AGENT");
@@ -57,7 +60,7 @@ public class JvmMonitorBuildFeature extends AgentLifeCycleAdapter {
             LOGGER.info("jvm-monitor-plugin feature enabled for build");
 
             BuildAgentConfiguration config = build.getAgentConfiguration();
-            outputDir = new File(config.getTempDirectory(), "jvmmon");
+            outputDir = new File(config.getTempDirectory(), JVM_MONITOR_PATH_NAME);
             FileUtil.delete(outputDir);
             boolean result = outputDir.mkdirs();
             if (!result) {
@@ -84,7 +87,7 @@ public class JvmMonitorBuildFeature extends AgentLifeCycleAdapter {
                 LOGGER.warn("Stop monitor failed", e);
             }
             monitor = null;
-            artifactsWatcher.addNewArtifactsPath(outputDir.getAbsolutePath() + "=>" + ".teamcity/jvmmon/");
+            artifactsWatcher.addNewArtifactsPath(outputDir.getAbsolutePath() + "=>" + JVM_MONITOR_LOG_PATH);
         }
     }
 }

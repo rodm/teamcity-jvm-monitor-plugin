@@ -20,5 +20,8 @@ public class JvmMonitorPlugin {
 
     public static final String FEATURE_TYPE = "jvm-monitor-plugin";
 
+    public static final String JVM_MONITOR_PATH_NAME = "jvmmon";
+    public static final String JVM_MONITOR_LOG_PATH = ".teamcity/" + JVM_MONITOR_PATH_NAME;
+
     private JvmMonitorPlugin() {}
 }
