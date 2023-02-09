@@ -65,7 +65,7 @@ public class JvmMonitorBuildFeature extends AgentLifeCycleAdapter {
             }
 
             File toolDir = pluginDescriptor.getPluginRoot().toPath().resolve("tool").toFile();
-            monitor = new JvmMonitorLauncher(toolDir, config.getAgentLogsDirectory(), outputDir);
+            monitor = new JvmMonitorLauncher(toolDir, outputDir);
             try {
                 monitor.start();
             }

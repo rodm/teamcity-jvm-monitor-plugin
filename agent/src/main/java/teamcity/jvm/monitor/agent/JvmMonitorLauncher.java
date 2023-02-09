@@ -43,16 +43,14 @@ public class JvmMonitorLauncher {
     private static final String LOG_CONFIG_FORMAT = "-Dlog4j2.configurationFile=jar:file:%s!/teamcity-jvm-monitor-log4j2.xml";
 
     private final File toolDir;
-    private final File logDir;
     private final File outputDir;
 
     private String javaHome;
     private PrintWriter writer;
     private Process process;
 
-    public JvmMonitorLauncher(File toolDir, File logDir, File outputDir) {
+    public JvmMonitorLauncher(File toolDir, File outputDir) {
         this.toolDir = toolDir;
-        this.logDir = logDir;
         this.outputDir = outputDir;
     }
 
@@ -81,10 +79,9 @@ public class JvmMonitorLauncher {
         }
         commandLine.add("-cp");
         commandLine.add(String.join(File.pathSeparator, classPath));
-        commandLine.add(String.format(LOG_DIR_FORMAT, logDir.getAbsolutePath()));
+        commandLine.add(String.format(LOG_DIR_FORMAT, outputDir.getAbsolutePath()));
         commandLine.add(String.format(LOG_CONFIG_FORMAT, monitorToolJar.getAbsolutePath()));
         commandLine.add(JVM_MONITOR_TOOL_CLASS);
-        commandLine.add(logDir.getCanonicalPath());
         commandLine.add(outputDir.getCanonicalPath());
         ProcessBuilder builder = new ProcessBuilder();
         builder.command(commandLine);

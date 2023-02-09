@@ -49,12 +49,10 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
 class JvmMonitorLauncherTest {
 
     private File toolDir;
-    private File logDir;
     private File outputDir;
 
     @BeforeEach
-    void init(@TempDir Path logPath, @TempDir Path outputPath) {
-        logDir = logPath.toFile();
+    void init(@TempDir Path outputPath) {
         outputDir = outputPath.toFile();
         toolDir = Paths.get(System.getProperty("tool.dir", "")).toFile();
     }
@@ -134,7 +132,7 @@ class JvmMonitorLauncherTest {
         String javaHome = System.getProperty("java.home");
         monitorTestApp(javaHome, javaHome);
 
-        Path monitorLogPath = logDir.toPath().resolve("jvm-monitor.log");
+        Path monitorLogPath = outputDir.toPath().resolve("jvm-monitor.log");
         assertTrue(Files.exists(monitorLogPath));
 
         List<String> lines = Files.readAllLines(monitorLogPath);
@@ -148,7 +146,7 @@ class JvmMonitorLauncherTest {
         String classPath = System.getProperty("java.class.path");
         String className = TestMain.class.getName();
 
-        JvmMonitorLauncher launcher = new JvmMonitorLauncher(toolDir, logDir, outputDir);
+        JvmMonitorLauncher launcher = new JvmMonitorLauncher(toolDir, outputDir);
         launcher.setJavaHome(monitorJavaHome);
         try {
             launcher.start();

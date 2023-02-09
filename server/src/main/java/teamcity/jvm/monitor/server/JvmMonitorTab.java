@@ -65,6 +65,7 @@ public class JvmMonitorTab extends ViewLogTab {
         BuildArtifact artifact = JvmMonitorUtil.getBuildArtifact(build);
         if (artifact != null) {
             for (BuildArtifact file : artifact.getChildren()) {
+                if ("jvm-monitor.log".equals(file.getName())) continue;
                 processes.add(new JvmLogName(file.getName()));
             }
         }

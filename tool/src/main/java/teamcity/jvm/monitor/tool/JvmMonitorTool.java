@@ -29,7 +29,7 @@ public class JvmMonitorTool {
 
     public static void main(String[] args) {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
-            File outputDir = new File(args[1]);
+            File outputDir = new File(args[0]);
             LOGGER.info("Output directory: " + outputDir.getCanonicalPath());
             if (!outputDir.exists()) {
                 LOGGER.warn("Output directory does not exist. JVM Monitor exiting.");
