@@ -58,7 +58,7 @@ public class JvmMonitorController extends BaseController {
             response.getOutputStream().write(responseNode.build().toString().getBytes(UTF_8));
         }
         catch (Exception e) {
-            // ignore
+            LOGGER.error("Failure writing response", e);
         }
         return null;
     }
