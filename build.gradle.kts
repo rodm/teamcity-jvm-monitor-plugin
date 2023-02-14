@@ -12,3 +12,9 @@ extra["teamcityVersion"] = project.findProperty("teamcity.api.version") as Strin
 teamcity {
     version = extra["teamcityVersion"] as String
 }
+
+sonarqube {
+    properties {
+        property("sonar.projectKey", "${project.group}:teamcity-jvm-monitor-plugin")
+    }
+}
