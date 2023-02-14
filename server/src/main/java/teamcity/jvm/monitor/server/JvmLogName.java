@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,15 +18,18 @@ package teamcity.jvm.monitor.server;
 
 public class JvmLogName {
 
-    private String fileName;
-    private String displayName;
+    private final String fileName;
+    private final String displayName;
 
     public JvmLogName(String file) {
         this.fileName = file;
         this.displayName = createDisplayName(file);
     }
 
+    @SuppressWarnings("unused")
     public String getFileName() { return fileName; }
+
+    @SuppressWarnings("unused")
     public String getDisplayName() { return displayName; }
 
     private String createDisplayName(String file) {
