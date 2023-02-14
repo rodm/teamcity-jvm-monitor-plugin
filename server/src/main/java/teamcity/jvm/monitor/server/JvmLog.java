@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,20 +23,20 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class JvmLog {
 
     private static final Logger LOGGER = Logger.getLogger("jetbrains.buildServer.SERVER");
 
-    private List<String> contents = new ArrayList<>();
+    private final List<String> contents = new ArrayList<>();
 
-    public JvmLog() {
-        this.contents.add("JVM log file not found");
+    static JvmLog from(BuildArtifact artifact) {
+        return new JvmLog(artifact);
     }
 
-    public JvmLog(BuildArtifact artifact) {
+    private JvmLog(BuildArtifact artifact) {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(artifact.getInputStream()))) {
             String line;
             while ((line = reader.readLine()) != null) {
@@ -47,7 +47,32 @@ public class JvmLog {
         }
     }
 
-    public List<String> getContents() {
-        return Collections.unmodifiableList(this.contents);
+    public List<String> getData() {
+        return contents.stream()
+            .filter(line -> !line.startsWith("# "))
+            .collect(Collectors.toList());
+    }
+
+    public String getCommandLine() {
+        return getValueFor("# command line: ");
+    }
+
+    public String getJvmArguments() {
+        return getValueFor("# jvm args: ");
+    }
+
+    public String getJvmVersion() {
+        return getValueFor("# jvm version: ");
+    }
+
+    public String getColumns() {
+        return "timestamp" + getValueFor("# timestamp");
+    }
+
+    private String getValueFor(String prefix) {
+        return contents.stream()
+            .filter(line -> line.startsWith(prefix))
+            .findFirst()
+            .map(line -> line.substring(prefix.length())).orElse("");
     }
 }

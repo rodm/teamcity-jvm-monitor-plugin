@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -31,9 +31,6 @@ import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -67,46 +64,12 @@ public class JvmMonitorController extends BaseController {
     }
 
     void process(BuildArtifact artifact, JsonObjectBuilder responseNode) {
-        List<String> headers = new ArrayList<>();
-        List<String> data = new ArrayList<>();
-
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(artifact.getInputStream()))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                if (line.startsWith("# ")) {
-                    headers.add(line);
-                } else {
-                    data.add(line);
-                }
-            }
-        }
-        catch (IOException e) {
-            LOGGER.warn("Exception reading artifact: " + artifact.getName(), e);
-        }
-        String cmdline = "";
-        String jvmArgs = "";
-        String jvmVersion = "";
-        String head = "";
-        for (String header : headers) {
-            if (header.startsWith("# command line")) {
-                cmdline = header.substring("# command line: ".length());
-            }
-            if (header.startsWith("# jvm args:")) {
-                jvmArgs = header.substring("# jvm args: ".length());
-            }
-            if (header.startsWith("# jvm version:")) {
-                jvmVersion = header.substring("# jvm version: ".length());
-            }
-            if (header.startsWith("# timestamp")) {
-                head = header.replace("# ", "");
-            }
-        }
-
         List<String> timestamps = new ArrayList<>();
         Map<String, List<Long>> datasets = new LinkedHashMap<>();
 
-        String[] columns = head.split(",");
-        for (String line : data) {
+        JvmLog jvmLog = JvmLog.from(artifact);
+        String[] columns = jvmLog.getColumns().split(",");
+        for (String line : jvmLog.getData()) {
             String[] parts = line.split(",");
             for (int i = 0; i < parts.length; i++) {
                 if ("timestamp".equals(columns[i])) {
@@ -119,9 +82,9 @@ public class JvmMonitorController extends BaseController {
         }
 
         JsonObject info = Json.createObjectBuilder()
-            .add("cmdline", cmdline)
-            .add("jvmargs", jvmArgs)
-            .add("jvmversion", jvmVersion)
+            .add("cmdline", jvmLog.getCommandLine())
+            .add("jvmargs", jvmLog.getJvmArguments())
+            .add("jvmversion", jvmLog.getJvmVersion())
             .build();
         responseNode.add("info", info);
 
