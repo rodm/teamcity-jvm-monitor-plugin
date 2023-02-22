@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -28,8 +28,12 @@ public class JvmMonitorTool {
     private static final Logger LOGGER = Logger.getLogger(JvmMonitorTool.class);
 
     public static void main(String[] args) {
+        File outputDir = new File(args[0]);
+        run(outputDir);
+    }
+
+    private static void run(File outputDir) {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
-            File outputDir = new File(args[0]);
             LOGGER.info("Output directory: " + outputDir.getCanonicalPath());
             if (!outputDir.exists()) {
                 LOGGER.warn("Output directory does not exist. JVM Monitor exiting.");
@@ -46,8 +50,8 @@ public class JvmMonitorTool {
                     monitor.start();
                 } else if ("stop".equals(command) || command == null) {
                     LOGGER.info("Stopping JVM Monitor");
-                    run = false;
                     monitor.stop();
+                    run = false;
                 }
             }
             LOGGER.info("JVM Monitor process exiting");
