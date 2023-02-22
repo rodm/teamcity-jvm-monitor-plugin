@@ -23,10 +23,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
 import java.io.File;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -165,23 +161,11 @@ class JvmMonitorLauncherTest {
         commandLine.add(command);
         Collections.addAll(commandLine, args);
 
-        ProcessBuilder builder = new ProcessBuilder();
-        builder.command(commandLine);
+        ProcessBuilder builder = new ProcessBuilder()
+            .command(commandLine)
+            .inheritIO();
 
         Process process = builder.start();
-        OutputStream in = process.getOutputStream();
-        InputStream out = process.getInputStream();
-        InputStream err = process.getErrorStream();
-
-        PipedOutputStream pos = new PipedOutputStream();
-        PipedInputStream pis = new PipedInputStream(pos);
-
-        Thread stdinThread = new Thread(new StreamPumper(pis, in));
-        Thread stdoutThread = new Thread(new StreamPumper(out, System.out));
-        Thread stderrThread = new Thread(new StreamPumper(err, System.err));
-        stdinThread.start();
-        stdoutThread.start();
-        stderrThread.start();
         return process.waitFor();
     }
 }
