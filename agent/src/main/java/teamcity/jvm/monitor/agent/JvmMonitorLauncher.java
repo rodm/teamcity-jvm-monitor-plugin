@@ -18,15 +18,8 @@ package teamcity.jvm.monitor.agent;
 
 import org.apache.log4j.Logger;
 
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
-import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -46,7 +39,7 @@ public class JvmMonitorLauncher {
     private final File outputDir;
 
     private String javaHome;
-    private PrintWriter writer;
+    private JvmMonitorConnector connector;
     private Process process;
 
     public JvmMonitorLauncher(File toolDir, File outputDir) {
@@ -54,8 +47,10 @@ public class JvmMonitorLauncher {
         this.outputDir = outputDir;
     }
 
-    public void start() throws IOException {
+    public void start() throws IOException, InterruptedException {
         LOGGER.info("Starting JVM Monitor process");
+        connector = JvmMonitorConnector.createConnector();
+
         List<String> commandLine = new ArrayList<>();
         commandLine.add(getJavaCommand());
         if (isJava9OrLater()) {
@@ -67,41 +62,24 @@ public class JvmMonitorLauncher {
         commandLine.add(String.format(LOG_DIR_FORMAT, outputDir.getAbsolutePath()));
         commandLine.add(String.format(LOG_CONFIG_FORMAT, getMonitorToolJarPath()));
         commandLine.add(JVM_MONITOR_TOOL_CLASS);
+        commandLine.add("" + connector.getPort());
         commandLine.add(outputDir.getCanonicalPath());
-        ProcessBuilder builder = new ProcessBuilder();
-        builder.command(commandLine);
         LOGGER.info("JVM Monitor command line: " + commandLine);
 
+        ProcessBuilder builder = new ProcessBuilder()
+            .command(commandLine)
+            .inheritIO();
+        connector.ready();
         process = builder.start();
-        OutputStream in = process.getOutputStream();
-        InputStream out = process.getInputStream();
-        InputStream err = process.getErrorStream();
-
-        PipedOutputStream pos = new PipedOutputStream();
-        PipedInputStream pis = new PipedInputStream(pos);
-        writer = new PrintWriter(new BufferedWriter(new OutputStreamWriter(pos)));
-
-        Thread stdinThread = new Thread(new StreamPumper(pis, in));
-        Thread stdoutThread = new Thread(new StreamPumper(out, System.out));
-        Thread stderrThread = new Thread(new StreamPumper(err, System.err));
-        stdinThread.start();
-        stdoutThread.start();
-        stderrThread.start();
-
-        writer.println("start");
-        writer.flush();
-        LOGGER.info("Started JVM Monitor process");
+        connector.startMonitor();
+        LOGGER.info("JVM Monitor process started");
     }
 
-    public void stop() throws InterruptedException {
+    public void stop() throws IOException, InterruptedException {
         LOGGER.info("Stopping JVM Monitor process");
-
-        writer.println("stop");
-        writer.flush();
-        writer.close();
-
+        connector.stopMonitor();
         int exitValue = process.waitFor();
-        LOGGER.info("Stopped JVM Monitor process, exit value: " + exitValue);
+        LOGGER.info("JVM Monitor process stopped, exit value: " + exitValue);
     }
 
     private String getJavaCommand() {

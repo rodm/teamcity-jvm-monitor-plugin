@@ -19,21 +19,29 @@ package teamcity.jvm.monitor.tool;
 import org.apache.log4j.Logger;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.Socket;
 
 public class JvmMonitorTool {
 
     private static final Logger LOGGER = Logger.getLogger(JvmMonitorTool.class);
 
     public static void main(String[] args) {
-        File outputDir = new File(args[0]);
-        run(outputDir);
+        int port = Integer.parseInt(args[0]);
+        File outputDir = new File(args[1]);
+        run(port, outputDir);
     }
 
-    private static void run(File outputDir) {
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
+    private static void run(int port, File outputDir) {
+        try (Socket socket = new Socket("localhost", port);
+             BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())))
+        {
+            LOGGER.info("Launcher port: " + port);
             LOGGER.info("Output directory: " + outputDir.getCanonicalPath());
             if (!outputDir.exists()) {
                 LOGGER.warn("Output directory does not exist. JVM Monitor exiting.");
@@ -48,9 +56,11 @@ public class JvmMonitorTool {
                 if ("start".equals(command)) {
                     LOGGER.info("Starting JVM Monitor");
                     monitor.start();
+                    sendResponse(writer, "started");
                 } else if ("stop".equals(command) || command == null) {
                     LOGGER.info("Stopping JVM Monitor");
                     monitor.stop();
+                    sendResponse(writer, "stopped");
                     run = false;
                 }
             }
@@ -59,5 +69,11 @@ public class JvmMonitorTool {
         catch (IOException e) {
             LOGGER.warn("", e);
         }
+    }
+
+    private static void sendResponse(BufferedWriter writer, String response) throws IOException {
+        writer.write(response);
+        writer.newLine();
+        writer.flush();
     }
 }
