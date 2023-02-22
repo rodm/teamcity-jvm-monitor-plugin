@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -56,31 +56,16 @@ public class JvmMonitorLauncher {
 
     public void start() throws IOException {
         LOGGER.info("Starting JVM Monitor process");
-        File javaHomeFile = getJavaHome();
-        File javaCommand = new File(javaHomeFile, "bin/java");
-        File toolsJar = new File(javaHomeFile, "lib/tools.jar");
-        File monitorToolJar = new File(toolDir, "jvm-monitor-tool.jar");
-
-        List<String> classPath = new ArrayList<>();
-        if (toolsJar.exists()) {
-            classPath.add(toolsJar.getCanonicalPath());
-        }
-        File[] toolFiles = toolDir.listFiles();
-        if (toolFiles != null) {
-            for (File file : toolFiles) {
-                classPath.add(file.getCanonicalPath());
-            }
-        }
         List<String> commandLine = new ArrayList<>();
-        commandLine.add(javaCommand.getAbsolutePath());
+        commandLine.add(getJavaCommand());
         if (isJava9OrLater()) {
             commandLine.add(EXPORT_MONITOR_PACKAGE);
             commandLine.add(EXPORT_EVENT_PACKAGE);
         }
         commandLine.add("-cp");
-        commandLine.add(String.join(File.pathSeparator, classPath));
+        commandLine.add(getClassPath());
         commandLine.add(String.format(LOG_DIR_FORMAT, outputDir.getAbsolutePath()));
-        commandLine.add(String.format(LOG_CONFIG_FORMAT, monitorToolJar.getAbsolutePath()));
+        commandLine.add(String.format(LOG_CONFIG_FORMAT, getMonitorToolJarPath()));
         commandLine.add(JVM_MONITOR_TOOL_CLASS);
         commandLine.add(outputDir.getCanonicalPath());
         ProcessBuilder builder = new ProcessBuilder();
@@ -117,6 +102,29 @@ public class JvmMonitorLauncher {
 
         int exitValue = process.waitFor();
         LOGGER.info("Stopped JVM Monitor process, exit value: " + exitValue);
+    }
+
+    private String getJavaCommand() {
+        return new File(getJavaHome(), "bin/java").getAbsolutePath();
+    }
+
+    private String getClassPath() throws IOException {
+        File toolsJar = new File(getJavaHome(), "lib/tools.jar");
+        List<String> classPath = new ArrayList<>();
+        if (toolsJar.exists()) {
+            classPath.add(toolsJar.getCanonicalPath());
+        }
+        File[] toolFiles = toolDir.listFiles();
+        if (toolFiles != null) {
+            for (File file : toolFiles) {
+                classPath.add(file.getCanonicalPath());
+            }
+        }
+        return String.join(File.pathSeparator, classPath);
+    }
+
+    private String getMonitorToolJarPath() {
+        return new File(toolDir, "jvm-monitor-tool.jar").getAbsolutePath();
     }
 
     void setJavaHome(String javaHome) {
