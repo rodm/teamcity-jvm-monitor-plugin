@@ -11,11 +11,11 @@ java {
 }
 
 dependencies {
-    testImplementation (platform("org.junit:junit-bom:5.5.2"))
+    testImplementation (platform("org.junit:junit-bom:5.9.2"))
     testImplementation (group = "org.junit.jupiter", name = "junit-jupiter-api")
     testImplementation (group = "org.junit.jupiter", name = "junit-jupiter-params")
     testImplementation (group = "org.hamcrest", name = "hamcrest", version = "2.2")
-    testImplementation (group = "org.mockito", name = "mockito-core", version = "3.7.7")
+    testImplementation (group = "org.mockito", name = "mockito-core", version = "4.11.0")
 
     testRuntimeOnly (group = "org.junit.jupiter", name = "junit-jupiter-engine")
 }
