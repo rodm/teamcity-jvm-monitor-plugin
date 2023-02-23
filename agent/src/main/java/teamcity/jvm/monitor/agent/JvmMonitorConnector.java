@@ -27,6 +27,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.CountDownLatch;
 
+import static java.util.concurrent.TimeUnit.SECONDS;
+
 public class JvmMonitorConnector implements Runnable {
 
     private static final Logger LOGGER = Logger.getLogger("jetbrains.buildServer.AGENT");
@@ -70,18 +72,23 @@ public class JvmMonitorConnector implements Runnable {
     }
 
     public void startMonitor() throws IOException, InterruptedException {
-        start.await();
-        sendCommand("start");
-        String command = reader.readLine();
-        if (!"started".equals(command)) {
-            throw new IOException("JVM Monitor tool failed to start");
+        if (start.await(10, SECONDS)) {
+            sendCommand("start");
+            String response = reader.readLine();
+            if (!"started".equals(response)) {
+                LOGGER.warn("Response received: " + response);
+                throw new IOException("JVM Monitor tool failed to start");
+            }
+        } else {
+            LOGGER.warn("Connector timed out waiting for JVM Monitor to connect");
         }
     }
 
     public void stopMonitor() throws IOException {
         sendCommand("stop");
-        String command = reader.readLine();
-        if (!"stopped".equals(command)) {
+        String response = reader.readLine();
+        if (!"stopped".equals(response)) {
+            LOGGER.warn("Response received: " + response);
             throw new IOException("JVM Monitor tool failed to stop");
         }
     }
