@@ -16,6 +16,8 @@
 
 package teamcity.jvm.monitor.agent;
 
+import org.apache.log4j.Logger;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -26,6 +28,8 @@ import java.net.Socket;
 import java.util.concurrent.CountDownLatch;
 
 public class JvmMonitorConnector implements Runnable {
+
+    private static final Logger LOGGER = Logger.getLogger("jetbrains.buildServer.AGENT");
 
     private final ServerSocket socket;
     private final CountDownLatch ready = new CountDownLatch(1);
@@ -57,7 +61,7 @@ public class JvmMonitorConnector implements Runnable {
             start.countDown();
         }
         catch (IOException e) {
-            throw new RuntimeException(e);
+            LOGGER.warn("Connector failed", e);
         }
     }
 

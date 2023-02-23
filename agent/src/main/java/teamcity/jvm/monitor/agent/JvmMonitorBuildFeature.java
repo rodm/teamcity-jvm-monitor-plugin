@@ -31,6 +31,7 @@ import org.jetbrains.annotations.NotNull;
 import teamcity.jvm.monitor.JvmMonitorPlugin;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Collection;
 
 import static teamcity.jvm.monitor.JvmMonitorPlugin.JVM_MONITOR_LOG_PATH;
@@ -72,7 +73,11 @@ public class JvmMonitorBuildFeature extends AgentLifeCycleAdapter {
             try {
                 monitor.start();
             }
-            catch (Exception e) {
+            catch (InterruptedException e) {
+                LOGGER.warn("Start monitor failed", e);
+                Thread.currentThread().interrupt();
+            }
+            catch (IOException e) {
                 LOGGER.warn("Start monitor failed", e);
             }
         }
@@ -83,7 +88,12 @@ public class JvmMonitorBuildFeature extends AgentLifeCycleAdapter {
         if (monitor != null) {
             try {
                 monitor.stop();
-            } catch (Exception e) {
+            }
+            catch (InterruptedException e) {
+                LOGGER.warn("Stop monitor failed", e);
+                Thread.currentThread().interrupt();
+            }
+            catch (IOException e) {
                 LOGGER.warn("Stop monitor failed", e);
             }
             monitor = null;

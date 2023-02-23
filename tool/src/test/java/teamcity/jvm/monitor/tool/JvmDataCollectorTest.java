@@ -35,7 +35,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class JvmDataCollectorTest {
+class JvmDataCollectorTest {
 
     private ScheduledExecutorService executor;
     private MonitoredVm monitoredVm;

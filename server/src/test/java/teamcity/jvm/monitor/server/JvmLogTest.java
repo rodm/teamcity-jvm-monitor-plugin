@@ -32,7 +32,7 @@ import static org.hamcrest.Matchers.startsWith;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class JvmLogTest {
+class JvmLogTest {
 
     private BuildArtifact artifact;
     private final String log = "# command line: org.example.Main -v start\n" +
