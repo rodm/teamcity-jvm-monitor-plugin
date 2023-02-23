@@ -20,6 +20,7 @@ import org.apache.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -86,10 +87,17 @@ public class JvmMonitorConnector implements Runnable {
 
     public void stopMonitor() throws IOException {
         sendCommand("stop");
-        String response = reader.readLine();
-        if (!"stopped".equals(response)) {
-            LOGGER.warn("Response received: " + response);
-            throw new IOException("JVM Monitor tool failed to stop");
+        try {
+            String response = reader.readLine();
+            if (!"stopped".equals(response)) {
+                LOGGER.warn("Response received: " + response);
+                throw new IOException("JVM Monitor tool failed to stop");
+            }
+        }
+        finally {
+            close(reader);
+            close(writer);
+            close(socket);
         }
     }
 
@@ -97,5 +105,14 @@ public class JvmMonitorConnector implements Runnable {
         writer.write(c);
         writer.newLine();
         writer.flush();
+    }
+
+    private void close(Closeable resource) {
+        try {
+            resource.close();
+        }
+        catch (IOException e) {
+            // ignore
+        }
     }
 }
