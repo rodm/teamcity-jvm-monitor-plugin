@@ -52,9 +52,7 @@ BS.JvmMon = {
             orange: 'rgb(255, 159, 64)',
             yellow: 'rgb(255, 205, 86)',
             green: 'rgb(75, 192, 192)',
-            blue: 'rgb(54, 162, 235)',
-            purple: 'rgb(153, 102, 255)',
-            grey: 'rgb(201, 203, 207)'
+            blue: 'rgb(54, 162, 235)'
         };
 
         $j('#charts').empty();
@@ -63,12 +61,14 @@ BS.JvmMon = {
             datasets: [{
                 label: 'Utilization',
                 backgroundColor: chartColors.red,
+                borderColor: chartColors.red,
                 data: chartData.datasets['EU'],
                 fill: false
             },
             {
                 label: 'Capacity',
                 backgroundColor: chartColors.blue,
+                borderColor: chartColors.blue,
                 data: chartData.datasets['EC'],
                 fill: false
             }]
@@ -79,24 +79,28 @@ BS.JvmMon = {
             datasets: [{
                 label: 'Survivor space 0 utilization',
                 backgroundColor: chartColors.red,
+                borderColor: chartColors.red,
                 data: chartData.datasets['S0U'],
                 fill: false
             },
             {
                 label: 'Survivor space 0 capacity',
                 backgroundColor: chartColors.orange,
+                borderColor: chartColors.orange,
                 data: chartData.datasets['S0C'],
                 fill: false
             },
             {
                 label: 'Survivor space 1 utilization',
                 backgroundColor: chartColors.yellow,
+                borderColor: chartColors.yellow,
                 data: chartData.datasets['S1U'],
                 fill: false
             },
             {
                 label: 'Survivor space 1 capacity',
                 backgroundColor: chartColors.green,
+                borderColor: chartColors.green,
                 data: chartData.datasets['S1C'],
                 fill: false
             }]
@@ -107,12 +111,14 @@ BS.JvmMon = {
             datasets: [{
                 label: 'Utilization',
                 backgroundColor: chartColors.red,
+                borderColor: chartColors.red,
                 data: chartData.datasets['OU'],
                 fill: false
             },
             {
                 label: 'Capacity',
                 backgroundColor: chartColors.orange,
+                borderColor: chartColors.orange,
                 data: chartData.datasets['OC'],
                 fill: false
             }]
@@ -124,12 +130,14 @@ BS.JvmMon = {
                 datasets: [{
                     label: 'Utilization',
                     backgroundColor: chartColors.red,
+                    borderColor: chartColors.red,
                     data: chartData.datasets['PU'],
                     fill: false
                 },
                 {
                     label: 'Capacity',
                     backgroundColor: chartColors.orange,
+                    borderColor: chartColors.orange,
                     data: chartData.datasets['PC'],
                     fill: false
                 }]
@@ -142,12 +150,14 @@ BS.JvmMon = {
                 datasets: [{
                     label: 'Utilization',
                     backgroundColor: chartColors.red,
+                    borderColor: chartColors.red,
                     data: chartData.datasets['MU'],
                     fill: false
                 },
                 {
                     label: 'Capacity',
                     backgroundColor: chartColors.orange,
+                    borderColor: chartColors.orange,
                     data: chartData.datasets['MC'],
                     fill: false
                 }]
@@ -160,12 +170,14 @@ BS.JvmMon = {
                 datasets: [{
                     label: 'Used',
                     backgroundColor: chartColors.red,
+                    borderColor: chartColors.red,
                     data: chartData.datasets['CCSU'],
                     fill: false
                 },
                 {
                     label: 'Capacity',
                     backgroundColor: chartColors.orange,
+                    borderColor: chartColors.orange,
                     data: chartData.datasets['CCSC'],
                     fill: false
                 }]
