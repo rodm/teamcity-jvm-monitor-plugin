@@ -12,9 +12,7 @@ val javaHome = javaCompiler.get().metadata.installationPath.toString()
 
 dependencies {
     compileOnly (files("${javaHome}/lib/tools.jar"))
-    implementation (group = "org.apache.logging.log4j", name = "log4j-1.2-api", version = "2.12.4")
-    implementation (group = "org.apache.logging.log4j", name = "log4j-api", version = "2.12.4")
-    implementation (group = "org.apache.logging.log4j", name = "log4j-core", version = "2.12.4")
+    implementation (libs.bundles.log4j2)
 
     testImplementation (files("${javaHome}/lib/tools.jar"))
 }

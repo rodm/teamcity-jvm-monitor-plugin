@@ -15,7 +15,7 @@ val tool by configurations.creating
 dependencies {
     implementation (project(":jvm-monitor-common"))
 
-    testRuntimeOnly (group = "log4j", name = "log4j", version = "1.2.17")
+    testRuntimeOnly (libs.log4j)
 
     tool (project(":jvm-monitor-tool"))
 }

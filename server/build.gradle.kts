@@ -5,8 +5,8 @@ plugins {
 
 dependencies {
     implementation (project(":jvm-monitor-common"))
-    implementation (group = "javax.json", name = "javax.json-api", version = "1.1.4")
-    runtimeOnly (group = "org.glassfish", name = "javax.json", version = "1.1.4")
+    implementation (libs.json.api)
+    runtimeOnly (libs.json.impl)
 
     agent (project(path = ":jvm-monitor-agent", configuration = "plugin"))
 }
