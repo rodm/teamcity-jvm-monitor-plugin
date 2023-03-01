@@ -32,7 +32,7 @@ teamcity {
         }
 
         register("teamcity2022.10") {
-            version = "2022.10.1"
+            version = "2022.10.2"
             plugins = configurations["plugins"]
             javaHome = extra["java11Home"] as String
         }
