@@ -16,5 +16,6 @@ teamcity {
 sonarqube {
     properties {
         property("sonar.projectKey", "${project.group}:teamcity-jvm-monitor-plugin")
+        property("sonar.projectName", "teamcity-jvm-monitor-plugin")
     }
 }
