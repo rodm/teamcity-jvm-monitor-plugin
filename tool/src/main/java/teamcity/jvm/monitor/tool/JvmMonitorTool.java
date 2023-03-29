@@ -16,7 +16,8 @@
 
 package teamcity.jvm.monitor.tool;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -28,7 +29,7 @@ import java.net.Socket;
 
 public class JvmMonitorTool {
 
-    private static final Logger LOGGER = Logger.getLogger(JvmMonitorTool.class);
+    private static final Logger LOGGER = LogManager.getLogger(JvmMonitorTool.class);
 
     public static void main(String[] args) {
         int port = Integer.parseInt(args[0]);
