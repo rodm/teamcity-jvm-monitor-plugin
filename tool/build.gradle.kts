@@ -16,10 +16,3 @@ dependencies {
 
     testImplementation (files("${javaHome}/lib/tools.jar"))
 }
-
-tasks {
-    compileJava {
-        sourceCompatibility = "1.7"
-        targetCompatibility = "1.7"
-    }
-}

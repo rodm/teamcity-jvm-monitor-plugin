@@ -21,18 +21,13 @@ dependencies {
 }
 
 tasks {
-    named<JavaCompile>("compileFunctionalJava").configure {
-        sourceCompatibility = JavaVersion.VERSION_1_7.toString()
-        targetCompatibility = JavaVersion.VERSION_1_7.toString()
-    }
-
     val toolDir = project.layout.buildDirectory.dir("tool")
     register("copyTool", Copy::class) {
         destinationDir = toolDir.get().asFile
         from(tool)
     }
 
-    val javaVersions = 7..19
+    val javaVersions = 8..19
     register("functionalTest", Test::class) {
         group = "verification"
         description = "Runs the functional tests."
