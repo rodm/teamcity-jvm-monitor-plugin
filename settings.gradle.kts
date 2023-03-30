@@ -8,14 +8,13 @@ pluginManagement {
 dependencyResolutionManagement {
     versionCatalogs {
         create("libs") {
-            version("json", "1.1.4")
-            library("json-api", "javax.json", "javax.json-api").versionRef("json")
-            library("json-impl", "org.glassfish", "javax.json").versionRef("json")
+            library("json-api", "jakarta.json:jakarta.json-api:2.1.1")
+            library("json-impl", "org.eclipse.parsson:parsson:1.1.1")
 
             version("log4j", "1.2.17")
             library("log4j", "log4j", "log4j").versionRef("log4j")
 
-            version("log4j2", "2.12.4")
+            version("log4j2", "2.20.0")
             library("log4j2-api", "org.apache.logging.log4j", "log4j-api").versionRef("log4j2")
             library("log4j2-core", "org.apache.logging.log4j", "log4j-core").versionRef("log4j2")
             bundle("log4j2", listOf("log4j2-api", "log4j2-core"))
