@@ -21,20 +21,17 @@ teamcity {
 
         register("teamcity2018.1") {
             version = "2018.1.5"
+            plugins = configurations["plugins"]
             serverOptions ("-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005")
             agentOptions ("-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5006")
-            plugins = configurations["plugins"]
-        }
-
-        register("teamcity2020.2") {
-            version = "2020.2.4"
-            plugins = configurations["plugins"]
         }
 
         register("teamcity2022.10") {
-            version = "2022.10.2"
-            plugins = configurations["plugins"]
+            version = "2022.10.3"
             javaHome = extra["java11Home"] as String
+            plugins = configurations["plugins"]
+            serverOptions ("-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005")
+            agentOptions ("-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5006")
         }
     }
 }
