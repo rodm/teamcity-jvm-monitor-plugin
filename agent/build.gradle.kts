@@ -3,19 +3,18 @@ plugins {
     id ("teamcity.agent-plugin")
 }
 
-sourceSets {
-    create("functional") {
-        compileClasspath += sourceSets["main"].output + configurations.testRuntimeClasspath
-        runtimeClasspath += sourceSets["main"].output + configurations.testRuntimeClasspath
-    }
-}
-
+val functional by sourceSets.creating
 val tool by configurations.creating
+
+configurations["functionalImplementation"].extendsFrom(configurations["testImplementation"])
+configurations["functionalRuntimeOnly"].extendsFrom(configurations["testRuntimeOnly"])
 
 dependencies {
     implementation (project(":jvm-monitor-common"))
 
     testRuntimeOnly (libs.log4j)
+
+    "functionalImplementation" (project)
 
     tool (project(":jvm-monitor-tool"))
 }
@@ -33,8 +32,8 @@ tasks {
         description = "Runs the functional tests."
         useJUnitPlatform()
         dependsOn(named("copyTool"))
-        testClassesDirs = sourceSets["functional"].output.classesDirs
-        classpath = sourceSets["functional"].runtimeClasspath
+        testClassesDirs = functional.output.classesDirs
+        classpath = functional.runtimeClasspath
         systemProperty ("tool.dir", toolDir.get().asFile.absolutePath)
         javaVersions.forEach { version ->
             val propertyName = "java${version}.home"
