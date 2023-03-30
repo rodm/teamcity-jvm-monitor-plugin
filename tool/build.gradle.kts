@@ -3,16 +3,13 @@ plugins {
     id ("teamcity.java-tool")
 }
 
-repositories {
-    mavenCentral()
-}
-
 val javaCompiler = javaToolchains.compilerFor { languageVersion.set(JavaLanguageVersion.of(8)) }
 val javaHome = javaCompiler.get().metadata.installationPath.toString()
+val toolsJar = "${javaHome}/lib/tools.jar"
 
 dependencies {
-    compileOnly (files("${javaHome}/lib/tools.jar"))
+    compileOnly (files(toolsJar))
     implementation (libs.bundles.log4j2)
 
-    testImplementation (files("${javaHome}/lib/tools.jar"))
+    testImplementation (files(toolsJar))
 }
