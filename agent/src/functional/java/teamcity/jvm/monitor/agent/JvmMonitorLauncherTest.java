@@ -16,6 +16,7 @@
 
 package teamcity.jvm.monitor.agent;
 
+import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -27,18 +28,21 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.startsWith;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 import static org.junit.jupiter.api.Assumptions.assumeFalse;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
@@ -68,28 +72,18 @@ class JvmMonitorLauncherTest {
 
         String className = TestMain.class.getName();
         File[] files = outputDir.listFiles();
-        if (files == null || files.length == 0) {
-            fail("Expected JVM metrics file for " + className + " process");
-        }
-        File metrics = null;
-        for (File file : files) {
-            if (file.getName().contains(className)) {
-                metrics = file;
-            }
-        }
-        if (metrics == null) {
-            fail("Expected JVM metrics file for " + className + " process");
-        }
-        List<String> lines = Files.readAllLines(metrics.toPath());
+        assertNotNull(files, "Expected JVM metrics files in output directory");
+        assertNotEquals(0, files.length, "Expected JVM metrics files in output directory");
+        File metrics = getMetricsFileFor(className, files);
+        assertNotNull(metrics, "Expected JVM metrics file for " + className + " process");
 
+        List<String> lines = Files.readAllLines(metrics.toPath());
         assertThat(lines, hasItem(containsString("main class: " + className)));
         assertThat(lines, hasItem(containsString("jvm version: " + version)));
 
-        List<String> dataLines = new ArrayList<>();
-        for (String line : lines) {
-            if (!line.startsWith("#")) dataLines.add(line);
-        }
+        List<String> dataLines = lines.stream().filter(line -> !line.startsWith("#")).collect(Collectors.toList());
         assertThat(dataLines.size(), greaterThanOrEqualTo(4));
+        assertThat(dataLines, not(hasItem(startsWith("#"))));
     }
 
     @ParameterizedTest(name = "launch jvm monitor running on Java {1}")
@@ -107,15 +101,9 @@ class JvmMonitorLauncherTest {
 
         String className = TestMain.class.getName();
         File[] files = outputDir.listFiles();
-        assertNotNull(files, "Expected JVM metrics file for " + className + " process");
-        assertNotEquals(0, files.length, "Expected JVM metrics file for " + className + " process");
-
-        File metrics = null;
-        for (File file : files) {
-            if (file.getName().contains(className)) {
-                metrics = file;
-            }
-        }
+        assertNotNull(files, "Expected JVM metrics files in output directory");
+        assertNotEquals(0, files.length, "Expected JVM metrics files in output directory");
+        File metrics = getMetricsFileFor(className, files);
         assertNotNull(metrics, "Expected JVM metrics file for " + className + " process");
     }
 
@@ -163,5 +151,13 @@ class JvmMonitorLauncherTest {
 
         Process process = builder.start();
         return process.waitFor();
+    }
+
+    @Nullable
+    private static File getMetricsFileFor(String className, File[] files) {
+        return Arrays.stream(files)
+            .filter(file -> file.getName().contains(className))
+            .findFirst()
+            .orElse(null);
     }
 }
