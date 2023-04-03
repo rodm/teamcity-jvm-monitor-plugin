@@ -42,8 +42,8 @@ public class JvmMonitorTool {
              BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
              BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())))
         {
-            LOGGER.info("Launcher port: " + port);
-            LOGGER.info("Output directory: " + outputDir.getCanonicalPath());
+            LOGGER.info("Launcher port: {}", port);
+            LOGGER.info("Output directory: {}", outputDir.getCanonicalPath());
             if (!outputDir.exists()) {
                 LOGGER.warn("Output directory does not exist. JVM Monitor exiting.");
                 return;

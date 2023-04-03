@@ -18,6 +18,7 @@ package teamcity.jvm.monitor.tool;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.message.ParameterizedMessage;
 import sun.jvmstat.monitor.HostIdentifier;
 import sun.jvmstat.monitor.MonitorException;
 import sun.jvmstat.monitor.MonitoredHost;
@@ -108,7 +109,7 @@ public class JvmMonitor implements HostListener {
 
             if (!monitoredVms.containsKey(id)) {
                 String mainClass = getMainClass(mvm);
-                LOGGER.info("Starting collector for VM: " + id + ": main class: " + mainClass);
+                LOGGER.info("Starting collector for VM: {}: main class: {}", id, mainClass);
                 String name = id + "-" + mainClass + ".txt";
                 File outputFile = new File(outputDir, name);
                 Writer writer = new FileWriter(outputFile);
@@ -117,7 +118,8 @@ public class JvmMonitor implements HostListener {
             }
         }
         catch (MonitorException e) {
-            LOGGER.error("Exception starting collector for VM: " + id, e);
+            ParameterizedMessage message = new ParameterizedMessage("Exception starting collector for VM: {}", id);
+            LOGGER.error(message, e);
         }
         catch (URISyntaxException e) {
             LOGGER.error("Invalid VM identifier", e);
@@ -128,7 +130,7 @@ public class JvmMonitor implements HostListener {
     }
 
     private void stopCollector(Integer id) {
-        LOGGER.info("Stopping collector for VM: " + id);
+        LOGGER.info("Stopping collector for VM: {}", id);
         JvmDataCollector collector = monitoredVms.remove(id);
         if (collector != null) {
             collector.stop();
