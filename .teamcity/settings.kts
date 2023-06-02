@@ -98,20 +98,20 @@ project {
     val build2 = buildType {
         templates(buildTemplate)
         id("Build2")
-        name = "Build - TeamCity 2020.2"
+        name = "Build - TeamCity 2022.10"
 
         params {
-            param("gradle.opts", "-Pteamcity.api.version=2020.2")
+            param("gradle.opts", "-Pteamcity.api.version=2022.10")
         }
     }
 
     val build3 = buildType {
         templates(buildTemplate)
         id("Build3")
-        name = "Build - TeamCity 2022.10"
+        name = "Build - TeamCity 2023.05"
 
         params {
-            param("gradle.opts", "-Pteamcity.api.version=2022.10")
+            param("gradle.opts", "-Pteamcity.api.version=2023.05")
         }
     }
 
