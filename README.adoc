@@ -15,7 +15,7 @@
 
 The JVM Monitor plugin is a Build Feature that can be added to a build configuration to record the garbage collection metrics for any JVM running during the build.
 
-image:{uri-build-status}?branch=master["Build Status", link="{uri-build-history}"]
+image:{uri-build-status}?branch=main["Build Status", link="{uri-build-history}"]
 image:{uri-version}[Download, link={uri-download}]
 image:{uri-downloads}["Downloads", link="{uri-download}"]
 
