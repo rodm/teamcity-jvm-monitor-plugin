@@ -26,8 +26,8 @@ teamcity {
             agentOptions ("-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5006")
         }
 
-        register("teamcity2022.10") {
-            version = "2022.10.3"
+        register("teamcity2023.05") {
+            version = "2023.05"
             javaHome = extra["java11Home"] as String
             plugins = configurations["plugins"]
             serverOptions ("-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005")
