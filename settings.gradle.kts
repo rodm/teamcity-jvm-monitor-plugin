@@ -8,8 +8,8 @@ pluginManagement {
 dependencyResolutionManagement {
     versionCatalogs {
         create("libs") {
-            library("json-api", "jakarta.json:jakarta.json-api:2.1.1")
-            library("json-impl", "org.eclipse.parsson:parsson:1.1.1")
+            library("json-api", "jakarta.json:jakarta.json-api:2.1.2")
+            library("json-impl", "org.eclipse.parsson:parsson:1.1.2")
 
             version("log4j", "1.2.17")
             library("log4j", "log4j", "log4j").versionRef("log4j")
