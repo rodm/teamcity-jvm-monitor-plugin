@@ -59,8 +59,7 @@ class JvmMonitorLauncherTest {
 
     @ParameterizedTest(name = "monitor process running on Java {1}")
     @CsvSource(value = {
-        "java8.home, 1.8", "java11.home, 11", "java17.home , 17", "java18.home, 18",
-        "java19.home, 19", "java20.home, 20"
+        "java8.home, 1.8", "java11.home, 11", "java17.home, 17", "java21.home, 21", "java22.home, 22"
     })
     void monitorJavaProcessOnJava(String homeProperty, String version) throws Exception {
         String javaHome = System.getProperty(homeProperty, "");
@@ -88,8 +87,7 @@ class JvmMonitorLauncherTest {
 
     @ParameterizedTest(name = "launch jvm monitor running on Java {1}")
     @CsvSource(value = {
-        "java8.home, 1.8", "java11.home, 11", "java17.home , 17", "java18.home, 18",
-        "java19.home, 19", "java20.home, 20"
+        "java8.home, 1.8", "java11.home, 11", "java17.home, 17", "java21.home, 21", "java22.home, 22"
     })
     void launchJvmMonitorOnJava(String homeProperty, String version) throws Exception {
         String javaHome = System.getProperty(homeProperty, "");

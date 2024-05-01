@@ -69,7 +69,7 @@ project {
         }
 
         // create java home properties for LTS versions and versions after last LTS
-        val javaVersions = listOf(8, 11, 17, 18, 19, 20)
+        val javaVersions = listOf(8, 11, 17, 21, 22)
         val sharedOptions = javaVersions.map { version ->
             "-Pjava${version}.home=%java${version}.home%"
         }.toList().joinToString(" ")
