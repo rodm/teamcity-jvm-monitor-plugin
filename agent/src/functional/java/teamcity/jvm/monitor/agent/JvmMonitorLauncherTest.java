@@ -16,12 +16,13 @@
 
 package teamcity.jvm.monitor.agent;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -32,6 +33,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
@@ -48,6 +50,10 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 class JvmMonitorLauncherTest {
 
+    static Stream<String> javaVersions() {
+        return Stream.of("1.8", "11", "17", "21", "22");
+    }
+
     private File toolDir;
     private File outputDir;
 
@@ -57,15 +63,10 @@ class JvmMonitorLauncherTest {
         toolDir = Paths.get(System.getProperty("tool.dir", "")).toFile();
     }
 
-    @ParameterizedTest(name = "monitor process running on Java {1}")
-    @CsvSource(value = {
-        "java8.home, 1.8", "java11.home, 11", "java17.home, 17", "java21.home, 21", "java22.home, 22"
-    })
-    void monitorJavaProcessOnJava(String homeProperty, String version) throws Exception {
-        String javaHome = System.getProperty(homeProperty, "");
-        assumeFalse(javaHome.trim().isEmpty(), "The property '" + javaHome + "' should not be empty");
-        File javaBinary = new File(javaHome, "bin/java");
-        assumeTrue(javaBinary.exists(), "The path set for the '" + javaHome + "' property is not a valid Java install");
+    @ParameterizedTest(name = "monitor process running on Java {0}")
+    @MethodSource("javaVersions")
+    void monitorJavaProcessOnJava(String version) throws Exception {
+        String javaHome = getJavaHome(version);
 
         monitorTestApp(System.getProperty("java.home"), javaHome);
 
@@ -85,15 +86,10 @@ class JvmMonitorLauncherTest {
         assertThat(dataLines, not(hasItem(startsWith("#"))));
     }
 
-    @ParameterizedTest(name = "launch jvm monitor running on Java {1}")
-    @CsvSource(value = {
-        "java8.home, 1.8", "java11.home, 11", "java17.home, 17", "java21.home, 21", "java22.home, 22"
-    })
-    void launchJvmMonitorOnJava(String homeProperty, String version) throws Exception {
-        String javaHome = System.getProperty(homeProperty, "");
-        assumeFalse(javaHome.trim().isEmpty(), "The property '" + javaHome + "' should not be empty");
-        File javaCommand = new File(javaHome, "bin/java");
-        assumeTrue(javaCommand.exists(), "The path set for the '" + javaHome + "' property is not a valid Java install");
+    @ParameterizedTest(name = "launch jvm monitor running on Java {0}")
+    @MethodSource("javaVersions")
+    void launchJvmMonitorOnJava(String version) throws Exception {
+        String javaHome = getJavaHome(version);
 
         monitorTestApp(javaHome, System.getProperty("java.home"));
 
@@ -116,6 +112,19 @@ class JvmMonitorLauncherTest {
         List<String> lines = Files.readAllLines(monitorLogPath);
         assertThat(lines, hasItem(containsString("Starting JVM Monitor")));
         assertThat(lines, hasItem(containsString("Stopping JVM Monitor")));
+    }
+
+    private @NotNull String getJavaHome(String version) {
+        String javaHomeProperty = buildJavaHomeProperty(version);
+        String javaHome = System.getProperty(javaHomeProperty, "");
+        assumeFalse(javaHome.trim().isEmpty(), "The property '" + javaHome + "' should not be empty");
+        File javaBinary = new File(javaHome, "bin/java");
+        assumeTrue(javaBinary.exists(), "The path set for the '" + javaHome + "' property is not a valid Java install");
+        return javaHome;
+    }
+
+    private String buildJavaHomeProperty(String version) {
+        return String.format("java%s.home", version.replace("1.", ""));
     }
 
     private void monitorTestApp(String monitorJavaHome, String appJavaHome) throws Exception {
