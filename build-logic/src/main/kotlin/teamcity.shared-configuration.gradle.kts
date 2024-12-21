@@ -6,7 +6,7 @@ plugins {
 
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(8))
+        languageVersion = JavaLanguageVersion.of(8)
     }
 }
 
@@ -24,12 +24,12 @@ dependencies {
 tasks {
     test {
         useJUnitPlatform()
-        finalizedBy(named("jacocoTestReport"))
+        finalizedBy(jacocoTestReport)
     }
 
     jacocoTestReport {
         reports {
-            xml.required.set(true)
+            xml.required = true
         }
     }
 }
