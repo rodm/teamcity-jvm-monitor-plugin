@@ -36,8 +36,11 @@ tasks {
         classpath = functional.runtimeClasspath
         systemProperty ("tool.dir", toolDir.get().asFile.absolutePath)
         javaVersions.forEach { version ->
-            val propertyName = "java${version}.home"
-            systemProperty(propertyName, findProperty(propertyName) ?: "")
+            val launcher = project.javaToolchains.launcherFor {
+                languageVersion.set(JavaLanguageVersion.of(version))
+            }
+            val javaHome = launcher.get().metadata.installationPath.toString()
+            systemProperty ("java${version}.home", javaHome)
         }
     }
 }
