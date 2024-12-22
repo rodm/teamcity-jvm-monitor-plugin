@@ -51,7 +51,7 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
 class JvmMonitorLauncherTest {
 
     static Stream<String> javaVersions() {
-        return Stream.of("1.8", "11", "17", "21", "22");
+        return Stream.of("1.8", "11", "17", "21", "22", "23");
     }
 
     private File toolDir;

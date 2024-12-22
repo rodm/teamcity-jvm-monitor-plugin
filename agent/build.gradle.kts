@@ -26,7 +26,7 @@ tasks {
         from(tool)
     }
 
-    val javaVersions = listOf(8, 11, 17, 18, 19, 20, 21, 22)
+    val javaVersions = listOf(8, 11, 17, 21, 22, 23)
     register<Test>("functionalTest") {
         group = "verification"
         description = "Runs the functional tests."
