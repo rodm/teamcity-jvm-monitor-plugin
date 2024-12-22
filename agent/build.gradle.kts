@@ -21,13 +21,13 @@ dependencies {
 
 tasks {
     val toolDir = project.layout.buildDirectory.dir("tool")
-    register("copyTool", Copy::class) {
+    register<Copy>("copyTool") {
         destinationDir = toolDir.get().asFile
         from(tool)
     }
 
     val javaVersions = listOf(8, 11, 17, 18, 19, 20, 21, 22)
-    register("functionalTest", Test::class) {
+    register<Test>("functionalTest") {
         group = "verification"
         description = "Runs the functional tests."
         useJUnitPlatform()
