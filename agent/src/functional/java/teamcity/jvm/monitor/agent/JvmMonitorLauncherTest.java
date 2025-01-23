@@ -51,7 +51,8 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
 class JvmMonitorLauncherTest {
 
     static Stream<String> javaVersions() {
-        return Stream.of("1.8", "11", "17", "21", "22", "23");
+        String javaVersions = System.getProperty("java.versions");
+        return Stream.of(javaVersions.split(",")).map(String::trim);
     }
 
     private File toolDir;
@@ -77,9 +78,10 @@ class JvmMonitorLauncherTest {
         File metrics = getMetricsFileFor(className, files);
         assertNotNull(metrics, "Expected JVM metrics file for " + className + " process");
 
+        String expectedVersion = ("8".equals(version)) ? "1.8" : version;
         List<String> lines = Files.readAllLines(metrics.toPath());
         assertThat(lines, hasItem(containsString("main class: " + className)));
-        assertThat(lines, hasItem(containsString("jvm version: " + version)));
+        assertThat(lines, hasItem(containsString("jvm version: " + expectedVersion)));
 
         List<String> dataLines = lines.stream().filter(line -> !line.startsWith("#")).collect(Collectors.toList());
         assertThat(dataLines.size(), greaterThanOrEqualTo(4));
@@ -124,7 +126,7 @@ class JvmMonitorLauncherTest {
     }
 
     private String buildJavaHomeProperty(String version) {
-        return String.format("java%s.home", version.replace("1.", ""));
+        return String.format("java%s.home", version);
     }
 
     private void monitorTestApp(String monitorJavaHome, String appJavaHome) throws Exception {

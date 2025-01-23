@@ -35,6 +35,7 @@ tasks {
         testClassesDirs = functional.output.classesDirs
         classpath = functional.runtimeClasspath
         systemProperty ("tool.dir", toolDir.get().asFile.absolutePath)
+        systemProperty ("java.versions", javaVersions.joinToString())
         javaVersions.forEach { version ->
             val launcher = project.javaToolchains.launcherFor {
                 languageVersion.set(JavaLanguageVersion.of(version))
