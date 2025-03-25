@@ -11,7 +11,7 @@ java {
 }
 
 dependencies {
-    testImplementation (platform("org.junit:junit-bom:5.11.4"))
+    testImplementation (platform("org.junit:junit-bom:5.12.1"))
     testImplementation (group = "org.junit.jupiter", name = "junit-jupiter-api")
     testImplementation (group = "org.junit.jupiter", name = "junit-jupiter-params")
     testImplementation (group = "org.hamcrest", name = "hamcrest", version = "3.0")
