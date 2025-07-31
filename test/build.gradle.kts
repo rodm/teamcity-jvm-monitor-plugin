@@ -11,7 +11,7 @@ dependencies {
 
 teamcity {
     environments {
-        val java11Home = project.findProperty("java11.home") as String? ?: "/opt/jdk-11.0.2"
+        val java21Home = project.findProperty("java21.home") as String? ?: "/opt/jdk-21.0.2"
         val serverDebugOptions = "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005"
         val agentDebugOptions = "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5006"
 
@@ -22,9 +22,9 @@ teamcity {
             agentOptions (agentDebugOptions)
         }
 
-        register("teamcity2025.03") {
-            version = "2025.03"
-            javaHome = java11Home
+        register("teamcity2025.07") {
+            version = "2025.07"
+            javaHome = java21Home
             plugins = configurations["plugins"]
             serverOptions (serverDebugOptions)
             agentOptions (agentDebugOptions)
