@@ -12,13 +12,13 @@ java {
 
 dependencies {
     testImplementation (platform("org.junit:junit-bom:5.13.4"))
-    testImplementation (group = "org.junit.jupiter", name = "junit-jupiter-api")
-    testImplementation (group = "org.junit.jupiter", name = "junit-jupiter-params")
-    testImplementation (group = "org.hamcrest", name = "hamcrest", version = "3.0")
-    testImplementation (group = "org.mockito", name = "mockito-core", version = "4.11.0")
+    testImplementation ("org.junit.jupiter:junit-jupiter-api")
+    testImplementation ("org.junit.jupiter:junit-jupiter-params")
+    testImplementation ("org.hamcrest:hamcrest:3.0")
+    testImplementation ("org.mockito:mockito-core:4.11.0")
 
-    testRuntimeOnly (group = "org.junit.platform", name = "junit-platform-launcher")
-    testRuntimeOnly (group = "org.junit.jupiter", name = "junit-jupiter-engine")
+    testRuntimeOnly ("org.junit.platform:junit-platform-launcher")
+    testRuntimeOnly ("org.junit.jupiter:junit-jupiter-engine")
 }
 
 tasks {
