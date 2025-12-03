@@ -53,7 +53,7 @@ public class JvmMonitor implements HostListener {
 
     private MonitoredHost monitoredHost;
 
-    private Map<Integer, JvmDataCollector> monitoredVms = new HashMap<>();
+    private final Map<Integer, JvmDataCollector> monitoredVms = new HashMap<>();
 
     public JvmMonitor(File outputDir) {
         this.outputDir = outputDir;
@@ -86,7 +86,7 @@ public class JvmMonitor implements HostListener {
         executor.shutdown();
     }
 
-    @Override
+    @Override @SuppressWarnings("unchecked")
     public void vmStatusChanged(VmStatusChangeEvent event) {
         Set<Integer> startedVMs = event.getStarted();
         for (Integer id : startedVMs) {
