@@ -50,15 +50,16 @@ public class JvmMonitorController extends BaseController {
     @Override
     protected ModelAndView doHandle(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response) {
         BuildArtifact artifact = getBuildArtifact(request);
-
-        try {
-            JsonObjectBuilder responseNode = Json.createObjectBuilder();
-            response.setContentType("text/json");
-            process(artifact, responseNode);
-            response.getOutputStream().write(responseNode.build().toString().getBytes(UTF_8));
-        }
-        catch (Exception e) {
-            LOGGER.error("Failure writing response", e);
+        if (artifact != null) {
+            try {
+                JsonObjectBuilder responseNode = Json.createObjectBuilder();
+                response.setContentType("text/json");
+                process(artifact, responseNode);
+                response.getOutputStream().write(responseNode.build().toString().getBytes(UTF_8));
+            }
+            catch (Exception e) {
+                LOGGER.error("Failure writing response", e);
+            }
         }
         return null;
     }
@@ -96,10 +97,13 @@ public class JvmMonitorController extends BaseController {
         responseNode.add("datasets", jsonDatasets.build());
     }
 
+    @Nullable
     private BuildArtifact getBuildArtifact(HttpServletRequest request) {
         Long buildId = getBuildIdFromRequest(request);
+        if (buildId == null) return null;
         String jvmLogName = getJvmLogNameFromRequest(request);
         SBuild build = myServer.findBuildInstanceById(buildId);
+        if (build == null) return null;
         return JvmMonitorUtil.getBuildArtifact(build, jvmLogName);
     }
 
