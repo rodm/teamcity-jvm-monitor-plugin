@@ -17,6 +17,7 @@
 package teamcity.jvm.monitor.agent;
 
 import org.apache.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -51,19 +52,7 @@ public class JvmMonitorLauncher {
         LOGGER.info("Starting JVM Monitor process");
         connector = JvmMonitorConnector.createConnector();
 
-        List<String> commandLine = new ArrayList<>();
-        commandLine.add(getJavaCommand());
-        if (isJava9OrLater()) {
-            commandLine.add(EXPORT_MONITOR_PACKAGE);
-            commandLine.add(EXPORT_EVENT_PACKAGE);
-        }
-        commandLine.add("-cp");
-        commandLine.add(getClassPath());
-        commandLine.add(String.format(LOG_DIR_FORMAT, outputDir.getAbsolutePath()));
-        commandLine.add(String.format(LOG_CONFIG_FORMAT, getMonitorToolJarPath()));
-        commandLine.add(JVM_MONITOR_TOOL_CLASS);
-        commandLine.add("" + connector.getPort());
-        commandLine.add(outputDir.getCanonicalPath());
+        List<String> commandLine = buildCommandLine();
         LOGGER.info("JVM Monitor command line: " + commandLine);
 
         ProcessBuilder builder = new ProcessBuilder()
@@ -80,6 +69,24 @@ public class JvmMonitorLauncher {
         connector.stopMonitor();
         int exitValue = process.waitFor();
         LOGGER.info("JVM Monitor process stopped, exit value: " + exitValue);
+    }
+
+    @NotNull
+    private List<String> buildCommandLine() throws IOException {
+        List<String> commandLine = new ArrayList<>();
+        commandLine.add(getJavaCommand());
+        if (isJava9OrLater()) {
+            commandLine.add(EXPORT_MONITOR_PACKAGE);
+            commandLine.add(EXPORT_EVENT_PACKAGE);
+        }
+        commandLine.add("-cp");
+        commandLine.add(getClassPath());
+        commandLine.add(String.format(LOG_DIR_FORMAT, outputDir.getAbsolutePath()));
+        commandLine.add(String.format(LOG_CONFIG_FORMAT, getMonitorToolJarPath()));
+        commandLine.add(JVM_MONITOR_TOOL_CLASS);
+        commandLine.add("" + connector.getPort());
+        commandLine.add(outputDir.getCanonicalPath());
+        return commandLine;
     }
 
     private String getJavaCommand() {
