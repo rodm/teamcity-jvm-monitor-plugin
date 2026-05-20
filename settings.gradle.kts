@@ -1,7 +1,7 @@
 
 pluginManagement {
     plugins {
-        id ("org.sonarqube") version "7.1.0.6387"
+        id ("org.sonarqube") version "7.3.0.8198"
     }
 }
 
