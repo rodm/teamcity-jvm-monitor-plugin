@@ -10,7 +10,8 @@ repositories {
 }
 
 dependencies {
-    testImplementation (platform("org.junit:junit-bom:5.14.1"))
+    // configure dependencies that are compatible with Java 8
+    testImplementation (platform("org.junit:junit-bom:5.14.4"))
     testImplementation ("org.junit.jupiter:junit-jupiter-api")
     testImplementation ("org.junit.jupiter:junit-jupiter-params")
     testImplementation ("org.hamcrest:hamcrest:3.0")
