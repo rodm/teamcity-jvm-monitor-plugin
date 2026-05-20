@@ -4,12 +4,6 @@ plugins {
     id ("org.gradle.jacoco")
 }
 
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(8)
-    }
-}
-
 dependencies {
     testImplementation (platform("org.junit:junit-bom:5.14.1"))
     testImplementation ("org.junit.jupiter:junit-jupiter-api")
@@ -19,6 +13,12 @@ dependencies {
 
     testRuntimeOnly ("org.junit.platform:junit-platform-launcher")
     testRuntimeOnly ("org.junit.jupiter:junit-jupiter-engine")
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
 }
 
 tasks {
