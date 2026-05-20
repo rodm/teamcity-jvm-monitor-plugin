@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package teamcity.jvm.monitor.agent;
+package teamcity.jvm.monitor.test;
 
 public class TestMain {
 

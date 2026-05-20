@@ -15,6 +15,7 @@ dependencies {
     testRuntimeOnly (libs.log4j)
 
     "functionalImplementation" (project)
+    "functionalImplementation" (testFixtures(project(":jvm-monitor-tool")))
 
     tool (project(":jvm-monitor-tool"))
 }
