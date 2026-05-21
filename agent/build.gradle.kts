@@ -4,18 +4,21 @@ plugins {
 }
 
 val functional by sourceSets.creating
+val functionalImplementation = configurations
+    .getByName(functional.implementationConfigurationName)
+    .extendsFrom(configurations.testImplementation)
+val functionalRuntimeOnly = configurations
+    .getByName(functional.runtimeOnlyConfigurationName)
+    .extendsFrom(configurations.testRuntimeOnly)
 val tool by configurations.creating
-
-configurations["functionalImplementation"].extendsFrom(configurations["testImplementation"])
-configurations["functionalRuntimeOnly"].extendsFrom(configurations["testRuntimeOnly"])
 
 dependencies {
     implementation (project(":jvm-monitor-common"))
 
     testRuntimeOnly (libs.log4j)
 
-    "functionalImplementation" (project)
-    "functionalImplementation" (testFixtures(project(":jvm-monitor-tool")))
+    functionalImplementation (project)
+    functionalImplementation (testFixtures(project(":jvm-monitor-tool")))
 
     tool (project(":jvm-monitor-tool"))
 }
