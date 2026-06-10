@@ -15,8 +15,8 @@ teamcity {
         val serverDebugOptions = "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005"
         val agentDebugOptions = "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5006"
 
-        register("teamcity2018.1") {
-            version = "2018.1.5"
+        register("teamcity2025.03") {
+            version = "2025.03.3"
             plugins = configurations["plugins"]
             serverOptions (serverDebugOptions)
             agentOptions (agentDebugOptions)

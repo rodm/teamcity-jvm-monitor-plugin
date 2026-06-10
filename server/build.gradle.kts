@@ -24,6 +24,7 @@ teamcity {
             vendorUrl = "https://github.com/rodm/teamcity-jvm-monitor-plugin"
             email = "rod.n.mackenzie@gmail.com"
             useSeparateClassloader = true
+            minimumBuild = "186049"
         }
     }
 }

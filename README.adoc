@@ -38,14 +38,14 @@ uploaded as build artifacts and presented as graphs in the `JVM Monitor` tab of 
 * To build and package the plugin run `./gradlew build`, the plugin is output to the `build/distributions` directory.
 * To deploy and test the plugin the following commands can be used to download and install a server, deploy the plugin
 and start the server.
-* Download and install a TeamCity server run `./gradlew installTeamCity2018.1`
-* Deploy the plugin run `./gradlew deployPlugin2018.1`
-* Start the server run `./gradlew startTeamcity2018.1`
-* To stop the server run `./gradlew stopTeamcity2018.1`
+* Download and install a TeamCity server run `./gradlew installTeamCity2025.03`
+* Deploy the plugin run `./gradlew deployPlugin2025.03`
+* Start the server run `./gradlew startTeamcity2025.03`
+* To stop the server run `./gradlew stopTeamcity2025.03`
 
 == Compatibility
 
-The plugin is compatible with TeamCity 2018.1 and later and requires the build agent to be running on Java 8 or later.
+The plugin is compatible with TeamCity 2025.03 and later and requires the build agent to be running on Java 21 or later.
 
 == License
 
