@@ -22,8 +22,8 @@ teamcity {
             agentOptions (agentDebugOptions)
         }
 
-        register("teamcity2026.1") {
-            version = "2026.1"
+        register("teamcity2026.2") {
+            version = "2026.2"
             javaHome = java21Home
             plugins = configurations["plugins"]
             serverOptions (serverDebugOptions)
