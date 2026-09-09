@@ -26,6 +26,7 @@ dependencies {
 tasks {
     val toolDir = project.layout.buildDirectory.dir("tool")
     register<Copy>("copyTool") {
+        description = "Copy the tool archive for tests."
         destinationDir = toolDir.get().asFile
         from(tool)
     }
