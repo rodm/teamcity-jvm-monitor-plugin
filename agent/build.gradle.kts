@@ -3,21 +3,21 @@ plugins {
     id ("teamcity.agent-plugin")
 }
 
-val functional by sourceSets.creating
+val functional = sourceSets.create("functional")
 val functionalImplementation = configurations
     .getByName(functional.implementationConfigurationName)
     .extendsFrom(configurations.testImplementation)
 val functionalRuntimeOnly = configurations
     .getByName(functional.runtimeOnlyConfigurationName)
     .extendsFrom(configurations.testRuntimeOnly)
-val tool by configurations.creating
+val tool = configurations.create("tool")
 
 dependencies {
     implementation (project(":jvm-monitor-common"))
 
     testRuntimeOnly (libs.log4j)
 
-    functionalImplementation (project)
+    functionalImplementation (project())
     functionalImplementation (testFixtures(project(":jvm-monitor-tool")))
 
     tool (project(":jvm-monitor-tool"))
