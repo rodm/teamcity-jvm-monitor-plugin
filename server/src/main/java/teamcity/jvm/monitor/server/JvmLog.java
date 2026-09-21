@@ -37,7 +37,7 @@ public class JvmLog {
     }
 
     private JvmLog(BuildArtifact artifact) {
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(artifact.getInputStream()))) {
+        try (var reader = new BufferedReader(new InputStreamReader(artifact.getInputStream()))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 contents.add(line);

@@ -17,10 +17,8 @@
 package teamcity.jvm.monitor.server;
 
 import jakarta.json.Json;
-import jakarta.json.JsonObject;
 import jakarta.json.JsonObjectBuilder;
 import jetbrains.buildServer.controllers.BaseController;
-import jetbrains.buildServer.serverSide.SBuild;
 import jetbrains.buildServer.serverSide.SBuildServer;
 import jetbrains.buildServer.serverSide.artifacts.BuildArtifact;
 import jetbrains.buildServer.web.openapi.WebControllerManager;
@@ -49,10 +47,10 @@ public class JvmMonitorController extends BaseController {
 
     @Override
     protected ModelAndView doHandle(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response) {
-        BuildArtifact artifact = getBuildArtifact(request);
+        var artifact = getBuildArtifact(request);
         if (artifact != null) {
             try {
-                JsonObjectBuilder responseNode = Json.createObjectBuilder();
+                var responseNode = Json.createObjectBuilder();
                 response.setContentType("text/json");
                 process(artifact, responseNode);
                 response.getOutputStream().write(responseNode.build().toString().getBytes(UTF_8));
@@ -68,28 +66,28 @@ public class JvmMonitorController extends BaseController {
         List<String> timestamps = new ArrayList<>();
         Map<String, List<Long>> datasets = new LinkedHashMap<>();
 
-        JvmLog jvmLog = JvmLog.from(artifact);
-        String[] columns = jvmLog.getColumns().split(",");
+        var jvmLog = JvmLog.from(artifact);
+        var columns = jvmLog.getColumns().split(",");
         for (String line : jvmLog.getData()) {
-            String[] parts = line.split(",");
+            var parts = line.split(",");
             for (int i = 0; i < parts.length; i++) {
                 if ("timestamp".equals(columns[i])) {
                     timestamps.add(parts[i]);
                 } else {
-                    String column = columns[i].trim();
+                    var column = columns[i].trim();
                     datasets.computeIfAbsent(column, k -> new ArrayList<>()).add(Long.parseLong(parts[i]));
                 }
             }
         }
 
-        JsonObject info = Json.createObjectBuilder()
+        var info = Json.createObjectBuilder()
             .add("cmdline", jvmLog.getCommandLine())
             .add("jvmargs", jvmLog.getJvmArguments())
             .add("jvmversion", jvmLog.getJvmVersion())
             .build();
         responseNode.add("info", info);
 
-        JsonObjectBuilder jsonDatasets = Json.createObjectBuilder();
+        var jsonDatasets = Json.createObjectBuilder();
         jsonDatasets.add("timestamp", Json.createArrayBuilder(timestamps));
         for (Map.Entry<String, List<Long>> entry : datasets.entrySet()) {
             jsonDatasets.add(entry.getKey(), Json.createArrayBuilder(entry.getValue()));
@@ -99,17 +97,17 @@ public class JvmMonitorController extends BaseController {
 
     @Nullable
     private BuildArtifact getBuildArtifact(HttpServletRequest request) {
-        Long buildId = getBuildIdFromRequest(request);
+        var buildId = getBuildIdFromRequest(request);
         if (buildId == null) return null;
-        String jvmLogName = getJvmLogNameFromRequest(request);
-        SBuild build = myServer.findBuildInstanceById(buildId);
+        var jvmLogName = getJvmLogNameFromRequest(request);
+        var build = myServer.findBuildInstanceById(buildId);
         if (build == null) return null;
         return JvmMonitorUtil.getBuildArtifact(build, jvmLogName);
     }
 
     @Nullable
     private Long getBuildIdFromRequest(HttpServletRequest request) {
-        String value = request.getParameter("buildId");
+        var value = request.getParameter("buildId");
         if (value != null) {
             try {
                 return Long.parseLong(value);

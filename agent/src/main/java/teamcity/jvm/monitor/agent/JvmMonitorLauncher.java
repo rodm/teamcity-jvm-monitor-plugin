@@ -22,7 +22,6 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,10 +51,10 @@ public class JvmMonitorLauncher {
         LOGGER.info("Starting JVM Monitor process");
         connector = JvmMonitorConnector.createConnector();
 
-        List<String> commandLine = buildCommandLine();
+        var commandLine = buildCommandLine();
         LOGGER.info("JVM Monitor command line: " + commandLine);
 
-        ProcessBuilder builder = new ProcessBuilder()
+        var builder = new ProcessBuilder()
             .command(commandLine)
             .inheritIO();
         connector.ready();
@@ -67,7 +66,7 @@ public class JvmMonitorLauncher {
     public void stop() throws IOException, InterruptedException {
         LOGGER.info("Stopping JVM Monitor process");
         connector.stopMonitor();
-        int exitValue = process.waitFor();
+        var exitValue = process.waitFor();
         LOGGER.info("JVM Monitor process stopped, exit value: " + exitValue);
     }
 
@@ -94,14 +93,14 @@ public class JvmMonitorLauncher {
     }
 
     private String getClassPath() throws IOException {
-        File toolsJar = new File(getJavaHome(), "lib/tools.jar");
+        var toolsJar = new File(getJavaHome(), "lib/tools.jar");
         List<String> classPath = new ArrayList<>();
         if (toolsJar.exists()) {
             classPath.add(toolsJar.getCanonicalPath());
         }
-        File[] toolFiles = toolDir.listFiles();
+        var toolFiles = toolDir.listFiles();
         if (toolFiles != null) {
-            for (File file : toolFiles) {
+            for (var file : toolFiles) {
                 classPath.add(file.getCanonicalPath());
             }
         }
@@ -120,7 +119,7 @@ public class JvmMonitorLauncher {
         if (javaHome == null) {
             javaHome = System.getProperty("java.home");
         }
-        File javaHomeFile = new File(javaHome);
+        var javaHomeFile = new File(javaHome);
         if ("jre".equals(javaHomeFile.getName())) {
             return javaHomeFile.getParentFile();
         } else {
@@ -129,7 +128,7 @@ public class JvmMonitorLauncher {
     }
 
     private boolean isJava9OrLater() {
-        Path modulesFile = getJavaHome().toPath().resolve("lib/modules");
+        var modulesFile = getJavaHome().toPath().resolve("lib/modules");
         return Files.exists(modulesFile);
     }
 }

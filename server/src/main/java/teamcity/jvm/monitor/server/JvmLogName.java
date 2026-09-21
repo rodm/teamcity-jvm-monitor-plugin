@@ -33,7 +33,7 @@ public class JvmLogName {
     public String getDisplayName() { return displayName; }
 
     private String createDisplayName(String file) {
-        String[] parts = removeExtension(file).split("-");
+        var parts = removeExtension(file).split("-");
         if (parts.length > 1) {
             return parts[1] + " (pid: " + parts[0] + ")";
         } else {

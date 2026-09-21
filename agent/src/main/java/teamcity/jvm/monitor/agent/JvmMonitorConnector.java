@@ -25,7 +25,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
-import java.net.Socket;
 import java.util.concurrent.CountDownLatch;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
@@ -41,7 +40,7 @@ public class JvmMonitorConnector implements Runnable {
     private BufferedReader reader;
 
     public static JvmMonitorConnector createConnector() throws IOException {
-        JvmMonitorConnector connector = new JvmMonitorConnector();
+        var connector = new JvmMonitorConnector();
         new Thread(connector).start();
         return connector;
     }
@@ -58,7 +57,7 @@ public class JvmMonitorConnector implements Runnable {
     public void run() {
         try {
             ready.countDown();
-            Socket client = socket.accept();
+            var client = socket.accept();
             writer = new BufferedWriter(new OutputStreamWriter(client.getOutputStream()));
             reader = new BufferedReader(new InputStreamReader(client.getInputStream()));
             start.countDown();
@@ -75,7 +74,7 @@ public class JvmMonitorConnector implements Runnable {
     public void startMonitor() throws IOException, InterruptedException {
         if (start.await(10, SECONDS)) {
             sendCommand("start");
-            String response = reader.readLine();
+            var response = reader.readLine();
             if (!"started".equals(response)) {
                 LOGGER.warn("Response received: " + response);
                 throw new IOException("JVM Monitor tool failed to start");
@@ -88,7 +87,7 @@ public class JvmMonitorConnector implements Runnable {
     public void stopMonitor() throws IOException {
         sendCommand("stop");
         try {
-            String response = reader.readLine();
+            var response = reader.readLine();
             if (!"stopped".equals(response)) {
                 LOGGER.warn("Response received: " + response);
                 throw new IOException("JVM Monitor tool failed to stop");

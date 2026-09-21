@@ -16,11 +16,9 @@
 
 package teamcity.jvm.monitor.agent;
 
-import jetbrains.buildServer.agent.AgentBuildFeature;
 import jetbrains.buildServer.agent.AgentLifeCycleAdapter;
 import jetbrains.buildServer.agent.AgentLifeCycleListener;
 import jetbrains.buildServer.agent.AgentRunningBuild;
-import jetbrains.buildServer.agent.BuildAgentConfiguration;
 import jetbrains.buildServer.agent.BuildFinishedStatus;
 import jetbrains.buildServer.agent.artifacts.ArtifactsWatcher;
 import jetbrains.buildServer.agent.plugins.beans.PluginDescriptor;
@@ -32,7 +30,6 @@ import teamcity.jvm.monitor.JvmMonitorPlugin;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Collection;
 
 import static teamcity.jvm.monitor.JvmMonitorPlugin.JVM_MONITOR_LOG_PATH;
 import static teamcity.jvm.monitor.JvmMonitorPlugin.JVM_MONITOR_PATH_NAME;
@@ -56,19 +53,19 @@ public class JvmMonitorBuildFeature extends AgentLifeCycleAdapter {
 
     @Override
     public void buildStarted(@NotNull AgentRunningBuild build) {
-        Collection<AgentBuildFeature> features = build.getBuildFeaturesOfType(JvmMonitorPlugin.FEATURE_TYPE);
+        var features = build.getBuildFeaturesOfType(JvmMonitorPlugin.FEATURE_TYPE);
         if (!features.isEmpty()) {
             LOGGER.info("jvm-monitor-plugin feature enabled for build");
 
-            BuildAgentConfiguration config = build.getAgentConfiguration();
+            var config = build.getAgentConfiguration();
             outputDir = new File(config.getTempDirectory(), JVM_MONITOR_PATH_NAME);
             FileUtil.delete(outputDir);
-            boolean result = outputDir.mkdirs();
+            var result = outputDir.mkdirs();
             if (!result) {
                 LOGGER.warn("Failed to create output directory");
             }
 
-            File toolDir = pluginDescriptor.getPluginRoot().toPath().resolve("tool").toFile();
+            var toolDir = pluginDescriptor.getPluginRoot().toPath().resolve("tool").toFile();
             monitor = new JvmMonitorLauncher(toolDir, outputDir);
             try {
                 monitor.start();

@@ -45,12 +45,12 @@ public class JvmMonitorTab extends ViewLogTab {
 
     @Override
     public boolean isAvailable(@NotNull HttpServletRequest request) {
-        SBuild build = this.getBuild(request);
+        var build = this.getBuild(request);
         return build != null && this.hasArtifacts(build);
     }
 
     private boolean hasArtifacts(@NotNull SBuild build) {
-        BuildArtifact artifact = JvmMonitorUtil.getBuildArtifact(build);
+        var artifact = JvmMonitorUtil.getBuildArtifact(build);
         return artifact != null && !artifact.getChildren().isEmpty();
     }
 
@@ -62,9 +62,9 @@ public class JvmMonitorTab extends ViewLogTab {
 
     private List<JvmLogName> getProcesses(SBuild build) {
         List<JvmLogName> processes = new ArrayList<>();
-        BuildArtifact artifact = JvmMonitorUtil.getBuildArtifact(build);
+        var artifact = JvmMonitorUtil.getBuildArtifact(build);
         if (artifact != null) {
-            for (BuildArtifact file : artifact.getChildren()) {
+            for (var file : artifact.getChildren()) {
                 if ("jvm-monitor.log".equals(file.getName())) continue;
                 processes.add(new JvmLogName(file.getName()));
             }

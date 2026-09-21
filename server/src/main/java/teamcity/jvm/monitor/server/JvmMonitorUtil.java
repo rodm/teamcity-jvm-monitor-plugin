@@ -18,20 +18,19 @@ package teamcity.jvm.monitor.server;
 
 import jetbrains.buildServer.serverSide.SBuild;
 import jetbrains.buildServer.serverSide.artifacts.BuildArtifact;
-import jetbrains.buildServer.serverSide.artifacts.BuildArtifacts;
-import jetbrains.buildServer.serverSide.artifacts.BuildArtifactsViewMode;
 
+import static jetbrains.buildServer.serverSide.artifacts.BuildArtifactsViewMode.VIEW_HIDDEN_ONLY;
 import static teamcity.jvm.monitor.JvmMonitorPlugin.JVM_MONITOR_LOG_PATH;
 
 public class JvmMonitorUtil {
 
     static BuildArtifact getBuildArtifact(SBuild build) {
-        BuildArtifacts artifacts = build.getArtifacts(BuildArtifactsViewMode.VIEW_HIDDEN_ONLY);
+        var artifacts = build.getArtifacts(VIEW_HIDDEN_ONLY);
         return artifacts.getArtifact(JVM_MONITOR_LOG_PATH);
     }
 
     static BuildArtifact getBuildArtifact(SBuild build, String name) {
-        BuildArtifacts artifacts = build.getArtifacts(BuildArtifactsViewMode.VIEW_HIDDEN_ONLY);
+        var artifacts = build.getArtifacts(VIEW_HIDDEN_ONLY);
         return artifacts.getArtifact(JVM_MONITOR_LOG_PATH + "/" + name);
     }
 
