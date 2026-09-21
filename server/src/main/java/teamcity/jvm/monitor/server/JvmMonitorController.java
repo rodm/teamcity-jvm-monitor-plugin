@@ -70,7 +70,7 @@ public class JvmMonitorController extends BaseController {
         var columns = jvmLog.getColumns().split(",");
         for (String line : jvmLog.getData()) {
             var parts = line.split(",");
-            for (int i = 0; i < parts.length; i++) {
+            for (var i = 0; i < parts.length; i++) {
                 if ("timestamp".equals(columns[i])) {
                     timestamps.add(parts[i]);
                 } else {
